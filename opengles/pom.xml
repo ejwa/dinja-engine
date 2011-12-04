@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.ejwa</groupId>
+		<artifactId>dinja</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.ejwa.dinja</groupId>
+	<artifactId>opengles</artifactId>
+	<packaging>jar</packaging>
+	<version>0.1-SNAPSHOT</version>
+	<name>Dinja Engine OpenGLES Wrapper</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>javacpp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-jnilib</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+								<argument>-jar</argument>        <argument>${com.googlecode:javacpp:jar}</argument>
+								<argument>-classpath</argument>  <argument>${project.build.outputDirectory}</argument>
+								<argument>-d</argument>          <argument>${project.build.outputDirectory}/libs/armeabi</argument>
+								<argument>-properties</argument> <argument>android-arm</argument>
+
+								<argument>-Dplatform.root=${env.ANDROID_NDK_HOME}</argument>
+								<argument>com.ejwa.dinja.opengles.OpenGLES2</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
