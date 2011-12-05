@@ -21,19 +21,36 @@
 package com.ejwa.dinja.opengles;
 
 import com.googlecode.javacpp.BytePointer;
+import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.PointerPointer;
 import com.googlecode.javacpp.annotation.Cast;
+import com.googlecode.javacpp.annotation.Const;
 import com.googlecode.javacpp.annotation.Platform;
 
 @Platform(cinclude = "GLES2/gl2.h", link = "GLESv2")
 public final class OpenGLES2 {
+	static { Loader.load(); }
+
+	public static final int GL_ES_VERSION_2_0 = 1;
+	public static final int GL_DEPTH_BUFFER_BIT = 0x100;
+	public static final int GL_STENCIL_BUFFER_BIT = 0x400;
+	public static final int GL_COLOR_BUFFER_BIT =0x4000;
+
 	private OpenGLES2() {
 		/* No instances of this class allowed. */
 	}
 
-	static { Loader.load(); }
 	public static native void glClear(int mask);
 	public static native void glClearColor(float red, float green, float blue, float alpha);
+
 	public static native @Cast("const uint8_t *") BytePointer glGetString(int nameIdentifier);
 	public static native void glViewport (int x, int y, int width, int height);
+
+	public static native int glCreateProgram();
+	public static native void glAttachShader(int program, int shader);
+	public static native void glDetachShader(int program, int shader);
+	public static native int glCreateShader(int shaderType);
+	public static native void glDeleteShader(int shader);
+	public static native void glShaderSource(int shader, int count, @Cast("const char **") PointerPointer strings, IntPointer length);
 }
