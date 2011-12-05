@@ -25,9 +25,9 @@ import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Loader;
 import com.googlecode.javacpp.PointerPointer;
 import com.googlecode.javacpp.annotation.Cast;
-import com.googlecode.javacpp.annotation.Const;
 import com.googlecode.javacpp.annotation.Platform;
 
+@SuppressWarnings("PMD.TooManyMethods")
 @Platform(cinclude = "GLES2/gl2.h", link = "GLESv2")
 public final class OpenGLES2 {
 	static { Loader.load(); }
@@ -44,6 +44,7 @@ public final class OpenGLES2 {
 	public static native void glClear(int mask);
 	public static native void glClearColor(float red, float green, float blue, float alpha);
 
+	public static native int glGetError();
 	public static native @Cast("const uint8_t *") BytePointer glGetString(int nameIdentifier);
 	public static native void glViewport (int x, int y, int width, int height);
 
