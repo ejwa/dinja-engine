@@ -18,32 +18,22 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.demo.activity;
+package com.ejwa.dinja.opengles;
 
-import android.app.Activity;
-import android.os.Bundle;
-import com.ejwa.dinja.opengles.view.GLSurface;
+import com.googlecode.javacpp.BytePointer;
+import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.annotation.Cast;
+import com.googlecode.javacpp.annotation.Platform;
 
-public class DemoActivity extends Activity {
-	private GLSurface glSurfaceView;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		glSurfaceView = new GLSurface(getApplication());
-		setContentView(glSurfaceView);
+@Platform(cinclude = "GLES2/gl2.h", link = "GLESv2")
+public final class OpenGLES2 {
+	private OpenGLES2() {
+		/* No instances of this class allowed. */
 	}
 
-	@Override
-	protected void onPause() {
-		glSurfaceView.onPause();
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		glSurfaceView.onResume();
-	}
+	static { Loader.load(); }
+	public static native void glClear(int mask);
+	public static native void glClearColor(float red, float green, float blue, float alpha);
+	public static native @Cast("const uint8_t *") BytePointer glGetString(int nameIdentifier);
+	public static native void glViewport (int x, int y, int width, int height);
 }

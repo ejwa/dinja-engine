@@ -18,32 +18,16 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.demo.activity;
+package com.ejwa.dinja.opengles.view;
 
-import android.app.Activity;
-import android.os.Bundle;
-import com.ejwa.dinja.opengles.view.GLSurface;
+import android.content.Context;
+import android.opengl.GLSurfaceView;
 
-public class DemoActivity extends Activity {
-	private GLSurface glSurfaceView;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		glSurfaceView = new GLSurface(getApplication());
-		setContentView(glSurfaceView);
-	}
-
-	@Override
-	protected void onPause() {
-		glSurfaceView.onPause();
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		glSurfaceView.onResume();
+public class GLSurface extends GLSurfaceView {
+	public GLSurface(Context context) {
+		super(context);
+		setEGLContextFactory(new ContextFactory());
+		setEGLConfigChooser(new DisplayConfigurationChooser());
+		setRenderer(new GLSurfaceRenderer());
 	}
 }

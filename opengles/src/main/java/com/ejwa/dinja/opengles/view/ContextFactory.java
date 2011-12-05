@@ -18,32 +18,25 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.demo.activity;
+package com.ejwa.dinja.opengles.view;
 
-import android.app.Activity;
-import android.os.Bundle;
-import com.ejwa.dinja.opengles.view.GLSurface;
+import android.opengl.GLSurfaceView.EGLContextFactory;
+import javax.microedition.khronos.egl.EGL10;
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLContext;
+import javax.microedition.khronos.egl.EGLDisplay;
 
-public class DemoActivity extends Activity {
-	private GLSurface glSurfaceView;
+class ContextFactory implements EGLContextFactory {
+	private final static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		glSurfaceView = new GLSurface(getApplication());
-		setContentView(glSurfaceView);
+	public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
+		final int eglAttributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE };
+		return egl.eglCreateContext(display, eglConfig, EGL10.EGL_NO_CONTEXT, eglAttributes);
 	}
 
 	@Override
-	protected void onPause() {
-		glSurfaceView.onPause();
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		glSurfaceView.onResume();
+	public void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context) {
+		egl.eglDestroyContext(display, context);
 	}
 }
