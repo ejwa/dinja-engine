@@ -20,24 +20,17 @@
  */
 package com.ejwa.dinja.opengles;
 
-public final class OpenGLESProperty {
-	public enum Identifier {
-		GL_VENDOR(0x1f00),
-		GL_RENDERER(0x1f01),
-		GL_VERSION(0x1f02),
-		GL_EXTENSIONS(0x1f03),
-		GL_SHADING_LANGUAGE_VERSION(0x8b8c);
+public enum Property {
+	GL_VENDOR(0x1f00),
+	GL_RENDERER(0x1f01),
+	GL_VERSION(0x1f02),
+	GL_EXTENSIONS(0x1f03),
+	GL_SHADING_LANGUAGE_VERSION(0x8b8c);
 
-		private final int id;
-		Identifier(int id) { this.id = id; }
-		int get() { return id; }
-	}
+	private final int id;
+	Property(int id) { this.id = id; }
 
-	private OpenGLESProperty() {
-		/* No instances of this class allowed. */
-	}
-
-	public static String get(Identifier identifier) {
-		return OpenGLES2.glGetString(identifier.get()).getString();
+	public String get() {
+		return OpenGLES2.glGetString(id).getString();
 	}
 }

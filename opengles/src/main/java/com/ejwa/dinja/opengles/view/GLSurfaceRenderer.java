@@ -23,8 +23,7 @@ package com.ejwa.dinja.opengles.view;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 import com.ejwa.dinja.opengles.OpenGLES2;
-import com.ejwa.dinja.opengles.OpenGLES2Code;
-import com.ejwa.dinja.opengles.OpenGLESProperty;
+import com.ejwa.dinja.opengles.Property;
 import java.util.Random;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -35,7 +34,7 @@ public class GLSurfaceRenderer implements Renderer {
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		OpenGLES2.glClearColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
-		OpenGLES2.glClear(OpenGLES2Code.GL_DEPTH_BUFFER_BIT | OpenGLES2Code.GL_COLOR_BUFFER_BIT);
+		OpenGLES2.glClear(OpenGLES2.GL_DEPTH_BUFFER_BIT | OpenGLES2.GL_COLOR_BUFFER_BIT);
 	}
 
 	@Override
@@ -43,12 +42,11 @@ public class GLSurfaceRenderer implements Renderer {
 		OpenGLES2.glViewport(0, 0, width, height);
 
 		Log.i(GLSurfaceRenderer.class.getName(), "OpenGL properties of this device:");
-		Log.i(GLSurfaceRenderer.class.getName(), "Version: " + OpenGLESProperty.get(OpenGLESProperty.Identifier.GL_VERSION));
-		Log.i(GLSurfaceRenderer.class.getName(), "Vendor: " + OpenGLESProperty.get(OpenGLESProperty.Identifier.GL_VENDOR));
-		Log.i(GLSurfaceRenderer.class.getName(), "Shading language version: " + OpenGLESProperty.get(OpenGLESProperty.Identifier.GL_SHADING_LANGUAGE_VERSION));
-		Log.i(GLSurfaceRenderer.class.getName(), "Renderer: " + OpenGLESProperty.get(OpenGLESProperty.Identifier.GL_RENDERER));
-		Log.i(GLSurfaceRenderer.class.getName(), "Extensions: " + OpenGLESProperty.get(OpenGLESProperty.Identifier.GL_EXTENSIONS));
-
+		Log.i(GLSurfaceRenderer.class.getName(), "Version: " + Property.GL_VERSION);
+		Log.i(GLSurfaceRenderer.class.getName(), "Vendor: " + Property.GL_VENDOR);
+		Log.i(GLSurfaceRenderer.class.getName(), "Shading language version: " + Property.GL_SHADING_LANGUAGE_VERSION);
+		Log.i(GLSurfaceRenderer.class.getName(), "Renderer: " + Property.GL_RENDERER);
+		Log.i(GLSurfaceRenderer.class.getName(), "Extensions: " + Property.GL_EXTENSIONS);
 	}
 
 	@Override
