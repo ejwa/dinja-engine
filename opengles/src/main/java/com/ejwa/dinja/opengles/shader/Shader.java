@@ -33,6 +33,16 @@ import org.apache.commons.io.FileUtils;
 class Shader {
 	private final int shaderHandle;
 
+	private int createShader(int shaderType) {
+		final int handle = OpenGLES2.glCreateShader(shaderType);
+
+		if (handle == 0) {
+			throw new GLException("Failed to create shader.");
+		}
+
+		return handle;
+	}
+
 	private void attachShaderSource(String shaderSource) {
 		final BytePointer sourceCodePtr = new BytePointer(shaderSource);
 		final PointerPointer sourceCodePtrPtr =  new PointerPointer(new BytePointer[] { sourceCodePtr });
@@ -49,7 +59,7 @@ class Shader {
 	}
 
 	public Shader(int shaderType, String shaderSource) {
-		shaderHandle = OpenGLES2.glCreateShader(shaderType);
+		shaderHandle = createShader(shaderType);
 		attachShaderSource(shaderSource);
 
 		if (!isCompiled()) {
