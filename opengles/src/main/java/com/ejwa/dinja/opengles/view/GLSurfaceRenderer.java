@@ -42,11 +42,11 @@ public class GLSurfaceRenderer implements Renderer {
 		OpenGLES2.glViewport(0, 0, width, height);
 
 		Log.i(GLSurfaceRenderer.class.getName(), "OpenGL properties of this device:");
-		Log.i(GLSurfaceRenderer.class.getName(), "Version: " + Property.GL_VERSION);
-		Log.i(GLSurfaceRenderer.class.getName(), "Vendor: " + Property.GL_VENDOR);
-		Log.i(GLSurfaceRenderer.class.getName(), "Shading language version: " + Property.GL_SHADING_LANGUAGE_VERSION);
-		Log.i(GLSurfaceRenderer.class.getName(), "Renderer: " + Property.GL_RENDERER);
-		Log.i(GLSurfaceRenderer.class.getName(), "Extensions: " + Property.GL_EXTENSIONS);
+		Log.i(GLSurfaceRenderer.class.getName(), "Version: " + Property.GL_VERSION.get());
+		Log.i(GLSurfaceRenderer.class.getName(), "Vendor: " + Property.GL_VENDOR.get());
+		Log.i(GLSurfaceRenderer.class.getName(), "Shading language version: " + Property.GL_SHADING_LANGUAGE_VERSION.get());
+		Log.i(GLSurfaceRenderer.class.getName(), "Renderer: " + Property.GL_RENDERER.get());
+		Log.i(GLSurfaceRenderer.class.getName(), "Extensions: " + Property.GL_EXTENSIONS.get());
 	}
 
 	@Override
