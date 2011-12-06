@@ -23,7 +23,7 @@ package com.ejwa.dinja.opengles;
 public class GLException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	GLException(String message) {
+	public GLException(String message) {
 		super(message);
 	}
 }
