@@ -26,7 +26,11 @@ import java.io.IOException;
 public class FragmentShader extends Shader {
 	private static final int GL_FRAGMENT_SHADER = 0x8b30;
 
-	public FragmentShader(File shaderFile) throws IOException {
-		super(GL_FRAGMENT_SHADER, shaderFile);
+	public FragmentShader(File shaderSource) throws IOException {
+		super(GL_FRAGMENT_SHADER, shaderSource);
+	}
+
+	public FragmentShader(String shaderSource) {
+		super(GL_FRAGMENT_SHADER, shaderSource);
 	}
 }

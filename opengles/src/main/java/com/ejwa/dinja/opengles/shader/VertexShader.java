@@ -26,7 +26,11 @@ import java.io.IOException;
 public class VertexShader extends Shader {
 	private static final int GL_VERTEX_SHADER = 0x8b31;
 
-	public VertexShader(File shaderFile) throws IOException {
-		super(GL_VERTEX_SHADER, shaderFile);
+	public VertexShader(File shaderSource) throws IOException {
+		super(GL_VERTEX_SHADER, shaderSource);
+	}
+
+	public VertexShader(String shaderSource) {
+		super(GL_VERTEX_SHADER, shaderSource);
 	}
 }
