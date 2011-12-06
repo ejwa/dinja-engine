@@ -22,6 +22,7 @@ package com.ejwa.dinja.opengles.shader;
 
 import com.ejwa.dinja.opengles.OpenGLES2;
 import com.googlecode.javacpp.BytePointer;
+import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.PointerPointer;
 import java.io.File;
 import java.io.IOException;
@@ -44,5 +45,22 @@ class Shader {
 
 	public void delete() {
 		OpenGLES2.glDeleteShader(shaderHandle);
+	}
+
+	private IntPointer getParameter(int code) {
+		final IntPointer parameter = new IntPointer();
+
+		OpenGLES2.glGetShaderiv(shaderHandle, code, parameter);
+		return parameter;
+	}
+
+	public boolean isFlaggedForDeletion() {
+		final int GL_DELETE_STATUS = 0x8b80;
+		return getParameter(GL_DELETE_STATUS).get() != 0;
+	}
+
+	public boolean isCompiled() {
+		final int GL_COMPILE_STATUS = 0x8b81;
+		return getParameter(GL_COMPILE_STATUS).get() != 0;
 	}
 }

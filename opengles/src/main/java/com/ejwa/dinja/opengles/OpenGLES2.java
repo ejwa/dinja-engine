@@ -54,4 +54,5 @@ public final class OpenGLES2 {
 	public static native int glCreateShader(int shaderType);
 	public static native void glDeleteShader(int shader);
 	public static native void glShaderSource(int shader, int count, @Cast("const char **") PointerPointer strings, IntPointer length);
+	public static native void glGetShaderiv(int shader, int paramName, IntPointer params);
 }
