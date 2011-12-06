@@ -55,12 +55,13 @@ class Shader {
 		if (!isCompiled()) {
 			final String infoLog = getInfoLog();
 
+			delete();
 			Log.e(Shader.class.getName(), infoLog);
 			throw new GLException("Failed to compile shader.");
 		}
 	}
 
-	public void delete() {
+	public final void delete() {
 		OpenGLES2.glDeleteShader(shaderHandle);
 	}
 
