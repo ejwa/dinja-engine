@@ -21,58 +21,60 @@
 package com.ejwa.dinja.opengles.shader;
 
 import android.util.Log;
+import com.ejwa.dinja.opengles.GLError;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.OpenGLES2;
-import java.io.File;
-import java.io.IOException;
-import org.apache.commons.io.FileUtils;
 
-public class Shader {
+public class Program {
 	private final int handle;
 
-	private int createShader(int shaderType) {
-		final int h = OpenGLES2.glCreateShader(shaderType);
+	private int createProgram() {
+		final int h = OpenGLES2.glCreateProgram();
 
 		if (h == 0) {
-			throw new GLException("Failed to create shader.");
+			throw new GLException("Failed to create program.");
 		}
 
 		return h;
 	}
 
-	public Shader(int shaderType, File shaderSource) throws IOException {
-		this(shaderType, FileUtils.readFileToString(shaderSource));
+	public Program() {
+		handle = createProgram();
 	}
 
-	public Shader(int shaderType, String shaderSource) {
-		handle = createShader(shaderType);
-		OpenGLES2.glShaderSource(handle, shaderSource);
-		OpenGLES2.glCompileShader(handle);
+	@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
+	public Program(Shader ...shaders) {
+		this();
+		attach(shaders);
+	}
 
-		if (!isCompiled()) {
-			final String infoLog = OpenGLES2.glGetShaderInfoLog(handle);
+	public final void attach(Shader ...shaders) {
+		for (Shader s : shaders) {
+			OpenGLES2.glAttachShader(handle, s.getHandle());
+			GLError.check(Program.class);
+		}
 
+		OpenGLES2.glLinkProgram(handle);
+
+		if (!isLinked()) {
+			final String infoLog = OpenGLES2.glGetProgramInfoLog(handle);
+	
 			delete();
 			Log.e(Shader.class.getName(), infoLog);
-			throw new GLException("Failed to compile shader.");
+			throw new GLException("Failed to link program.");
 		}
 	}
 
 	public final void delete() {
-		OpenGLES2.glDeleteShader(handle);
+		OpenGLES2.glDeleteProgram(handle);
 	}
 
 	public int getHandle() {
 		return handle;
 	}
 
-	public boolean isFlaggedForDeletion() {
-		final int GL_DELETE_STATUS = 0x8b80;
-		return OpenGLES2.glGetShaderiv(handle, GL_DELETE_STATUS) != 0;
-	}
-
-	public final boolean isCompiled() {
-		final int GL_COMPILE_STATUS = 0x8b81;
-		return OpenGLES2.glGetShaderiv(handle, GL_COMPILE_STATUS) != 0;
+	public boolean isLinked() {
+		final int GL_LINK_STATUS = 0x8b82;
+		return OpenGLES2.glGetProgramiv(handle, GL_LINK_STATUS) != 0;
 	}
 }

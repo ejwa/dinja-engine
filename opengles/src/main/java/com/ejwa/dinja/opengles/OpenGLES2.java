@@ -6,8 +6,29 @@ import com.googlecode.javacpp.PointerPointer;
 
 public final class OpenGLES2 extends OpenGLES2Native {
 	private OpenGLES2() {
-		super();
-		/* No instances of this class allowed. */
+		super(); /* No instances of this class allowed. */
+	}
+
+	public static int glGetProgramiv(int program, int paramName) {
+		final IntPointer parameterPtr = new IntPointer(1);
+		OpenGLES2Native.glGetProgramiv(program, paramName, parameterPtr);
+
+		final int parameter = parameterPtr.get();
+		parameterPtr.deallocate();
+		return parameter;
+	}
+
+	public static String glGetProgramInfoLog(int program) {
+		final BytePointer infoLogPtr = new BytePointer(256);
+		final IntPointer length = new IntPointer(1);
+
+		OpenGLES2Native.glGetProgramInfoLog(program, infoLogPtr.capacity(), length, infoLogPtr);
+
+		final String infoLog = infoLogPtr.getString();
+		infoLogPtr.deallocate();
+		length.deallocate();
+
+		return infoLog;
 	}
 
 	public static void glShaderSource(int shader, String source) {
