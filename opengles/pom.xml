@@ -63,7 +63,7 @@
 								<argument>-Dcompiler.options=-march=armv5te -mtune=xscale -msoft-float ${env.ANDROID_NDK_HOME}/sources/cxx-stl/gnu-libstdc++/libs/armeabi/libsupc++.a</argument>
 								<argument>-Dcompiler.linkpath=sources/cxx-stl/gnu-libstdc++/libs/armeabi/:platforms/android-8/arch-arm/usr/lib/</argument>
 								<argument>-Dplatform.root=${env.ANDROID_NDK_HOME}</argument>
-								<argument>com.ejwa.dinja.opengles.OpenGLES2</argument>
+								<argument>com.ejwa.dinja.opengles.OpenGLES2Native</argument>
 							</arguments>
 						</configuration>
 					</execution>
