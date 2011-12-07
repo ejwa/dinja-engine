@@ -18,25 +18,32 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.demo.activity;
+package com.ejwa.dinja.engine.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
-import com.ejwa.dinja.engine.activity.DinjaActivity;
 import com.ejwa.dinja.opengles.view.GLSurface;
 
-public class DemoActivity extends DinjaActivity {
+public class DinjaActivity extends Activity {
+	private GLSurface glSurfaceView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		glSurfaceView = new GLSurface(getApplication());
+		setContentView(glSurfaceView);
 	}
 
 	@Override
 	protected void onPause() {
+		glSurfaceView.onPause();
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		glSurfaceView.onResume();
 	}
 }
