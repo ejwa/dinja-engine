@@ -43,9 +43,9 @@ public class Program {
 	}
 
 	@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-	public Program(Shader ...shaders) {
+	public Program(VertexShader vertexShader, FragmentShader fragmentShader) {
 		this();
-		attach(shaders);
+		attach(vertexShader, fragmentShader);
 	}
 
 	private void linkProgram() {
@@ -60,11 +60,12 @@ public class Program {
 		}
 	}
 
-	public final void attach(Shader ...shaders) {
-		for (Shader s : shaders) {
-			OpenGLES2.glAttachShader(handle, s.getHandle());
-			GLError.check(Program.class);
-		}
+	public final void attach(VertexShader vertexShader, FragmentShader fragmentShader) {
+		OpenGLES2.glAttachShader(handle, vertexShader.getHandle());
+		GLError.check(Program.class);
+
+		OpenGLES2.glAttachShader(handle, fragmentShader.getHandle());
+		GLError.check(Program.class);
 
 		linkProgram();
 	}
