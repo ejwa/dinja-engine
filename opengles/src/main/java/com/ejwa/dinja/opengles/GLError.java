@@ -21,14 +21,15 @@
 package com.ejwa.dinja.opengles;
 
 import android.util.Log;
+import javax.microedition.khronos.opengles.GL10;
 
 public final class GLError {
 	public enum Code {
-		GL_NO_ERROR(0x0, "No error has been recorded."),
-		GL_INVALID_ENUM(0x500, "An unacceptable value is specified for an enumerated argument."),
-		GL_INVALID_VALUE(0x501, "A numeric argument is out of range"),
-		GL_INVALID_OPERATION(0x502, "The specified operation is not allowed in the current state."),
-		GL_OUT_OF_MEMORY(0x505, "There is not enough memory left to execute the command.");
+		GL_NO_ERROR(GL10.GL_NO_ERROR, "No error has been recorded."),
+		GL_INVALID_ENUM(GL10.GL_INVALID_ENUM, "An unacceptable value is specified for an enumerated argument."),
+		GL_INVALID_VALUE(GL10.GL_INVALID_VALUE, "A numeric argument is out of range"),
+		GL_INVALID_OPERATION(GL10.GL_INVALID_OPERATION, "The specified operation is not allowed in the current state."),
+		GL_OUT_OF_MEMORY(GL10.GL_OUT_OF_MEMORY, "There is not enough memory left to execute the command.");
 
 		private final int id;
 		private final String description;

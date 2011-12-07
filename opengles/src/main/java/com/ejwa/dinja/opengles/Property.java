@@ -20,11 +20,13 @@
  */
 package com.ejwa.dinja.opengles;
 
+import javax.microedition.khronos.opengles.GL10;
+
 public enum Property {
-	GL_VENDOR(0x1f00),
-	GL_RENDERER(0x1f01),
-	GL_VERSION(0x1f02),
-	GL_EXTENSIONS(0x1f03),
+	GL_VENDOR(GL10.GL_VENDOR),
+	GL_RENDERER(GL10.GL_RENDERER),
+	GL_VERSION(GL10.GL_VERSION),
+	GL_EXTENSIONS(GL10.GL_EXTENSIONS),
 	GL_SHADING_LANGUAGE_VERSION(0x8b8c);
 
 	private final int id;
