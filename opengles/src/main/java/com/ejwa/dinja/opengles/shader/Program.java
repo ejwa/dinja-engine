@@ -48,21 +48,34 @@ public class Program {
 		attach(shaders);
 	}
 
+	private void linkProgram() {
+		OpenGLES2.glLinkProgram(handle);
+
+		if (!isLinked()) {
+			final String infoLog = OpenGLES2.glGetProgramInfoLog(handle);
+
+			delete();
+			Log.e(Shader.class.getName(), infoLog);
+			throw new GLException("Failed to link program.");
+		}
+	}
+
 	public final void attach(Shader ...shaders) {
 		for (Shader s : shaders) {
 			OpenGLES2.glAttachShader(handle, s.getHandle());
 			GLError.check(Program.class);
 		}
 
-		OpenGLES2.glLinkProgram(handle);
+		linkProgram();
+	}
 
-		if (!isLinked()) {
-			final String infoLog = OpenGLES2.glGetProgramInfoLog(handle);
-	
-			delete();
-			Log.e(Shader.class.getName(), infoLog);
-			throw new GLException("Failed to link program.");
+	public final void detach(Shader ...shaders) {
+		for (Shader s : shaders) {
+			OpenGLES2.glDetachShader(handle, s.getHandle());
+			GLError.check(Program.class);
 		}
+
+		linkProgram();
 	}
 
 	public final void delete() {
