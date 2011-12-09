@@ -23,6 +23,7 @@ package com.ejwa.dinja.opengles;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.PointerPointer;
 import com.googlecode.javacpp.annotation.Cast;
 import com.googlecode.javacpp.annotation.Platform;
@@ -54,14 +55,15 @@ class OpenGLES2Native {
 	public static native void glLinkProgram(int program);
 	public static native void glAttachShader(int program, int shader);
 	public static native void glDetachShader(int program, int shader);
-	public static native void glGetProgramiv(int program, int paramName, IntPointer params);
-	public static native void glGetProgramInfoLog(int program, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
+	protected static native void glGetProgramiv(int program, int paramName, IntPointer params);
+	protected static native void glGetProgramInfoLog(int program, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
 
 	public static native int glCreateShader(int shaderType);
 	public static native void glDeleteShader(int shader);
-	public static native void glShaderSource(int shader, int count, @Cast("const char **") PointerPointer strings, IntPointer length);
+	protected static native void glShaderSource(int shader, int count, @Cast("const char **") PointerPointer strings, IntPointer length);
 	public static native void glCompileShader(int shader);
-	public static native void glGetShaderiv(int shader, int paramName, IntPointer params);
-	public static native void glGetShaderInfoLog(int shader, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
+	protected static native void glGetShaderiv(int shader, int paramName, IntPointer params);
+	protected static native void glGetShaderInfoLog(int shader, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
+
 	protected static native void glDrawElements(int mode, int count, int type, Pointer indices);
 }
