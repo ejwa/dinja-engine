@@ -25,7 +25,7 @@ import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
 
-public class DisplayConfigurationChooser implements EGLConfigChooser {
+class DisplayConfigurationChooser implements EGLConfigChooser {
 	private static final int EGL_OPENGL_ES2_BIT = 4;
 	private static final int RED_BITS = 5;
 	private static final int GREEN_BITS = 6;
