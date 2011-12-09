@@ -1,8 +1,11 @@
 package com.ejwa.dinja.opengles;
 
+import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;
+import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.PointerPointer;
+import javax.microedition.khronos.opengles.GL10;
 
 public final class OpenGLES2 extends OpenGLES2Native {
 	private OpenGLES2() {
@@ -60,5 +63,12 @@ public final class OpenGLES2 extends OpenGLES2Native {
 		length.deallocate();
 
 		return infoLog;
+	}
+
+	public static void glDrawElements(PrimitiveData primitiveData) {
+		final Pointer indices =  primitiveData.getIndices();
+		final int type = primitiveData.getVertices().capacity() <= 256 ? GL10.GL_UNSIGNED_BYTE : GL10.GL_UNSIGNED_SHORT;
+
+		OpenGLES2Native.glDrawElements(primitiveData.getPrimitiveType().getId(), indices.capacity(), type, indices);
 	}
 }

@@ -63,4 +63,5 @@ class OpenGLES2Native {
 	public static native void glCompileShader(int shader);
 	public static native void glGetShaderiv(int shader, int paramName, IntPointer params);
 	public static native void glGetShaderInfoLog(int shader, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
+	protected static native void glDrawElements(int mode, int count, int type, Pointer indices);
 }
