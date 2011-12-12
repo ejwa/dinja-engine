@@ -34,8 +34,12 @@ public class Vertex {
 		/* Currently, no need to do anything here. */
 	}
 
-	public Vertex(Vector3f position, Vector3f normal) {
+	public Vertex(Vector3f position) {
 		this.position = position;
+	}
+
+	public Vertex(Vector3f position, Vector3f normal) {
+		this(position);
 		this.normal = normal;
 	}
 
