@@ -122,7 +122,9 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 				final Shape shape = ((Group) t.getTransformable()).getShape();
 
 				if (shape != null) {
-					final Mesh mesh = new Mesh(PrimitiveType.GL_TRIANGLE_STRIP);
+					final String meshName = ((Group) t.getTransformable()).getDef();
+					final Mesh mesh = new Mesh(meshName, PrimitiveType.GL_TRIANGLE_STRIP);
+
 					addMeshVertices(mesh, shape.getIndexedFaceSet());
 					addMeshFaces(mesh, shape.getIndexedFaceSet());
 				}
@@ -130,5 +132,18 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 		}
 
 		return meshes;
+	}
+
+	@Override
+	public Mesh getMesh(String name) {
+		final List<Mesh> meshes = getMeshes();
+
+		for (Mesh m : meshes) {
+			if (name.equals(m.getName())) {
+				return m;
+			}
+		}
+
+		return null;
 	}
 }

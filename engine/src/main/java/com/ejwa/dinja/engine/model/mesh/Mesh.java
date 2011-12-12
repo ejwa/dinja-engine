@@ -27,23 +27,33 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Mesh {
+	private final String name;
 	private final PrimitiveType primitiveType;
 	private final List<Face> faces = new LinkedList<Face>();
 	private final List<Vertex> vertices = new LinkedList<Vertex>();
 
-	public Mesh(PrimitiveType primitiveType) {
+	public Mesh(String name, PrimitiveType primitiveType) {
+		this.name = name;
 		this.primitiveType = primitiveType;
 	}
 
-	public Mesh(PrimitiveType type, Vertex ...vertices) {
-		this(type);
+	public Mesh(String name, PrimitiveType type, Vertex ...vertices) {
+		this(name, type);
 		addVertices(vertices);
 	}
 
-	public Mesh(PrimitiveType primitiveType, Vertex vertices[], Face ...faces) {
-		this(primitiveType, vertices);
+	public Mesh(String name, PrimitiveType primitiveType, Vertex vertices[], Face ...faces) {
+		this(name, primitiveType, vertices);
 		addFaces(faces);
 
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public PrimitiveType getPrimitiveType() {
+		return primitiveType;
 	}
 
 	public final void addVertices(Vertex ...vertices) {

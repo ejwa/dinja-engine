@@ -25,4 +25,5 @@ import java.util.List;
 
 public interface IFile {
 	List<Mesh> getMeshes();
+	Mesh getMesh(String name);
 }
