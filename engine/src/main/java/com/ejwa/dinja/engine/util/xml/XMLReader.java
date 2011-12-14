@@ -42,7 +42,6 @@ public class XMLReader<T> {
 			} catch (Exception ex) {
 				Log.e(XMLReader.class.getName(), String.format("Could not de-serialize '%s'", xmlFile));
 				Log.e(XMLReader.class.getName(), ex.getMessage());
-				throw new RuntimeException(ex);
 			} finally {
 				try {
 					if (xmlStream != null) {
