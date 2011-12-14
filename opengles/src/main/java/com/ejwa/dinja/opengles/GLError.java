@@ -20,6 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
+import com.ejwa.dinja.opengles.library.OpenGLES2;
 import android.util.Log;
 import javax.microedition.khronos.opengles.GL10;
 

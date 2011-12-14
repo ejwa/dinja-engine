@@ -22,7 +22,7 @@ package com.ejwa.dinja.opengles.shader;
 
 import android.util.Log;
 import com.ejwa.dinja.opengles.GLException;
-import com.ejwa.dinja.opengles.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;

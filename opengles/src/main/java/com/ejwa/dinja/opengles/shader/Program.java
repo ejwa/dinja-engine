@@ -23,7 +23,7 @@ package com.ejwa.dinja.opengles.shader;
 import android.util.Log;
 import com.ejwa.dinja.opengles.GLError;
 import com.ejwa.dinja.opengles.GLException;
-import com.ejwa.dinja.opengles.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2;
 
 public class Program {
 	private final int handle;

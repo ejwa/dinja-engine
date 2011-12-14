@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles;
+package com.ejwa.dinja.opengles.library;
 
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;

@@ -18,22 +18,36 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles;
+package com.ejwa.dinja.opengles.library;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
-import javax.microedition.khronos.opengles.GL10;
+import com.googlecode.javacpp.BytePointer;
+import com.googlecode.javacpp.FloatPointer;
+import com.googlecode.javacpp.Pointer;
+import com.googlecode.javacpp.ShortPointer;
 
-public enum Property {
-	GL_VENDOR(GL10.GL_VENDOR),
-	GL_RENDERER(GL10.GL_RENDERER),
-	GL_VERSION(GL10.GL_VERSION),
-	GL_EXTENSIONS(GL10.GL_EXTENSIONS),
-	GL_SHADING_LANGUAGE_VERSION(0x8b8c);
+public final class NativeMemory extends OpenGLES2Native {
+	private NativeMemory() {
+		super(); /* No instances of this class allowed. */
+	}
 
-	private final int id;
-	Property(int id) { this.id = id; }
+	private static void checkPointer(Pointer pointer) {
+		if (pointer != null) {
+			pointer.deallocate();
+		}
+	}
 
-	public String get() {
-		return OpenGLES2.glGetString(id).getString();
+	public static BytePointer getBytePointer(Pointer pointer, int size) {
+		checkPointer(pointer);
+		return new BytePointer(size);
+	}
+
+	public static FloatPointer getFloatPointer(Pointer pointer, int size) {
+		checkPointer(pointer);
+		return new FloatPointer(size);
+	}
+
+	public static ShortPointer getShortPointer(Pointer pointer, int size) {
+		checkPointer(pointer);
+		return new ShortPointer(size);
 	}
 }

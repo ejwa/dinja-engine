@@ -22,7 +22,7 @@ package com.ejwa.dinja.opengles.view;
 
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
-import com.ejwa.dinja.opengles.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.Property;
 import java.util.Random;
 import javax.microedition.khronos.egl.EGLConfig;
