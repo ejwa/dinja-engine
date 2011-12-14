@@ -22,11 +22,16 @@ package com.ejwa.dinja.opengles.shader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class FragmentShader extends Shader {
 	private static final int GL_FRAGMENT_SHADER = 0x8b30;
 
 	public FragmentShader(File shaderSource) throws IOException {
+		super(GL_FRAGMENT_SHADER, shaderSource);
+	}
+
+	public FragmentShader(InputStream shaderSource) throws IOException {
 		super(GL_FRAGMENT_SHADER, shaderSource);
 	}
 

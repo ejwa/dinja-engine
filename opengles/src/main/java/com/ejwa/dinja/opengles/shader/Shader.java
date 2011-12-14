@@ -25,7 +25,9 @@ import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 public class Shader {
 	private final int handle;
@@ -42,6 +44,10 @@ public class Shader {
 
 	public Shader(int shaderType, File shaderSource) throws IOException {
 		this(shaderType, FileUtils.readFileToString(shaderSource));
+	}
+
+	public Shader(int shaderType, InputStream shaderSource) throws IOException {
+		this(shaderType, IOUtils.toString(shaderSource));
 	}
 
 	public Shader(int shaderType, String shaderSource) {

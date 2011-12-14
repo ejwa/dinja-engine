@@ -22,11 +22,16 @@ package com.ejwa.dinja.opengles.shader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class VertexShader extends Shader {
 	private static final int GL_VERTEX_SHADER = 0x8b31;
 
 	public VertexShader(File shaderSource) throws IOException {
+		super(GL_VERTEX_SHADER, shaderSource);
+	}
+
+	public VertexShader(InputStream shaderSource) throws IOException {
 		super(GL_VERTEX_SHADER, shaderSource);
 	}
 
