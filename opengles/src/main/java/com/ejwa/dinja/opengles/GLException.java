@@ -26,4 +26,8 @@ public class GLException extends RuntimeException {
 	public GLException(String message) {
 		super(message);
 	}
+
+	public GLException(String message, Throwable ex) {
+		super(message, ex);
+	}
 }
