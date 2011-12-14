@@ -24,28 +24,24 @@ import android.util.Log;
 import com.ejwa.dinja.opengles.GLError;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
+import java.util.List;
 
 public class Program {
-	private final int handle;
-
-	private int createProgram() {
-		final int h = OpenGLES2.glCreateProgram();
-
-		if (h == 0) {
-			throw new GLException("Failed to create program.");
-		}
-
-		return h;
-	}
+	private int handle = 0;
+	private VertexShader vertexShader;
+	private FragmentShader fragmentShader;
 
 	public Program() {
-		handle = createProgram();
+		/* It's possible to create an empty Program and then call attach(vs, fs); */
 	}
 
-	@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 	public Program(VertexShader vertexShader, FragmentShader fragmentShader) {
-		this();
 		attach(vertexShader, fragmentShader);
+	}
+
+	public final void attach(VertexShader vertexShader, FragmentShader fragmentShader) {
+		this.vertexShader = vertexShader;
+		this.fragmentShader = fragmentShader;
 	}
 
 	private void linkProgram() {
@@ -60,7 +56,19 @@ public class Program {
 		}
 	}
 
-	public final void attach(VertexShader vertexShader, FragmentShader fragmentShader) {
+	public void compile() {
+		if (vertexShader == null || fragmentShader == null) {
+			throw new GLException("A vertex shader and a fragment shader has to be attached before compiling.");
+		}
+
+		vertexShader.compile();
+		fragmentShader.compile();
+		handle = OpenGLES2.glCreateProgram();
+
+		if (handle == 0) {
+			throw new GLException("Failed to create program.");
+		}
+
 		OpenGLES2.glAttachShader(handle, vertexShader.getHandle());
 		GLError.check(Program.class);
 
@@ -70,16 +78,7 @@ public class Program {
 		linkProgram();
 	}
 
-	public final void detach(Shader ...shaders) {
-		for (Shader s : shaders) {
-			OpenGLES2.glDetachShader(handle, s.getHandle());
-			GLError.check(Program.class);
-		}
-
-		linkProgram();
-	}
-
-	public final void delete() {
+	public void delete() {
 		OpenGLES2.glDeleteProgram(handle);
 	}
 
@@ -90,5 +89,9 @@ public class Program {
 	public boolean isLinked() {
 		final int GL_LINK_STATUS = 0x8b82;
 		return OpenGLES2.glGetProgramiv(handle, GL_LINK_STATUS) != 0;
+	}
+
+	public void use() {
+		OpenGLES2.glUseProgram(handle);
 	}
 }

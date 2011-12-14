@@ -22,7 +22,14 @@ package com.ejwa.dinja.engine.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import com.ejwa.dinja.engine.view.Viewable;
+import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.display.GLSurface;
+import com.ejwa.dinja.opengles.primitive.PrimitiveData;
+import com.ejwa.dinja.opengles.shader.FragmentShader;
+import com.ejwa.dinja.opengles.shader.Program;
+import com.ejwa.dinja.opengles.shader.VertexShader;
+import java.io.InputStream;
 
 public class DinjaActivity extends Activity {
 	private GLSurface glSurfaceView;
@@ -41,9 +48,33 @@ public class DinjaActivity extends Activity {
 		super.onPause();
 	}
 
+	private void setShaders() {
+		final InputStream vertexShader = getClass().getResourceAsStream("/vertex.glsl");
+		final InputStream fragmentShader = getClass().getResourceAsStream("/fragment.glsl");
+
+		try {
+			glSurfaceView.registerProgram(new Program(new VertexShader(vertexShader), new FragmentShader(fragmentShader)));
+		} catch (Exception ex) {
+			throw new GLException("Failed to open shader source files.", ex);
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		glSurfaceView.onResume();
+		setShaders();
+	}
+
+	protected final void registerView(Viewable view) {
+		for (PrimitiveData p : view) {
+			glSurfaceView.registerPrimitiveData(p);
+		}
+	}
+
+	protected final void unregisterView(Viewable view) {
+		for (PrimitiveData p : view) {
+			glSurfaceView.unregisterPrimitiveData(p);
+		}
 	}
 }

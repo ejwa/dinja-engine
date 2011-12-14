@@ -84,6 +84,7 @@ public class GLSurfaceRenderer implements Renderer {
 
 		synchronized (glSurface.getPrograms()) {
 			for (Program p : glSurface.getPrograms()) {
+				p.compile();
 			}
 		}
 	}

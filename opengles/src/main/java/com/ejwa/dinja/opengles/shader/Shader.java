@@ -1,4 +1,4 @@
-/*
+	/*
  * Copyright © 2011 Ejwa Software. All rights reserved.
  *
  * This file is part of Dinja Engine. Dinja Engine is a OpenGLES2
@@ -30,7 +30,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 public class Shader {
-	private final int handle;
+	private int handle;
+	private final String shaderSource;
+	private final int shaderType;
 
 	private int createShader(int shaderType) {
 		final int h = OpenGLES2.glCreateShader(shaderType);
@@ -51,6 +53,11 @@ public class Shader {
 	}
 
 	public Shader(int shaderType, String shaderSource) {
+		this.shaderType = shaderType;
+		this.shaderSource = shaderSource;
+	}
+
+	public void compile() {
 		handle = createShader(shaderType);
 		OpenGLES2.glShaderSource(handle, shaderSource);
 		OpenGLES2.glCompileShader(handle);

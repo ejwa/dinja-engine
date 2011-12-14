@@ -53,6 +53,7 @@ class OpenGLES2Native {
 	public static native int glCreateProgram();
 	public static native void glDeleteProgram(int program);
 	public static native void glLinkProgram(int program);
+	public static native void glUseProgram(int program);
 	public static native void glAttachShader(int program, int shader);
 	public static native void glDetachShader(int program, int shader);
 	protected static native void glGetProgramiv(int program, int paramName, IntPointer params);
