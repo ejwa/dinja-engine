@@ -21,6 +21,7 @@
 package com.ejwa.dinja.opengles.display;
 
 import android.opengl.GLSurfaceView.Renderer;
+import android.os.SystemClock;
 import android.util.Log;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.Property;
@@ -30,9 +31,21 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class GLSurfaceRenderer implements Renderer {
 	private final Random r = new Random();
+	private long previousFrameTime = 0;
+	private long getMilliSecondsSinceLastFrame() {
+		final long msSinceLastFrame;
+
+		msSinceLastFrame = SystemClock.uptimeMillis() - previousFrameTime;
+		previousFrameTime = SystemClock.uptimeMillis();
+		return msSinceLastFrame;
+	}
+
+	private void updatePrimitives(long milliSecondsSinceLastFrame) {
+	}
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
+		updatePrimitives(getMilliSecondsSinceLastFrame());
 		OpenGLES2.glClearColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
 		OpenGLES2.glClear(OpenGLES2.GL_DEPTH_BUFFER_BIT | OpenGLES2.GL_COLOR_BUFFER_BIT);
 	}
