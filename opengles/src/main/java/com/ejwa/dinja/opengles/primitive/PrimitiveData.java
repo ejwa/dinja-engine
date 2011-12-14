@@ -21,6 +21,7 @@
 package com.ejwa.dinja.opengles.primitive;
 
 import com.ejwa.dinja.opengles.GLException;
+import com.ejwa.dinja.opengles.library.NativeMemory;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.FloatPointer;
 import com.googlecode.javacpp.Pointer;
@@ -32,41 +33,25 @@ import javax.vecmath.Vector3f;
 public class PrimitiveData {
 	private final PrimitiveType primitiveType;
 	private FloatPointer colors;
-	private final Pointer indices;
+	private Pointer indices;
 	private FloatPointer normals;
 	private FloatPointer textureCoords;
-	private final FloatPointer vertices;
+	private FloatPointer vertices;
+
+	public PrimitiveData(PrimitiveType primitiveType) {
+		this.primitiveType = primitiveType;
+	}
 
 	public PrimitiveData(PrimitiveType primitiveType, Vector3f[] vertices, Integer ...indices) {
 		this.primitiveType = primitiveType;
-		this.vertices = new FloatPointer(vertices.length * 3);
-
-		for (int i = 0; i < vertices.length * 3; i += 3) {
-			this.vertices.put(i, vertices[i].x);
-			this.vertices.put(i, vertices[i].y);
-			this.vertices.put(i, vertices[i].z);
-		}
-
-		if (this.vertices.capacity() < 256) {
-			this.indices = new BytePointer(indices.length);
-		} else {
-			this.indices = new ShortPointer(indices.length);
-		}
-
-		for (int i = 0; i < indices.length; i++) {
-			if (indices[i] >= this.vertices.capacity()) {
-				throw new GLException(String.format("Indices must point within bounds of vertices (got %d, " +
-				                                     "but maximum is %d)", indices[i], this.vertices.capacity()));
-			}
-		}
+		setVertices(vertices);
+		setIndices(indices);
 	}
 
-	private void validate(Pointer pointer, int length) {
-		if (pointer != null) {
-			pointer.deallocate();
-		}
-
-		if (length != vertices.capacity()) {
+	private void validate(int length) {
+		if (vertices == null) {
+			throw new GLException("Vertices must be set before setting normals, colors or texture coordinates.");
+		} else if (length != vertices.capacity()) {
 			throw new GLException(String.format("Attributes such as normals, colors and texture coordinates must " +
 			                                    "match with the number of vertices (got %d, but expected %d).",
 			                                    length, vertices.capacity()));
@@ -78,14 +63,14 @@ public class PrimitiveData {
 	}
 
 	public void setColors(Color4f ...colors) {
-		validate(this.colors, colors.length);
-		this.colors = new FloatPointer(colors.length);
+		validate(colors.length * 3);
+		this.colors = NativeMemory.getFloatPointer(this.colors, colors.length * 4);
 
-		for (int i = 0; i < colors.length * 2; i += 4) {
-			this.colors.put(i, colors[i].x);
-			this.colors.put(i, colors[i].y);
-			this.colors.put(i, colors[i].z);
-			this.colors.put(i, colors[i].w);
+		for (int i = 0; i < colors.length; i++) {
+			this.colors.put((i * 4), colors[i].x);
+			this.colors.put((i * 4) + 1, colors[i].y);
+			this.colors.put((i * 4) + 2, colors[i].z);
+			this.colors.put((i * 4) + 3, colors[i].w);
 		}
 	}
 
@@ -93,18 +78,39 @@ public class PrimitiveData {
 		return indices;
 	}
 
+	public final void setIndices(Integer ...indices) {
+		if (indices.length <= 256) {
+			this.indices = NativeMemory.getBytePointer(this.indices, indices.length);
+		} else {
+			this.indices = NativeMemory.getShortPointer(this.indices, indices.length);
+		}
+
+		for (int i = 0; i < indices.length; i++) {
+			if (indices[i] >= this.vertices.capacity() / 3) {
+				throw new GLException(String.format("Indices must point within bounds of vertices (got %d, " +
+				                                     "but maximum is %d)", indices[i], this.vertices.capacity() / 3));
+			}
+
+			if (this.indices instanceof BytePointer) {
+				((BytePointer) this.indices).put(i, indices[i].byteValue());
+			} else {
+				((ShortPointer) this.indices).put(i, indices[i].shortValue());
+			}
+		}
+	}
+
 	public FloatPointer getNormals() {
 		return normals;
 	}
 
 	public void setNormals(Vector3f ...normals) {
-		validate(this.colors, normals.length);
-		this.colors = new FloatPointer(normals.length);
+		validate(normals.length * 3);
+		this.normals = NativeMemory.getFloatPointer(this.normals, normals.length * 3);
 
-		for (int i = 0; i < normals.length * 2; i += 3) {
-			this.normals.put(i, normals[i].x);
-			this.normals.put(i, normals[i].y);
-			this.normals.put(i, normals[i].z);
+		for (int i = 0; i < normals.length; i++) {
+			this.normals.put((i * 3), normals[i].x);
+			this.normals.put((i * 3) + 1, normals[i].y);
+			this.normals.put((i * 3) + 2, normals[i].z);
 		}
 	}
 
@@ -113,17 +119,27 @@ public class PrimitiveData {
 	}
 
 	public void setTextureCoords(Vector2f ...textureCoords) {
-		validate(this.textureCoords, textureCoords.length);
-		this.colors = new FloatPointer(textureCoords.length);
+		validate(textureCoords.length * 3);
+		this.textureCoords = NativeMemory.getFloatPointer(this.textureCoords, textureCoords.length * 2);
 
-		for (int i = 0; i < textureCoords.length * 2; i += 2) {
-			this.textureCoords.put(i, textureCoords[i].x);
-			this.textureCoords.put(i, textureCoords[i].y);
+		for (int i = 0; i < textureCoords.length; i++) {
+			this.textureCoords.put((i * 2), textureCoords[i].x);
+			this.textureCoords.put((i * 2) + 1, textureCoords[i].y);
 		}
 	}
 
 	public FloatPointer getVertices() {
 		return vertices;
+	}
+
+	public final void setVertices(Vector3f  ...vertices) {
+		this.vertices = NativeMemory.getFloatPointer(this.vertices, vertices.length * 3);
+
+		for (int i = 0; i < vertices.length; i++) {
+			this.vertices.put((i * 3), vertices[i].x);
+			this.vertices.put((i * 3) + 1, vertices[i].y);
+			this.vertices.put((i * 3) + 2, vertices[i].z);
+		}
 	}
 
 	public PrimitiveType getPrimitiveType() {
