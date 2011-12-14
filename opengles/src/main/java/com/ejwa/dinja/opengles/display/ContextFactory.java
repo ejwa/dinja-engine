@@ -18,16 +18,25 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles.view;
+package com.ejwa.dinja.opengles.display;
 
-import android.content.Context;
-import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.EGLContextFactory;
+import javax.microedition.khronos.egl.EGL10;
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLContext;
+import javax.microedition.khronos.egl.EGLDisplay;
 
-public class GLSurface extends GLSurfaceView {
-	public GLSurface(Context context) {
-		super(context);
-		setEGLContextFactory(new ContextFactory());
-		setEGLConfigChooser(new DisplayConfigurationChooser());
-		setRenderer(new GLSurfaceRenderer());
+class ContextFactory implements EGLContextFactory {
+	private final static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
+
+	@Override
+	public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
+		final int eglAttributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE };
+		return egl.eglCreateContext(display, eglConfig, EGL10.EGL_NO_CONTEXT, eglAttributes);
+	}
+
+	@Override
+	public void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context) {
+		egl.eglDestroyContext(display, context);
 	}
 }

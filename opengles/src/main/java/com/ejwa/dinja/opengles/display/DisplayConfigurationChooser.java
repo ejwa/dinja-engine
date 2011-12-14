@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles.view;
+package com.ejwa.dinja.opengles.display;
 
 import android.opengl.GLSurfaceView.EGLConfigChooser;
 import javax.microedition.khronos.egl.EGL10;

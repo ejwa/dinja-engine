@@ -22,7 +22,7 @@ package com.ejwa.dinja.engine.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.ejwa.dinja.opengles.view.GLSurface;
+import com.ejwa.dinja.opengles.display.GLSurface;
 
 public class DinjaActivity extends Activity {
 	private GLSurface glSurfaceView;
