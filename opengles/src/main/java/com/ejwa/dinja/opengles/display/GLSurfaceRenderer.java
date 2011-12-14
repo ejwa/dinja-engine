@@ -25,6 +25,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.Property;
+import com.ejwa.dinja.opengles.primitive.PrimitiveData;
+import com.ejwa.dinja.opengles.shader.Program;
 import java.util.Random;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -32,6 +34,12 @@ import javax.microedition.khronos.opengles.GL10;
 public class GLSurfaceRenderer implements Renderer {
 	private final Random r = new Random();
 	private long previousFrameTime = 0;
+	private final GLSurface glSurface;
+
+	public GLSurfaceRenderer(GLSurface glSurface) {
+		this.glSurface = glSurface;
+	}
+
 	private long getMilliSecondsSinceLastFrame() {
 		final long msSinceLastFrame;
 
@@ -48,6 +56,16 @@ public class GLSurfaceRenderer implements Renderer {
 		updatePrimitives(getMilliSecondsSinceLastFrame());
 		OpenGLES2.glClearColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
 		OpenGLES2.glClear(OpenGLES2.GL_DEPTH_BUFFER_BIT | OpenGLES2.GL_COLOR_BUFFER_BIT);
+
+		for (Program program : glSurface.getPrograms()) {
+			program.use();
+
+			synchronized (glSurface.getPrimitiveDatas()) {
+				for (PrimitiveData p : glSurface.getPrimitiveDatas()) {
+					OpenGLES2.glDrawElements(p);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -63,5 +81,10 @@ public class GLSurfaceRenderer implements Renderer {
 		Log.i(GLSurfaceRenderer.class.getName(), "Shading language version: " + Property.GL_SHADING_LANGUAGE_VERSION.get());
 		Log.i(GLSurfaceRenderer.class.getName(), "Renderer: " + Property.GL_RENDERER.get());
 		Log.i(GLSurfaceRenderer.class.getName(), "Extensions: " + Property.GL_EXTENSIONS.get());
+
+		synchronized (glSurface.getPrograms()) {
+			for (Program p : glSurface.getPrograms()) {
+			}
+		}
 	}
 }

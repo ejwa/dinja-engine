@@ -22,12 +22,44 @@ package com.ejwa.dinja.opengles.display;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import com.ejwa.dinja.opengles.primitive.PrimitiveData;
+import com.ejwa.dinja.opengles.shader.Program;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GLSurface extends GLSurfaceView {
+	private final List<PrimitiveData> primitiveDatas = Collections.synchronizedList(new ArrayList<PrimitiveData>());
+	private final List<Program> programs = Collections.synchronizedList(new ArrayList<Program>());
+
 	public GLSurface(Context context) {
 		super(context);
 		setEGLContextFactory(new ContextFactory());
 		setEGLConfigChooser(new DisplayConfigurationChooser());
-		setRenderer(new GLSurfaceRenderer());
+		setRenderer(new GLSurfaceRenderer(this));
+	}
+
+	public void registerPrimitiveData(PrimitiveData primitiveData) {
+		primitiveDatas.add(primitiveData);
+	}
+
+	public void unregisterPrimitiveData(PrimitiveData primitiveData) {
+		primitiveDatas.remove(primitiveData);
+	}
+
+	public List<PrimitiveData> getPrimitiveDatas() {
+		return primitiveDatas;
+	}
+
+	public void registerProgram(Program program) {
+		programs.add(program);
+	}
+
+	public void unregisterProgram(Program program) {
+		programs.remove(program);
+	}
+
+	public List<Program> getPrograms() {
+		return programs;
 	}
 }
