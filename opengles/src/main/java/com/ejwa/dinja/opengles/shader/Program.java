@@ -24,7 +24,6 @@ import android.util.Log;
 import com.ejwa.dinja.opengles.GLError;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
-import java.util.List;
 
 public class Program {
 	private int handle = 0;
