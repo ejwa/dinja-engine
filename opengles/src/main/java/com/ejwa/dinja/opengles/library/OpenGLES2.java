@@ -20,8 +20,10 @@
  */
 package com.ejwa.dinja.opengles.library;
 
+import android.util.Log;
 import com.ejwa.dinja.opengles.DataType;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
+import com.ejwa.dinja.opengles.shader.Program;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
@@ -85,11 +87,16 @@ public final class OpenGLES2 extends OpenGLES2Native {
 		return infoLog;
 	}
 
-	public static void glDrawElements(PrimitiveData primitiveData) {
+	public static void glDrawElements(Program program, PrimitiveData primitiveData) {
 		final Pointer indices =  primitiveData.getIndices();
 		final DataType indicesType = primitiveData.getVertices().getData().capacity() <= 256 ? DataType.GL_UNSIGNED_INT : DataType.GL_UNSIGNED_SHORT;
+		final int vertexAttributeHandle = program.getVertexAttributeHandle(primitiveData.getVertices().getVariableName());
 
-		glVertexAttribPointer(0, 3, DataType.GL_FLOAT.getId() , false, 0, primitiveData.getVertices().getData());
+		if (vertexAttributeHandle != -1) {
+			glVertexAttribPointer(vertexAttributeHandle, 3, DataType.GL_FLOAT.getId() , false, 0, primitiveData.getVertices().getData());
+			glEnableVertexAttribArray(vertexAttributeHandle);
+		}
+
 		OpenGLES2Native.glDrawElements(primitiveData.getPrimitiveType().getId(), indices.capacity(), indicesType.getId(), indices);
 	}
 }

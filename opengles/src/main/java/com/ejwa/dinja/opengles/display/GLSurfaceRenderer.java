@@ -28,6 +28,7 @@ import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
 import java.util.Random;
+import java.util.Set;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -62,7 +63,7 @@ public class GLSurfaceRenderer implements Renderer {
 
 			synchronized (glSurface.getPrimitiveDatas()) {
 				for (PrimitiveData p : glSurface.getPrimitiveDatas()) {
-					OpenGLES2.glDrawElements(p);
+					OpenGLES2.glDrawElements(program, p);
 				}
 			}
 		}
@@ -74,6 +75,7 @@ public class GLSurfaceRenderer implements Renderer {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		Log.i(GLSurfaceRenderer.class.getName(), "OpenGL properties of this device:");
 		Log.i(GLSurfaceRenderer.class.getName(), "Version: " + Property.GL_VERSION.get());
@@ -83,8 +85,15 @@ public class GLSurfaceRenderer implements Renderer {
 		Log.i(GLSurfaceRenderer.class.getName(), "Extensions: " + Property.GL_EXTENSIONS.get());
 
 		synchronized (glSurface.getPrograms()) {
-			for (Program p : glSurface.getPrograms()) {
-				p.compile();
+			for (Program program : glSurface.getPrograms()) {
+				program.compile();
+
+				for (PrimitiveData p : glSurface.getPrimitiveDatas()) {
+					final Set<String> attributes = p.getVertexAttributeArrays().keySet();
+
+					program.registerVertexAttributeHandles(p.getVertices().getVariableName());
+					program.registerVertexAttributeHandles(attributes.toArray(new String[attributes.size()]));
+				}
 			}
 		}
 	}

@@ -24,11 +24,14 @@ import android.util.Log;
 import com.ejwa.dinja.opengles.GLError;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Program {
 	private int handle = 0;
 	private VertexShader vertexShader;
 	private FragmentShader fragmentShader;
+	private final Map<String, Integer> vertexAttributeHandles = new HashMap<String, Integer>();
 
 	public Program() {
 		/* It's possible to create an empty Program and then call attach(vs, fs); */
@@ -41,6 +44,26 @@ public class Program {
 	public final void attach(VertexShader vertexShader, FragmentShader fragmentShader) {
 		this.vertexShader = vertexShader;
 		this.fragmentShader = fragmentShader;
+	}
+
+	public void registerVertexAttributeHandles(String ...vertexAttributeVariableNames) {
+		for (String n : vertexAttributeVariableNames) {
+			final int vertexAttributeHandle = OpenGLES2.glGetAttribLocation(handle, n);
+
+			if (vertexAttributeHandle != -1) {
+				vertexAttributeHandles.put(n, vertexAttributeHandle);
+			}
+		}
+	}
+
+	public int getVertexAttributeHandle(String vertexAttributeVariableName) {
+		final Integer vertexAttributeHandle = vertexAttributeHandles.get(vertexAttributeVariableName);
+
+		if (vertexAttributeHandle == null) {
+			return -1;
+		}
+
+		return vertexAttributeHandle;
 	}
 
 	private void linkProgram() {
