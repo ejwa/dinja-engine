@@ -22,9 +22,14 @@ package com.ejwa.dinja.engine.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import com.ejwa.dinja.engine.controller.CameraController;
+import com.ejwa.dinja.engine.controller.Controllable;
+import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.engine.view.Viewable;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.display.GLSurface;
+import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
+import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.FragmentShader;
 import com.ejwa.dinja.opengles.shader.Program;
@@ -66,13 +71,39 @@ public class DinjaActivity extends Activity {
 		setShaders();
 	}
 
+	protected final void registerController(Controllable controllable) {
+		if (controllable instanceof IFrameUpdateListener) {
+			glSurfaceView.registerFrameUpdateListener((IFrameUpdateListener) controllable);
+		}
+
+		if (controllable instanceof ISurfaceChangeListener) {
+			glSurfaceView.registerSurfaceChangeListener((ISurfaceChangeListener) controllable);
+		}
+	}
+
+	protected final void unregisterController(Controllable controllable) {
+		if (controllable instanceof IFrameUpdateListener) {
+			glSurfaceView.unregisterFrameUpdateListener((IFrameUpdateListener) controllable);
+		}
+
+		if (controllable instanceof ISurfaceChangeListener) {
+			glSurfaceView.unregisterSurfaceChangeListener((ISurfaceChangeListener) controllable);
+		}
+	}
+
 	protected final void registerView(Viewable view) {
+		if (view instanceof SceneView) {
+			final SceneView sceneView = (SceneView) view;
+			registerController(new CameraController(sceneView.getScene().getCamera()));
+		}
+
 		for (PrimitiveData p : view) {
 			glSurfaceView.registerPrimitiveData(p);
 		}
 	}
 
 	protected final void unregisterView(Viewable view) {
+		/* TODO: Handle default controllers when unregistering certain views. */
 		for (PrimitiveData p : view) {
 			glSurfaceView.unregisterPrimitiveData(p);
 		}
