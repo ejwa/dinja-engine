@@ -50,12 +50,15 @@ public class GLSurfaceRenderer implements Renderer {
 		return msSinceLastFrame;
 	}
 
-	private void updatePrimitives(long milliSecondsSinceLastFrame) {
+	private void callFrameUpdateListeners(long milliSecondsSinceLastFrame) {
+		for (IFrameUpdateListener f : glSurface.getFrameUpdateListeners()) {
+			f.onFrameUpdate(milliSecondsSinceLastFrame);
+		}
 	}
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
-		updatePrimitives(getMilliSecondsSinceLastFrame());
+		callFrameUpdateListeners(getMilliSecondsSinceLastFrame());
 		OpenGLES2.glClearColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
 		OpenGLES2.glClear(OpenGLES2.GL_DEPTH_BUFFER_BIT | OpenGLES2.GL_COLOR_BUFFER_BIT);
 
@@ -73,6 +76,10 @@ public class GLSurfaceRenderer implements Renderer {
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		OpenGLES2.glViewport(0, 0, width, height);
+
+		for (ISurfaceChangeListener s : glSurface.getSurfaceChangeListeners()) {
+			s.onSurfaceChange(glSurface);
+		}
 	}
 
 	@Override
