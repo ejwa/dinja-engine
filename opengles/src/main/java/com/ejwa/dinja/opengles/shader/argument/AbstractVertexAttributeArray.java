@@ -41,7 +41,7 @@ public abstract class AbstractVertexAttributeArray<T, P extends Pointer> {
 		return components;
 	}
 
-	public P getData() {
+	public synchronized P getData() {
 		return data;
 	}
 

@@ -34,7 +34,7 @@ public class Tuple2fVertexAttributeArray extends AbstractVertexAttributeArray<Tu
 	}
 
 	@Override
-	public void setData(Tuple2f... values) {
+	public synchronized void setData(Tuple2f... values) {
 		data = NativeMemory.getFloatPointer(data, values.length * components);
 
 		for (int i = 0; i < values.length; i++) {
