@@ -22,6 +22,7 @@ package com.ejwa.dinja.opengles.primitive;
 
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.NativeMemory;
+import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import com.ejwa.dinja.opengles.shader.argument.AbstractVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.Tuple3fVertexAttributeArray;
 import com.googlecode.javacpp.BytePointer;
@@ -35,6 +36,7 @@ public class PrimitiveData {
 	private final PrimitiveType primitiveType;
 	private Pointer indices;
 	private final Tuple3fVertexAttributeArray vertices;
+	private final Map<String, AbstractUniform> uniforms = new HashMap<String, AbstractUniform>();
 	private final Map<String, AbstractVertexAttributeArray> vertexAttributeArrays = new HashMap<String, AbstractVertexAttributeArray>();
 
 	public PrimitiveData(PrimitiveType primitiveType, String vertexCoordVariableName) {
@@ -83,6 +85,22 @@ public class PrimitiveData {
 
 	public final void setVerticesData(Vector3f  ...vertices) {
 		this.vertices.setData(vertices);
+	}
+
+	public void addUniform(AbstractUniform uniform) {
+		uniforms.put(uniform.getVariableName(), uniform);
+	}
+
+	public void removeUniform(String variableName) {
+		final AbstractUniform uniform = uniforms.remove(variableName);
+
+		if (uniform != null) {
+			uniform.getData().deallocate();
+		}
+	}
+
+	public Map<String, AbstractUniform> getUniforms() {
+		return uniforms;
 	}
 
 	public void addVertexAttributeArray(AbstractVertexAttributeArray vertexAttributeArray) {

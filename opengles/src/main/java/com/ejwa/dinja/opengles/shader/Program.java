@@ -24,14 +24,21 @@ import android.util.Log;
 import com.ejwa.dinja.opengles.GLError;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("PMD.ProtectLogD")
 public class Program {
 	private int handle = 0;
 	private VertexShader vertexShader;
 	private FragmentShader fragmentShader;
 	private final Map<String, Integer> vertexAttributeHandles = new HashMap<String, Integer>();
+	private final Map<String, Integer> uniformHandles = new HashMap<String, Integer>();
+	private final List<AbstractUniform> globalUniforms = Collections.synchronizedList(new ArrayList<AbstractUniform>());
 
 	public Program() {
 		/* It's possible to create an empty Program and then call attach(vs, fs); */
@@ -51,6 +58,8 @@ public class Program {
 			final int vertexAttributeHandle = OpenGLES2.glGetAttribLocation(handle, n);
 
 			if (vertexAttributeHandle != -1) {
+				Log.d(Program.class.getName(), String.format("Registered vertex attribute '%s' at position %d.",
+				                                             n, vertexAttributeHandle));
 				vertexAttributeHandles.put(n, vertexAttributeHandle);
 			}
 		}
@@ -64,6 +73,39 @@ public class Program {
 		}
 
 		return vertexAttributeHandle;
+	}
+
+	public void registerUniformHandles(String ...uniformVariableNames) {
+		for (String n : uniformVariableNames) {
+			final int uniformHandle = OpenGLES2.glGetUniformLocation(handle, n);
+
+			if (uniformHandle != -1) {
+				Log.d(Program.class.getName(), String.format("Registered uniform '%s' at position %d.", n, uniformHandle));
+				uniformHandles.put(n, uniformHandle);
+			}
+		}
+	}
+
+	public int getUniformHandle(String uniformVariableName) {
+		final Integer uniformHandle = uniformHandles.get(uniformVariableName);
+
+		if (uniformHandle == null) {
+			return -1;
+		}
+
+		return uniformHandle;
+	}
+
+	public void registerGlobalUniform(AbstractUniform uniform) {
+		globalUniforms.add(uniform);
+	}
+
+	public void unregisterGlobalUniform(AbstractUniform uniform) {
+		globalUniforms.remove(uniform);
+	}
+
+	public List<AbstractUniform> getGlobalUniforms() {
+		return globalUniforms;
 	}
 
 	private void linkProgram() {

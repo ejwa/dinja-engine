@@ -67,8 +67,11 @@ class OpenGLES2Native {
 	protected static native void glGetShaderInfoLog(int shader, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
 
 	protected static native void glDrawElements(int mode, int count, int type, Pointer indices);
+
 	protected static native void glVertexAttribPointer(int index, int size, int type, boolean normalized, int stride, Pointer pointer);
 	public static native void glEnableVertexAttribArray(int index);
 	public static native void glDisableVertexAttribArray(int index);
 	public static native int glGetAttribLocation(int program, String name);
+
+	public static native int glGetUniformLocation(int program, String name);
 }

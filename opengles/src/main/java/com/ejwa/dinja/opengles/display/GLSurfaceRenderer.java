@@ -27,6 +27,7 @@ import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
+import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import java.util.Random;
 import java.util.Set;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -84,15 +85,23 @@ public class GLSurfaceRenderer implements Renderer {
 		Log.i(GLSurfaceRenderer.class.getName(), "Renderer: " + Property.GL_RENDERER.get());
 		Log.i(GLSurfaceRenderer.class.getName(), "Extensions: " + Property.GL_EXTENSIONS.get());
 
-		synchronized (glSurface.getPrograms()) {
-			for (Program program : glSurface.getPrograms()) {
-				program.compile();
+		for (Program program : glSurface.getPrograms()) {
+			program.compile();
 
+			synchronized (program.getGlobalUniforms()) {
+				for (AbstractUniform u : program.getGlobalUniforms()) {
+					program.registerUniformHandles(u.getVariableName());
+				}
+			}
+
+			synchronized (glSurface.getPrimitiveDatas()) {
 				for (PrimitiveData p : glSurface.getPrimitiveDatas()) {
 					final Set<String> attributes = p.getVertexAttributeArrays().keySet();
+					final Set<String> uniforms = p.getUniforms().keySet();
 
 					program.registerVertexAttributeHandles(p.getVertices().getVariableName());
 					program.registerVertexAttributeHandles(attributes.toArray(new String[attributes.size()]));
+					program.registerUniformHandles(uniforms.toArray(new String[uniforms.size()]));
 				}
 			}
 		}
