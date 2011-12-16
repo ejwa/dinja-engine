@@ -26,14 +26,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Scene {
-	public final List<Mesh> meshes = new LinkedList<Mesh>();
+	private final Camera camera;
+	private final List<Mesh> meshes = new LinkedList<Mesh>();
 
-	public Scene() {
-		/* A scene shouldn't have to have meshes attached to it initially. */
+	public Scene(Camera camera) {
+		this.camera = camera;
 	}
 
-	public Scene(Mesh ...meshes) {
+	public Scene(Camera camera, Mesh ...meshes) {
+		this(camera);
 		addMeshes(meshes);
+	}
+
+	public Camera getCamera() {
+		return camera;
 	}
 
 	public final void addMeshes(Mesh ...meshes) {
