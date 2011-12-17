@@ -22,6 +22,7 @@ package com.ejwa.dinja.engine.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Process;
 import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.controller.SceneController;
@@ -75,6 +76,7 @@ public class DinjaActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		glSurfaceView.onResume();
+		Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
 		setShaders();
 	}
 
