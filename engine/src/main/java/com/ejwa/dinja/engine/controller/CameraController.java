@@ -20,7 +20,6 @@
  */
 package com.ejwa.dinja.engine.controller;
 
-import android.util.Log;
 import com.ejwa.dinja.engine.model.Camera;
 import com.ejwa.dinja.opengles.display.GLSurface;
 import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;

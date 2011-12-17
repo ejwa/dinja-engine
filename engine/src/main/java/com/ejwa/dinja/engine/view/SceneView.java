@@ -20,7 +20,6 @@
  */
 package com.ejwa.dinja.engine.view;
 
-import android.util.Log;
 import com.ejwa.dinja.engine.model.Scene;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import java.util.Iterator;
