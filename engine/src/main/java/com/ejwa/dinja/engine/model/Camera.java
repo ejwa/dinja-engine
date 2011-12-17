@@ -22,18 +22,30 @@ package com.ejwa.dinja.engine.model;
 
 import android.opengl.Matrix;
 import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
 
 public class Camera {
 	private static final float DEFAULT_ASPECT_RATIO = 16 / 9.6f;
 	private static final float DEFAULT_FIELD_OF_VIEW = 45;
+	private static final float DEFAULT_FAR_PLANE = 10;
+	private static final float DEFAULT_NEAR_PLANE = 0.001f;
+	private static final Vector3f DEFAULT_LOOK_DIRECTION = new Vector3f(0, 0, -1);
+	private static final Vector3f DEFAULT_LOCATION = new Vector3f(0, 0, 5);
+	private static final Vector3f DEFAULT_UP_DIRECTION = new Vector3f(0, 1, 0);
 
 	private final Matrix4f projectionMatrix = new Matrix4f();
 	private boolean recalculateProjectionMatrix = true;
+	private final Matrix4f viewMatrix = new Matrix4f();
+	private boolean recalculateViewMatrix = true;
 
 	private float aspectRatio = DEFAULT_ASPECT_RATIO;
 	private float fieldOfView = DEFAULT_FIELD_OF_VIEW;
-	private float farPlane = 100;
-	private float nearPlane = 0.001f;
+	private float farPlane = DEFAULT_FAR_PLANE;
+	private float nearPlane = DEFAULT_NEAR_PLANE;
+
+	private Vector3f lookDirection = DEFAULT_LOOK_DIRECTION;
+	private Vector3f location = DEFAULT_LOCATION;
+	private Vector3f upDirection = DEFAULT_UP_DIRECTION;
 
 	public Matrix4f getProjectionMatrix() {
 		if (recalculateProjectionMatrix) {
@@ -45,10 +57,39 @@ public class Camera {
 			}
 
 			projectionMatrix.set(projectionMatrixValues);
+			projectionMatrix.transpose();
 			recalculateProjectionMatrix = false;
 		}
 
 		return projectionMatrix;
+	}
+
+	public Matrix4f getViewMatrix() {
+		if (recalculateViewMatrix) {
+			final Vector3f f = new Vector3f();
+			final Vector3f s = new Vector3f();
+			final Vector3f u = new Vector3f();
+
+			/* Calculate f */
+			f.sub(lookDirection, location);
+			f.normalize();
+
+			/* Calculate s */
+			s.cross(f, upDirection);
+			s.normalize();
+
+			/* Calculate u */
+			u.cross(s, f);
+
+			viewMatrix.setRow(0, s.x, s.y, s.z, 0);
+			viewMatrix.setRow(1, u.x, u.y, u.z, 0);
+			viewMatrix.setRow(2, -f.x, -f.y, -f.z, 0);
+			viewMatrix.setRow(3, 0, 0, 0, 1);
+			viewMatrix.setTranslation(new Vector3f(-location.x, -location.y, -location.z));
+			recalculateProjectionMatrix = false;
+		}
+
+		return viewMatrix;
 	}
 
 	public void setAspectRatio(float aspectRatio) {
@@ -88,5 +129,32 @@ public class Camera {
 	public void setNearPlane(float nearPlane) {
 		this.nearPlane = nearPlane;
 		recalculateProjectionMatrix = true;
+	}
+
+	public Vector3f getLookDirection() {
+		return lookDirection;
+	}
+
+	public void setLookDirection(Vector3f lookDirection) {
+		this.lookDirection = lookDirection;
+		recalculateViewMatrix = true;
+	}
+
+	public Vector3f getLocation() {
+		return location;
+	}
+
+	public void setLocation(Vector3f location) {
+		this.location = location;
+		recalculateViewMatrix = true;
+	}
+
+	public Vector3f getUpDirection() {
+		return upDirection;
+	}
+
+	public void setUpDirection(Vector3f upDirection) {
+		this.upDirection = upDirection;
+		recalculateViewMatrix = true;
 	}
 }
