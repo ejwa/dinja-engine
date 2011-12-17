@@ -46,7 +46,7 @@ public class TiltBombActivity extends DinjaActivity {
 	private class BombMeshController implements Controllable, ITiltForceInputListener, IFrameUpdateListener {
 		private final Mesh mesh;
 		private float xRotation;
-		private float yRotation;
+		private float zRotation;
 
 		public BombMeshController(Mesh mesh) {
 			this.mesh = mesh;
@@ -55,13 +55,13 @@ public class TiltBombActivity extends DinjaActivity {
 		@Override
 		public void onTiltForceInput(float xForce, float yForce, float zForce) {
 			xRotation = xForce / 2000;
-			yRotation = yForce / 2000;
+			zRotation = yForce / 2000;
 		}
 
 		@Override
 		public void onFrameUpdate(long milliSecondsSinceLastFrame) {
 			mesh.rotateX(xRotation * milliSecondsSinceLastFrame);
-			mesh.rotateZ(yRotation * milliSecondsSinceLastFrame);
+			mesh.rotateZ(zRotation * milliSecondsSinceLastFrame);
 		}
 	}
 }
