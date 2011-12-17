@@ -55,6 +55,7 @@ public abstract class AbstractUniform<T, P extends Pointer> {
 		return data;
 	}
 
+	public abstract void send(int handle);
 	protected abstract void setData(T value);
 
 	public String getVariableName() {
