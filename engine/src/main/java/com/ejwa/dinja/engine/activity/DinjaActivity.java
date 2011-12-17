@@ -25,6 +25,8 @@ import android.os.Bundle;
 import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.controller.SceneController;
+import com.ejwa.dinja.engine.controller.input.ITiltForceInputListener;
+import com.ejwa.dinja.engine.controller.input.TiltForceInputController;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.engine.view.Viewable;
 import com.ejwa.dinja.opengles.GLException;
@@ -36,13 +38,17 @@ import com.ejwa.dinja.opengles.shader.FragmentShader;
 import com.ejwa.dinja.opengles.shader.Program;
 import com.ejwa.dinja.opengles.shader.VertexShader;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DinjaActivity extends Activity {
 	private GLSurface glSurfaceView;
+	private Map<ITiltForceInputListener, TiltForceInputController> tiltForceListeners;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		tiltForceListeners = new HashMap<ITiltForceInputListener, TiltForceInputController>();
 
 		glSurfaceView = new GLSurface(getApplication());
 		setContentView(glSurfaceView);
@@ -80,6 +86,11 @@ public class DinjaActivity extends Activity {
 		if (controllable instanceof ISurfaceChangeListener) {
 			glSurfaceView.registerSurfaceChangeListener((ISurfaceChangeListener) controllable);
 		}
+
+		if (controllable instanceof ITiltForceInputListener) {
+			final TiltForceInputController input = new TiltForceInputController(this, (ITiltForceInputListener) controllable);
+			tiltForceListeners.put((ITiltForceInputListener) controllable, input);
+		}
 	}
 
 	protected final void unregisterController(Controllable controllable) {
@@ -89,6 +100,12 @@ public class DinjaActivity extends Activity {
 
 		if (controllable instanceof ISurfaceChangeListener) {
 			glSurfaceView.unregisterSurfaceChangeListener((ISurfaceChangeListener) controllable);
+		}
+
+		if (controllable instanceof ITiltForceInputListener) {
+			final TiltForceInputController input = tiltForceListeners.get((ITiltForceInputListener) controllable);
+			input.unregister();
+			tiltForceListeners.remove((ITiltForceInputListener) controllable);
 		}
 	}
 
