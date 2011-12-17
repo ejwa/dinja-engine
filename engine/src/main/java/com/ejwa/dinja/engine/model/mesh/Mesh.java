@@ -26,20 +26,25 @@ import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import com.ejwa.dinja.opengles.shader.argument.Tuple2fVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.Tuple3fVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.Tuple4fVertexAttributeArray;
+import com.ejwa.dinja.opengles.shader.argument.UniformMatrix4f;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.vecmath.Color4f;
+import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
 public class Mesh {
+	private static final String MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME = "uModelViewProjectionMatrix";
 	private static final String VERTEX_COORDINATE_ATTRIBUTE_NAME = "vPosition";
 	private static final String COLOR_ATTRIBUTE_NAME = "vColor";
 	private static final String NORMAL_ATTRIBUTE_NAME = "vNormal";
 	private static final String TEXTURE_COORDINATE_ATTRIBUTE_NAME = "vTextCoord";
 
+	private final Matrix4f modelMatrix = new Matrix4f();
+	private Matrix4f modelViewProjectionMatrix = modelMatrix;
 	private final String name;
 	private final PrimitiveType primitiveType;
 	private final List<Face> faces = new LinkedList<Face>();
@@ -49,7 +54,9 @@ public class Mesh {
 	public Mesh(String name, PrimitiveType primitiveType) {
 		this.name = name;
 		this.primitiveType = primitiveType;
+		modelMatrix.setIdentity();
 		primitiveData = new PrimitiveData(primitiveType, VERTEX_COORDINATE_ATTRIBUTE_NAME);
+		primitiveData.addUniform(new UniformMatrix4f(MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME, modelViewProjectionMatrix));
 	}
 
 	public Mesh(String name, PrimitiveType type, Vertex ...vertices) {
@@ -61,6 +68,19 @@ public class Mesh {
 		this(name, primitiveType, vertices);
 		addFaces(faces);
 
+	}
+
+	public Matrix4f getModelMatrix() {
+		return modelMatrix;
+	}
+
+	public Matrix4f getModelViewProjectionMatrix() {
+		return modelViewProjectionMatrix;
+	}
+
+	public void setModelViewProjectionMatrix(Matrix4f modelViewProjectionMatrix) {
+		this.modelViewProjectionMatrix = modelViewProjectionMatrix;
+		primitiveData.getUniforms().get(MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME).set(modelViewProjectionMatrix);
 	}
 
 	public String getName() {
@@ -98,7 +118,7 @@ public class Mesh {
 	}
 
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public void updatePrimitiveData() {
+	public void updatePrimitiveDataAttributes() {
 		final Color4f colors[] = new Color4f[this.vertices.size()];
 		final Vector3f normals[] = new Vector3f[this.vertices.size()];
 		final Vector3f positions[] = new Vector3f[this.vertices.size()];
