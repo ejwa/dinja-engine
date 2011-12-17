@@ -44,6 +44,9 @@ class OpenGLES2Native {
 	public static final int GL_STENCIL_BUFFER_BIT = GL10.GL_STENCIL_BUFFER_BIT;
 	public static final int GL_COLOR_BUFFER_BIT = GL10.GL_COLOR_BUFFER_BIT;
 
+	public static native void glEnable(int cap);
+	public static native void glDisable(int cap);
+
 	public static native void glClear(int mask);
 	public static native void glClearColor(float red, float green, float blue, float alpha);
 
