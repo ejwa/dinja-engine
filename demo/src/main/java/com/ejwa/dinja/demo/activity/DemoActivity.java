@@ -20,23 +20,40 @@
  */
 package com.ejwa.dinja.demo.activity;
 
+import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import com.ejwa.dinja.engine.activity.DinjaActivity;
-import com.ejwa.dinja.opengles.view.GLSurface;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import com.ejwa.dinja.demo.R;
 
-public class DemoActivity extends DinjaActivity {
+public class DemoActivity extends ListActivity {
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		final String[] demos = getResources().getStringArray(R.array.demos);
+		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.label, demos));
+
+		final ListView listView = getListView();
+		listView.setOnItemClickListener(new ListItemController());
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
+	private class ListItemController implements OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			final Class demoToShow;
 
-	@Override
-	protected void onResume() {
-		super.onResume();
+			switch(position) {
+				case 1: demoToShow = DragBombActivity.class; break;
+				case 2: demoToShow = SphereActivity.class; break;
+				default: demoToShow = TiltBombActivity.class; break;
+			}
+
+			startActivity(new Intent(getApplicationContext(), demoToShow));
+		}
 	}
 }

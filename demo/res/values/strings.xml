@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<string name="app_name">Dinja Engine Demo</string>
+	<string-array name="demos">
+		<item>Dinja Bomb (Tilt)\n\nA non-texturized dinja bomb object controlled with a TiltForceInputController.</item>
+		<item>Dinja Bomb (Drag)\n\nA texturized dinja bomb object controlled with a DragController.</item>
+		<item>Sphere (Custom Shader)\n\nA rotating sphere with a custom shader attached.</item>
+	</string-array>
 </resources>

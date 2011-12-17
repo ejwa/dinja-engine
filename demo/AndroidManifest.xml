@@ -8,16 +8,24 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- ***!! Remove later !!*** -->
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
-		<activity android:name=".activity.DemoActivity" android:label="@string/app_name" android:launchMode="singleInstance"
-		          android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:screenOrientation="landscape"
-			  android:alwaysRetainTaskState="true"
-			  android:finishOnTaskLaunch="true">
+		<activity android:name=".activity.DemoActivity" android:label="@string/app_name" android:launchMode="singleInstance">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+		<activity android:name=".activity.DragBombActivity" android:label="@string/app_name"
+		          android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+			  android:screenOrientation="landscape">
+		</activity>
+		<activity android:name=".activity.SphereActivity" android:label="@string/app_name"
+		          android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+			  android:screenOrientation="landscape">
+		</activity>
+		<activity android:name=".activity.TiltBombActivity" android:label="@string/app_name"
+		          android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+			  android:screenOrientation="landscape">
+		</activity>
 	</application>
 	<uses-sdk android:minSdkVersion="7"/>
 </manifest>
-
