@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
+import com.ejwa.dinja.engine.controller.SceneController;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.engine.view.Viewable;
 import com.ejwa.dinja.opengles.GLException;
@@ -95,6 +96,7 @@ public class DinjaActivity extends Activity {
 		if (view instanceof SceneView) {
 			final SceneView sceneView = (SceneView) view;
 			registerController(new CameraController(sceneView.getScene().getCamera()));
+			registerController(new SceneController(sceneView.getScene()));
 		}
 
 		for (PrimitiveData p : view) {
