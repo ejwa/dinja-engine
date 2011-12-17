@@ -43,6 +43,7 @@ public class Mesh {
 	private static final String NORMAL_ATTRIBUTE_NAME = "vNormal";
 	private static final String TEXTURE_COORDINATE_ATTRIBUTE_NAME = "vTextCoord";
 
+	private final Matrix4f translationMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
 	private Matrix4f modelViewProjectionMatrix = modelMatrix;
 	private final String name;
@@ -72,6 +73,24 @@ public class Mesh {
 
 	public Matrix4f getModelMatrix() {
 		return modelMatrix;
+	}
+
+	public void rotateX(float angle) {
+		translationMatrix.setZero();
+		translationMatrix.rotX(angle);
+		modelMatrix.mul(translationMatrix);
+	}
+
+	public void rotateY(float angle) {
+		translationMatrix.setZero();
+		translationMatrix.rotY(angle);
+		modelMatrix.mul(translationMatrix);
+	}
+
+	public void rotateZ(float angle) {
+		translationMatrix.setZero();
+		translationMatrix.rotZ(angle);
+		modelMatrix.mul(translationMatrix);
 	}
 
 	public Matrix4f getModelViewProjectionMatrix() {
