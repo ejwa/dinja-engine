@@ -41,7 +41,7 @@ public class UniformMatrix4f extends AbstractUniform<Matrix4f, FloatPointer> {
 
 		for (int i = 0; i < components / 4; i++) {
 			for (int j = 0; j < components / 4; j++) {
-				data.put(i, value.getElement(i, j));
+				data.put((i * 4) + j, value.getElement(j, i));
 			}
 		}
 	}
