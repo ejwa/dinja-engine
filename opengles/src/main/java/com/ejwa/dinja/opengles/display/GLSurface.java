@@ -42,7 +42,9 @@ public class GLSurface extends GLSurfaceView {
 	}
 
 	public void registerPrimitiveData(PrimitiveData primitiveData) {
-		primitiveDatas.add(primitiveData);
+		if (!primitiveDatas.contains(primitiveData)) {
+			primitiveDatas.add(primitiveData);
+		}
 	}
 
 	public void unregisterPrimitiveData(PrimitiveData primitiveData) {
@@ -54,7 +56,9 @@ public class GLSurface extends GLSurfaceView {
 	}
 
 	public void registerProgram(Program program) {
-		programs.add(program);
+		if (!programs.contains(program)) {
+			programs.add(program);
+		}
 	}
 
 	public void unregisterProgram(Program program) {
@@ -66,7 +70,9 @@ public class GLSurface extends GLSurfaceView {
 	}
 
 	public void registerFrameUpdateListener(IFrameUpdateListener frameUpdateListener) {
-		frameUpdateListeners.add(frameUpdateListener);
+		if (!frameUpdateListeners.contains(frameUpdateListener)) {
+			frameUpdateListeners.add(frameUpdateListener);
+		}
 	}
 
 	public void unregisterFrameUpdateListener(IFrameUpdateListener frameUpdateListener) {
@@ -78,7 +84,9 @@ public class GLSurface extends GLSurfaceView {
 	}
 
 	public void registerSurfaceChangeListener(ISurfaceChangeListener surfaceChangeListener) {
-		surfaceChangeListeners.add(surfaceChangeListener);
+		if (!surfaceChangeListeners.contains(surfaceChangeListener)) {
+			surfaceChangeListeners.add(surfaceChangeListener);
+		}
 
 		if (isShown()) {
 			surfaceChangeListener.onSurfaceChange(this);
