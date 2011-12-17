@@ -20,10 +20,10 @@
  */
 package com.ejwa.dinja.opengles.library;
 
-import android.util.Log;
 import com.ejwa.dinja.opengles.DataType;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
+import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
@@ -95,6 +95,11 @@ public final class OpenGLES2 extends OpenGLES2Native {
 		if (vertexAttributeHandle != -1) {
 			glVertexAttribPointer(vertexAttributeHandle, 3, DataType.GL_FLOAT.getId() , false, 0, primitiveData.getVertices().getData());
 			glEnableVertexAttribArray(vertexAttributeHandle);
+		}
+
+		for (AbstractUniform u : primitiveData.getUniforms().values()) {
+			final int uniformHandle = program.getUniformHandle(u.getVariableName());
+			u.send(uniformHandle);
 		}
 
 		OpenGLES2Native.glDrawElements(primitiveData.getPrimitiveType().getId(), indices.capacity(), indicesType.getId(), indices);
