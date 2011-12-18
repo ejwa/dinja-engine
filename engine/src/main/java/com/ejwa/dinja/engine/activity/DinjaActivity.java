@@ -23,9 +23,14 @@ package com.ejwa.dinja.engine.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Process;
+import android.view.MotionEvent;
 import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.controller.SceneController;
+import com.ejwa.dinja.engine.controller.input.FingerMovementInputController;
+import com.ejwa.dinja.engine.controller.input.FingerPositionInputController;
+import com.ejwa.dinja.engine.controller.input.IFingerMovementInputListener;
+import com.ejwa.dinja.engine.controller.input.IFingerPositionInputListener;
 import com.ejwa.dinja.engine.controller.input.ITiltForceInputListener;
 import com.ejwa.dinja.engine.controller.input.TiltForceInputController;
 import com.ejwa.dinja.engine.view.SceneView;
@@ -45,11 +50,15 @@ import java.util.Map;
 public class DinjaActivity extends Activity {
 	private GLSurface glSurfaceView;
 	private Map<ITiltForceInputListener, TiltForceInputController> tiltForceListeners;
+	private Map<IFingerPositionInputListener, FingerPositionInputController> fingerPositionListeners;
+	private Map<IFingerMovementInputListener, FingerMovementInputController> fingerMovementListeners;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		tiltForceListeners = new HashMap<ITiltForceInputListener, TiltForceInputController>();
+		fingerPositionListeners = new HashMap<IFingerPositionInputListener, FingerPositionInputController>();
+		fingerMovementListeners = new HashMap<IFingerMovementInputListener, FingerMovementInputController>();
 
 		glSurfaceView = new GLSurface(getApplication());
 		setContentView(glSurfaceView);
@@ -93,6 +102,16 @@ public class DinjaActivity extends Activity {
 			final TiltForceInputController input = new TiltForceInputController(this, (ITiltForceInputListener) controllable);
 			tiltForceListeners.put((ITiltForceInputListener) controllable, input);
 		}
+
+		if (controllable instanceof IFingerPositionInputListener) {
+			final FingerPositionInputController input = new FingerPositionInputController((IFingerPositionInputListener) controllable, glSurfaceView);
+			fingerPositionListeners.put((IFingerPositionInputListener) controllable, input);
+		}
+
+		if (controllable instanceof IFingerMovementInputListener) {
+			final FingerMovementInputController input = new FingerMovementInputController((IFingerMovementInputListener) controllable, glSurfaceView);
+			fingerMovementListeners.put((IFingerMovementInputListener) controllable, input);
+		}
 	}
 
 	protected final void unregisterController(Controllable controllable) {
@@ -108,6 +127,14 @@ public class DinjaActivity extends Activity {
 			final TiltForceInputController input = tiltForceListeners.get((ITiltForceInputListener) controllable);
 			input.unregister();
 			tiltForceListeners.remove((ITiltForceInputListener) controllable);
+		}
+
+		if (controllable instanceof IFingerPositionInputListener) {
+			fingerPositionListeners.remove((IFingerPositionInputListener) controllable);
+		}
+
+		if (controllable instanceof IFingerMovementInputListener) {
+			fingerMovementListeners.remove((IFingerMovementInputListener) controllable);
 		}
 	}
 
@@ -128,5 +155,18 @@ public class DinjaActivity extends Activity {
 		for (PrimitiveData p : view) {
 			glSurfaceView.unregisterPrimitiveData(p);
 		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		for (FingerPositionInputController c : fingerPositionListeners.values()) {
+			c.onTouchEvent(event);
+		}
+
+		for (FingerMovementInputController c : fingerMovementListeners.values()) {
+			c.onTouchEvent(event);
+		}
+
+		return true;
 	}
 }
