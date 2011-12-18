@@ -46,6 +46,7 @@ class OpenGLES2Native {
 
 	public static native void glEnable(int cap);
 	public static native void glDisable(int cap);
+	public static native void glCullFace (int mode);
 
 	public static native void glClear(int mask);
 	public static native void glClearColor(float red, float green, float blue, float alpha);
