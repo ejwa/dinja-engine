@@ -82,7 +82,7 @@ public final class StringConverter {
 	public static List<Float> getFloatListFromString(String source, String separator) {
 		final List<Float> values = new ArrayList<Float>();
 
-		for (String s : source.split(" ")) {
+		for (String s : source.split(separator)) {
 			values.add(Float.valueOf(s));
 		}
 
@@ -92,7 +92,7 @@ public final class StringConverter {
 	public static List<Integer> getIntegerListFromString(String source, String separator) {
 		final List<Integer> values = new ArrayList<Integer>();
 
-		for (String s : source.split(" ")) {
+		for (String s : source.split(separator)) {
 			values.add(Integer.valueOf(s));
 		}
 

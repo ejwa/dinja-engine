@@ -123,7 +123,7 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 
 				if (shape != null) {
 					final String meshName = ((Group) t.getTransformable()).getDef();
-					final Mesh mesh = new Mesh(meshName, PrimitiveType.GL_TRIANGLE_STRIP);
+					final Mesh mesh = new Mesh(meshName, PrimitiveType.GL_TRIANGLE_FAN);
 
 					addMeshVertices(mesh, shape.getIndexedFaceSet());
 					addMeshFaces(mesh, shape.getIndexedFaceSet());
