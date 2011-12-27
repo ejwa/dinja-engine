@@ -19,4 +19,63 @@
 			<artifactId>javacpp</artifactId>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-bullet</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>${env.ANDROID_NDK_HOME}/ndk-build</executable>
+							<arguments>
+								<argument>NDK_APP_OUT=${project.build.outputDirectory}</argument>
+								<argument>NDK_APP_PROJECT_PATH=${project.build.outputDirectory}</argument>
+								<argument>-j10</argument>
+							</arguments>
+							<workingDirectory>${basedir}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>build-jnilib</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+								<argument>-jar</argument>        <argument>${com.googlecode:javacpp:jar}</argument>
+								<argument>-classpath</argument>  <argument>${project.build.outputDirectory}</argument>
+								<argument>-d</argument>          <argument>${project.build.outputDirectory}/lib/armeabi</argument>
+								<argument>-properties</argument> <argument>android-arm</argument>
+
+								<argument>-Dcompiler.options=-march=armv5te -mtune=xscale -msoft-float ${env.ANDROID_NDK_HOME}/sources/cxx-stl/gnu-libstdc++/libs/armeabi/libsupc++.a</argument>
+								<argument>-Dcompiler.linkpath=sources/cxx-stl/gnu-libstdc++/libs/armeabi/:platforms/android-5/arch-arm/usr/lib/</argument>
+								<argument>-Dplatform.root=${env.ANDROID_NDK_HOME}</argument>
+								<argument>com.ejwa.dinja.physics.BulletNative</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
