@@ -46,7 +46,7 @@
 						<configuration>
 							<executable>${env.ANDROID_NDK_HOME}/ndk-build</executable>
 							<arguments>
-								<argument>NDK_APP_OUT=${project.build.outputDirectory}</argument>
+								<argument>NDK_APP_OUT=${project.build.directory}</argument>
 								<argument>NDK_APP_PROJECT_PATH=${project.build.outputDirectory}</argument>
 								<argument>-j10</argument>
 							</arguments>
