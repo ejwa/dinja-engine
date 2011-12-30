@@ -81,4 +81,6 @@ class OpenGLES2Native {
 	public static native int glGetUniformLocation(int program, String name);
 	public static native void glUniform4fv(int location, int count, FloatPointer value);
 	public static native void glUniformMatrix4fv(int location, int count, boolean transpose, FloatPointer value);
+
+	public static native void glActiveTexture(int texture);
 }
