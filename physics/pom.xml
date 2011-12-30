@@ -54,7 +54,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>build-jnilib</id>
+						<id>build-jnilib-armeabi</id>
 						<phase>process-classes</phase>
 						<goals>
 							<goal>exec</goal>
@@ -67,10 +67,33 @@
 								<argument>-d</argument>          <argument>${project.build.outputDirectory}/lib/armeabi</argument>
 								<argument>-properties</argument> <argument>android-arm</argument>
 
+								<argument>-Dcompiler.includepath=sources/cxx-stl/gnu-libstdc++/include/:sources/cxx-stl/gnu-libstdc++/libs/armeabi/include/:platforms/android-5/arch-arm/usr/include/:${project.build.sourceDirectory}/../cpp/</argument>
 								<argument>-Dcompiler.options=-march=armv5te -mtune=xscale -msoft-float ${env.ANDROID_NDK_HOME}/sources/cxx-stl/gnu-libstdc++/libs/armeabi/libsupc++.a</argument>
-								<argument>-Dcompiler.linkpath=sources/cxx-stl/gnu-libstdc++/libs/armeabi/:platforms/android-5/arch-arm/usr/lib/</argument>
+								<argument>-Dcompiler.linkpath=sources/cxx-stl/gnu-libstdc++/libs/armeabi/:platforms/android-5/arch-arm/usr/lib/:${project.build.directory}/local/armeabi/</argument>
 								<argument>-Dplatform.root=${env.ANDROID_NDK_HOME}</argument>
-								<argument>com.ejwa.dinja.physics.BulletNative</argument>
+								<argument>com.ejwa.dinja.physics.library.BulletNative</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>build-jnilib-armeabi-v7a</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+								<argument>-jar</argument>        <argument>${com.googlecode:javacpp:jar}</argument>
+								<argument>-classpath</argument>  <argument>${project.build.outputDirectory}</argument>
+								<argument>-d</argument>          <argument>${project.build.outputDirectory}/lib/armeabi-v7a</argument>
+								<argument>-properties</argument> <argument>android-arm</argument>
+
+								<argument>-Dcompiler.includepath=sources/cxx-stl/gnu-libstdc++/include/:sources/cxx-stl/gnu-libstdc++/libs/armeabi-v7a/include/:platforms/android-5/arch-arm/usr/include/:${project.build.sourceDirectory}/../cpp/</argument>
+								<argument>-Dcompiler.options=-march=armv7-a -mtune=xscale ${env.ANDROID_NDK_HOME}/sources/cxx-stl/gnu-libstdc++/libs/armeabi-v7a/libsupc++.a</argument>
+								<argument>-Dcompiler.linkpath=sources/cxx-stl/gnu-libstdc++/libs/armeabi-v7a/:platforms/android-5/arch-arm/usr/lib/:${project.build.directory}/local/armeabi-v7a/</argument>
+								<argument>-Dplatform.root=${env.ANDROID_NDK_HOME}</argument>
+								<argument>com.ejwa.dinja.physics.library.BulletNative</argument>
 							</arguments>
 						</configuration>
 					</execution>
