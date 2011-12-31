@@ -47,12 +47,29 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The base class for a dinja engine activity, which all applications should use.
+ * <code>DinjaActivity</code> handles all the "glue" needed to be able to create a GL surface, register views and controllers.
+ *
+ * @author Adam Waldenberg <adam.waldenberg@ejwa.se>
+ * @since 0.1
+ */
 public class DinjaActivity extends Activity {
 	private GLSurface glSurfaceView;
 	private Map<ITiltForceInputListener, TiltForceInputController> tiltForceListeners;
 	private Map<IFingerPositionInputListener, FingerPositionInputController> fingerPositionListeners;
 	private Map<IFingerMovementInputListener, FingerMovementInputController> fingerMovementListeners;
 
+	/**
+	 * Called when this dinja activity is starting. This is where most initialization is done. By default,
+	 * <code>DinjaActivity</code> initializes the GL surface here. If you override this method (and you probably will), you
+	 * should call <code>super.onCreate(savedInstanceState)</code> in your overriding <code>onCreate()</code> method.
+	 *
+	 * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle
+	 *                           contains the data it most recently supplied in onSaveInstanceState(Bundle).
+	 *                           <b>Note: Otherwise it is null.</b>
+	 * @see Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,6 +81,14 @@ public class DinjaActivity extends Activity {
 		setContentView(glSurfaceView);
 	}
 
+	/**
+	 * Called as part of the activity lifecycle when the dinja activity is going into the background, but has not (yet) been
+	 * killed. Most applications will not have to consider overriding this method. <code>DinjaActivity</code> pauses the
+	 * GL Surface here. If you override this method, you should call <code>super.onPause()</code> in your overriding
+	 * <code>onPause()</code> method.
+	 *
+	 * @see Activity#onPause()
+	 */
 	@Override
 	protected void onPause() {
 		glSurfaceView.onPause();
@@ -81,6 +106,14 @@ public class DinjaActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Called after <code>onCreate()</code> or after, <code>onPause()</code>. Everything that should happen after the dinja
+	 * activity is created or after it has been inactive, should be done here. <code>DinjaActivity</code> resumes the GL
+	 * surface here. It also sets up shaders and threads. If you override this method, you should call
+	 * <code>super.onResume()</code> in your overriding <code>onResume()</code> method.
+	 *
+	 * @see Activity#onResume()
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -89,6 +122,15 @@ public class DinjaActivity extends Activity {
 		setShaders();
 	}
 
+	/**
+	 * Registers a controller object to this activity. A controller is usually linked to a model object or a view. What is
+	 * important is that the passed object implements the {@link Controllable} interface.
+	 *
+	 * @param controllable A controller object implementing the {@link Controllable} interface.
+	 * @see #unregisterController
+	 * @see Controllable
+	 * @see <a href="http://en.wikipedia.org/wiki/Model-View-Controller">Wikipedia.org: Model-View-Controller</a>
+	 */
 	protected final void registerController(Controllable controllable) {
 		if (controllable instanceof IFrameUpdateListener) {
 			glSurfaceView.registerFrameUpdateListener((IFrameUpdateListener) controllable);
@@ -114,6 +156,14 @@ public class DinjaActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Unregisters a a controller object previously registered with {@link #registerController}.
+	 *
+	 * @param controllable A controller object implementing the {@link Controllable} interface.
+	 * @see #registerController
+	 * @see Controllable
+	 * @see <a href="http://en.wikipedia.org/wiki/Model-View-Controller">Wikipedia.org: Model-View-Controller</a>
+	 */
 	protected final void unregisterController(Controllable controllable) {
 		if (controllable instanceof IFrameUpdateListener) {
 			glSurfaceView.unregisterFrameUpdateListener((IFrameUpdateListener) controllable);
@@ -138,6 +188,16 @@ public class DinjaActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Registers a view object to this activity. A view usually displays something related to the model and is most often
+	 * linked to one or several model objects. What is important is that the passed object implements the {@link Viewable}
+	 * interface.
+	 *
+	 * @param view A view object implementing the {@link Viewable} interface.
+	 * @see #unregisterView
+	 * @see Viewable
+	 * @see <a href="http://en.wikipedia.org/wiki/Model-View-Controller">Wikipedia.org: Model-View-Controller</a>
+	 */
 	protected final void registerView(Viewable view) {
 		if (view instanceof SceneView) {
 			final SceneView sceneView = (SceneView) view;
@@ -150,6 +210,14 @@ public class DinjaActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Unregisters a a view object previously registered with {@link #registerView}.
+	 *
+	 * @param view A view object implementing the {@link Viewable} interface.
+	 * @see #registerView
+	 * @see Viewable
+	 * @see <a href="http://en.wikipedia.org/wiki/Model-View-Controller">Wikipedia.org: Model-View-Controller</a>
+	 */
 	protected final void unregisterView(Viewable view) {
 		/* TODO: Handle default controllers when unregistering certain views. */
 		for (PrimitiveData p : view) {
@@ -157,6 +225,16 @@ public class DinjaActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Called when a touch screen event was not handled by any of the views under it. <code>DinjaActivity</code> handles
+	 * input events and calls registered controllers here. It is <b>not advisable</b> to override this method. You should
+	 * instead register a controller using {@link #registerController}. If none of the controllers or controller interfaces
+	 * included in the engine suit your needs, you can always make your own.
+	 *
+	 * @param event The touch screen event being processed.
+	 * @return Always returns <code>true</code>, as the event is always considered as handled.
+	 * @see Activity#onTouchEvent(android.view.MotionEvent)
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		for (FingerPositionInputController c : fingerPositionListeners.values()) {
