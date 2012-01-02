@@ -26,6 +26,9 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
 public class IndexedFaceSet {
+	@Attribute(required = false)
+	private boolean colorPerVertex;
+
 	@Attribute
 	private boolean normalPerVertex;
 
@@ -38,10 +41,13 @@ public class IndexedFaceSet {
 	@Attribute
 	private String texCoordIndex;
 
+	@Element(name = "Color", required = false)
+	private Color color;
+
 	@Element(name = "Coordinate")
 	private Coordinate coordinate;
 
-	@Element(name = "Normal")
+	@Element(name = "Normal", required = false)
 	private Normal normal;
 
 	@Element(name = "TextureCoordinate")
@@ -57,6 +63,14 @@ public class IndexedFaceSet {
 
 	public void setCoordIndex(String coordIndex) {
 		this.coordIndex = coordIndex;
+	}
+
+	public boolean isColorPerVertex() {
+		return colorPerVertex;
+	}
+
+	public void setColorPerVertex(boolean colorPerVertex) {
+		this.colorPerVertex = colorPerVertex;
 	}
 
 	public boolean isNormalPerVertex() {
@@ -85,6 +99,14 @@ public class IndexedFaceSet {
 
 	public void setTexCoordIndex(String texCoordIndex) {
 		this.texCoordIndex = texCoordIndex;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	public Coordinate getCoordinate() {
