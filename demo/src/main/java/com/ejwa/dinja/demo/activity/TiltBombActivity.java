@@ -36,7 +36,7 @@ public class TiltBombActivity extends DinjaActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		final X3DFile x3dFile = new X3DFile(getAssets(), "dinja_bomb_simple.x3d");
+		final X3DFile x3dFile = new X3DFile(getAssets(), "dinja_bomb.x3d");
 		final Mesh m = x3dFile.getMesh("group_ME_Sphere");
 
 		registerView(new SceneView(new Scene(new Camera(), m)));
