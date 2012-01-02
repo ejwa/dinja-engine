@@ -31,10 +31,11 @@ class DisplayConfigurationChooser implements EGLConfigChooser {
 	private static final int GREEN_BITS = 6;
 	private static final int BLUE_BITS = 5;
 	private static final int ALPHA_BITS = 0;
-	private static final int DEPTH_BITS = 0;
+	private static final int DEPTH_BITS = 8;
 	private static final int STENCIL_BITS = 0;
 
 	private static int configuration[] = {
+		EGL10.EGL_DEPTH_SIZE, 8,
 		EGL10.EGL_RED_SIZE, 4,
 		EGL10.EGL_GREEN_SIZE, 4,
 		EGL10.EGL_BLUE_SIZE, 4,
