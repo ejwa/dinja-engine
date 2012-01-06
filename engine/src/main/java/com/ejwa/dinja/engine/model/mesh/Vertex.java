@@ -24,7 +24,7 @@ import javax.vecmath.Color4f;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
-public class Vertex {
+public class Vertex implements Cloneable {
 	private Color4f color;
 	private Vector3f normal;
 	private Vector3f position;
@@ -35,6 +35,7 @@ public class Vertex {
 	}
 
 	public Vertex(Vector3f position) {
+		this();
 		this.position = position;
 	}
 
@@ -78,5 +79,32 @@ public class Vertex {
 
 	public void setTextureCoordinates(Vector2f textureCoordinates) {
 		this.textureCoordinates = textureCoordinates;
+	}
+
+	@Override
+	@SuppressWarnings({"PMD.NPathComplexity", "PMD.DataflowAnomalyAnalysis"})
+	public int hashCode() {
+		int hash = 7;
+
+		hash *= 67 + (color == null ? 0 : color.hashCode());
+		hash *= 67 + (normal == null ? 0 : normal.hashCode());
+		hash *= 67 + (position == null ? 0 : position.hashCode());
+		hash *= 67 + (textureCoordinates == null ? 0 : textureCoordinates.hashCode());
+
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Vertex) {
+			return hashCode() == ((Vertex) o).hashCode();
+		}
+
+		return false;
+	}
+
+	@Override
+	public Vertex clone() throws CloneNotSupportedException {
+		return (Vertex) super.clone();
 	}
 }
