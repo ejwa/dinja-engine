@@ -24,6 +24,7 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.SystemClock;
 import android.util.Log;
 import com.ejwa.dinja.opengles.Capability;
+import com.ejwa.dinja.opengles.CullFaceMode;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
@@ -75,6 +76,7 @@ public class GLSurfaceRenderer implements Renderer {
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		OpenGLES2.glViewport(0, 0, width, height);
 		Capability.GL_DEPTH_TEST.enable();
+		Capability.GL_CULL_FACE.enable();
 
 		for (ISurfaceChangeListener s : glSurface.getSurfaceChangeListeners()) {
 			s.onSurfaceChange(glSurface);
