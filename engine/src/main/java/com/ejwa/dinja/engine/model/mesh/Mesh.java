@@ -20,9 +20,11 @@
  */
 package com.ejwa.dinja.engine.model.mesh;
 
+import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
+import com.ejwa.dinja.opengles.shader.argument.TextureRGB565Sampler;
 import com.ejwa.dinja.opengles.shader.argument.Tuple2fVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.Tuple3fVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.Tuple4fVertexAttributeArray;
@@ -38,10 +40,11 @@ import javax.vecmath.Vector3f;
 
 public class Mesh {
 	private static final String MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME = "uModelViewProjectionMatrix";
-	private static final String VERTEX_COORDINATE_ATTRIBUTE_NAME = "vPosition";
-	private static final String COLOR_ATTRIBUTE_NAME = "vColor";
-	private static final String NORMAL_ATTRIBUTE_NAME = "vNormal";
-	private static final String TEXTURE_COORDINATE_ATTRIBUTE_NAME = "vTextCoord";
+	private static final String VERTEX_COORDINATE_ATTRIBUTE_NAME = "aPosition";
+	private static final String COLOR_ATTRIBUTE_NAME = "aColor";
+	private static final String NORMAL_ATTRIBUTE_NAME = "aNormal";
+	private static final String TEXTURE_COORDINATE_ATTRIBUTE_NAME = "aTexCoord";
+	private static final String TEXTURE_SAMPLER_NAME = "sTexture";
 
 	private final Matrix4f translationMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
@@ -49,6 +52,7 @@ public class Mesh {
 	private final String name;
 	private final PrimitiveType primitiveType;
 	private final List<Face> faces = new LinkedList<Face>();
+	private Texture texture;
 	private final List<Vertex> vertices = new LinkedList<Vertex>();
 	private final PrimitiveData primitiveData;
 
@@ -134,6 +138,17 @@ public class Mesh {
 
 	public List<Face> getFaces() {
 		return faces;
+	}
+
+	public Texture getTexture() {
+		return texture;
+	}
+
+	public void setTexture(Texture texture) {
+		this.texture = texture;
+
+		primitiveData.addSampler(new TextureRGB565Sampler(TEXTURE_SAMPLER_NAME, ActiveTexture.GL_TEXTURE0,
+		                         texture.getWidth(), texture.getHeight(), texture.getPixelsRGB565()));
 	}
 
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")

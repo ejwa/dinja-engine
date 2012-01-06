@@ -21,10 +21,9 @@
 package com.ejwa.dinja.engine.util.file;
 
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.util.Log;
 import com.ejwa.dinja.engine.model.file.FileFormatException;
-import com.ejwa.dinja.engine.model.file.FileResourceException;
+import com.ejwa.dinja.engine.model.file.x3d.Appearance;
 import com.ejwa.dinja.engine.model.file.x3d.Group;
 import com.ejwa.dinja.engine.model.file.x3d.IndexedFaceSet;
 import com.ejwa.dinja.engine.model.file.x3d.Shape;
@@ -34,10 +33,11 @@ import com.ejwa.dinja.engine.model.file.x3d.X3D;
 import com.ejwa.dinja.engine.model.mesh.Face;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
 import com.ejwa.dinja.engine.model.mesh.Vertex;
+import com.ejwa.dinja.engine.util.TextureLoader;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
@@ -59,45 +59,30 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 		}
 	}
 
-	private void loadMeshTextures(Mesh mesh, Shape shape) {
-		if (shape.getAppearance() != null && shape.getAppearance().getImageTexture() != null) {
-			final String texture = shape.getAppearance().getImageTexture().getUrl();
-
-			try {
-				final Bitmap bitmap = BitmapFactory.decodeStream(assetManager.open(texture));
-				/* TODO: Implement the rest of the texture loading. */
-			} catch (IOException ex) {
-				throw new FileResourceException(String.format("Failed to load texture '%s' (%s).",
-				                                texture, ex.getMessage()), ex);
-			}
+	private void loadMeshTextures(Mesh mesh, Appearance appearance) {
+		if (appearance != null && appearance.getImageTexture() != null) {
+			final String texture = appearance.getImageTexture().getUrl().split(" \"")[0].replaceAll("\"", "");
+			mesh.setTexture(TextureLoader.load(assetManager, texture));
 		}
 	}
 
-	@SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.DataflowAnomalyAnalysis"})
+	private void setVertexProperties(Vertex v, int index, List<Vector3f> normals, ListIterator<Vector2f> textureCoordinates) {
+		if (normals != null) {
+			v.setNormal(normals.get(index));
+		}
+
+		if (textureCoordinates != null) {
+			final Vector2f uv = textureCoordinates.next();
+			uv.y = 1f - uv.y;
+			v.setTextureCoordinates(uv);
+		}
+	}
+
+	@SuppressWarnings({"PMD.ProtectLogD", "PMD.AvoidInstantiatingObjectsInLoops", "PMD.DataflowAnomalyAnalysis"})
 	private void addMeshVertices(Mesh mesh, IndexedFaceSet set) {
 		final List<Vector3f> coordinates = set.getCoordinate().getPointVectors();
 		final List<Vector3f> normals = set.getNormal() == null ? null : set.getNormal().getVectorList();
-		final List<Vector2f> textureCoordinates = set.getTextureCoordinate() == null ? null : set.getTextureCoordinate().getPointList();
-
-		for (int i = 0; i < coordinates.size(); i++) {
-			final Vertex vertex = new Vertex();
-
-			vertex.setPosition(coordinates.get(i));
-
-			if (normals != null) {
-				vertex.setNormal(normals.get(i));
-			}
-
-			if (textureCoordinates != null) {
-				vertex.setTextureCoordinates(textureCoordinates.get(i));
-			}
-
-			mesh.addVertices(vertex);
-		}
-	}
-
-	@SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.DataflowAnomalyAnalysis"})
-	private void addMeshFaces(Mesh mesh, IndexedFaceSet set) {
+		final ListIterator<Vector2f> textureCoordinates = set.getTextureCoordinate() == null ? null : set.getTextureCoordinate().getPointList().listIterator();
 		final List<Integer> faces = set.getCoordIndexList();
 		Face f = new Face();
 
@@ -106,9 +91,25 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 				mesh.addFaces(f);
 				f = new Face();
 			} else {
-				f.addVertices(mesh.getVertices().get(i));
+				final Vertex v = new Vertex(coordinates.get(i));
+				setVertexProperties(v, i, normals, textureCoordinates);
+
+				/*
+				 * If an identical vertex exists with identical properties, re-use that vertex in the face instead
+				 * of adding the newly created one.
+				 */
+				if (mesh.getVertices().contains(v)) {
+					f.addVertices(mesh.getVertices().get(mesh.getVertices().indexOf(v)));
+				} else {
+					f.addVertices(v);
+					mesh.addVertices(v);
+				}
 			}
 		}
+
+		Log.d(getClass().getName(), String.format("Number of faces: %s", mesh.getFaces().size()));
+		Log.d(getClass().getName(), String.format("Original number of vertices: %s", coordinates.size()));
+		Log.d(getClass().getName(), String.format("Number of vertices after duplicating for texture coordinates: %s", mesh.getVertices().size()));
 	}
 
 	@Override
@@ -126,7 +127,7 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 					final Mesh mesh = new Mesh(meshName, PrimitiveType.GL_TRIANGLES);
 
 					addMeshVertices(mesh, shape.getIndexedFaceSet());
-					addMeshFaces(mesh, shape.getIndexedFaceSet());
+					loadMeshTextures(mesh, shape.getAppearance());
 					mesh.updatePrimitiveDataAttributes();
 					meshes.add(mesh);
 				}

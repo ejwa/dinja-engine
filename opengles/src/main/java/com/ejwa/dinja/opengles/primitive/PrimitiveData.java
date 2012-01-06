@@ -22,6 +22,7 @@ package com.ejwa.dinja.opengles.primitive;
 
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.NativeMemory;
+import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import com.ejwa.dinja.opengles.shader.argument.AbstractVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.Tuple3fVertexAttributeArray;
@@ -32,10 +33,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.vecmath.Vector3f;
 
+/* TODO: Things like uniform.getData().deallocate() should happen in the uniform finalize method, and not here... */
 public class PrimitiveData {
 	private final PrimitiveType primitiveType;
 	private Pointer indices;
 	private final Tuple3fVertexAttributeArray vertices;
+	private final Map<String, AbstractSampler> samplers = new HashMap<String, AbstractSampler>();
 	private final Map<String, AbstractUniform> uniforms = new HashMap<String, AbstractUniform>();
 	private final Map<String, AbstractVertexAttributeArray> vertexAttributeArrays = new HashMap<String, AbstractVertexAttributeArray>();
 
@@ -85,6 +88,22 @@ public class PrimitiveData {
 
 	public final void setVerticesData(Vector3f  ...vertices) {
 		this.vertices.setData(vertices);
+	}
+
+	public void addSampler(AbstractSampler sampler) {
+		samplers.put(sampler.getVariableName(), sampler);
+	}
+
+	public void removeSampler(String variableName) {
+		final AbstractSampler sampler = samplers.remove(variableName);
+
+		if (sampler != null) {
+			sampler.getData().deallocate();
+		}
+	}
+
+	public Map<String, AbstractSampler> getSamplers() {
+		return samplers;
 	}
 
 	public void addUniform(AbstractUniform uniform) {

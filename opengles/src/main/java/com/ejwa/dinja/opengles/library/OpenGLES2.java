@@ -21,9 +21,14 @@
 package com.ejwa.dinja.opengles.library;
 
 import com.ejwa.dinja.opengles.DataType;
+import com.ejwa.dinja.opengles.TextureFormat;
+import com.ejwa.dinja.opengles.TextureTarget;
+import com.ejwa.dinja.opengles.TextureType;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
+import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
+import com.ejwa.dinja.opengles.shader.argument.AbstractVertexAttributeArray;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
@@ -102,6 +107,36 @@ public final class OpenGLES2 extends OpenGLES2Native {
 			u.send(uniformHandle);
 		}
 
+		for (AbstractVertexAttributeArray vAttributeArray : primitiveData.getVertexAttributeArrays().values()) {
+			final int vAttributeArrayHandle = program.getVertexAttributeHandle(vAttributeArray.getVariableName());
+			glVertexAttribPointer(vAttributeArrayHandle, vAttributeArray.getComponents(), DataType.GL_FLOAT.getId(), false, 0, vAttributeArray.getData());
+			glEnableVertexAttribArray(vAttributeArrayHandle);
+		}
+
+		for (AbstractSampler s : primitiveData.getSamplers().values()) {
+			final int samplerHandle = program.getUniformHandle(s.getVariableName());
+			s.send(samplerHandle);
+		}
+
 		OpenGLES2Native.glDrawElements(primitiveData.getPrimitiveType().getId(), indices.capacity(), indicesType.getId(), indices);
+	}
+
+	public static void glTexImage2D(int level, int width, int height, TextureFormat format, TextureType type, Pointer pixels) {
+		glTexImage2D(TextureTarget.GL_TEXTURE_2D.getId(), level, format.getId(), width, height, 0, format.getId(), type.getId(), pixels);
+	}
+
+	public static void glBindTexture(TextureTarget textureTarget, int handle) {
+		glBindTexture(textureTarget.getId(), handle);
+	}
+
+	public static int glGenTexture() {
+		final IntPointer handlePtr = new IntPointer(1);
+		final int handle;
+
+		glGenTextures(1, handlePtr);
+		handle = handlePtr.get(0);
+		handlePtr.deallocate();
+
+		return handle;
 	}
 }

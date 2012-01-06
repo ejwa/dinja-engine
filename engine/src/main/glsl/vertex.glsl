@@ -1,6 +1,12 @@
 uniform mat4 uModelViewProjectionMatrix;
-attribute vec4 vPosition;
+
+attribute vec2 aTexCoord;
+attribute vec4 aPosition;
+attribute vec3 aNormal;
+
+varying vec2 vTexCoord;
 
 void main() {
-	gl_Position = uModelViewProjectionMatrix * vPosition;
+	gl_Position = uModelViewProjectionMatrix * aPosition;
+	vTexCoord = aTexCoord;
 }

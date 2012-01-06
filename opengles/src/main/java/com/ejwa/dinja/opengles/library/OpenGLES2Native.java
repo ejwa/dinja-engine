@@ -81,6 +81,15 @@ class OpenGLES2Native {
 	public static native int glGetUniformLocation(int program, String name);
 	public static native void glUniform4fv(int location, int count, FloatPointer value);
 	public static native void glUniformMatrix4fv(int location, int count, boolean transpose, FloatPointer value);
+	public static native void glUniform1i(int location, int value);
 
 	public static native void glActiveTexture(int texture);
+	public static native void glTexParameteri(int target, int paramName, int param);
+	protected static native void glTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, Pointer pixels);
+	protected static native void glBindTexture(int target, int texture);
+	protected static native void glGenTextures(int n, @Cast("unsigned int *") IntPointer textures);
+	public static native void glPixelStorei(int paramName, int param);
+
+	public static native void glBindBuffer(int target, int buffer);
+	protected static native void glGenBuffers(int n, @Cast("unsigned int *") IntPointer buffers);
 }

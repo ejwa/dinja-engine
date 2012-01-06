@@ -29,6 +29,7 @@ import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
+import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import java.util.Set;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -110,6 +111,11 @@ public class GLSurfaceRenderer implements Renderer {
 					program.registerVertexAttributeHandles(p.getVertices().getVariableName());
 					program.registerVertexAttributeHandles(attributes.toArray(new String[attributes.size()]));
 					program.registerUniformHandles(uniforms.toArray(new String[uniforms.size()]));
+
+					for (AbstractSampler s : p.getSamplers().values()) {
+						program.registerUniformHandles(s.getVariableName());
+						s.bind();
+					}
 				}
 			}
 		}

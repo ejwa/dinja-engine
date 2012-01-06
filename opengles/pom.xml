@@ -31,6 +31,10 @@
 			<groupId>java3d</groupId>
 			<artifactId>vecmath</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
