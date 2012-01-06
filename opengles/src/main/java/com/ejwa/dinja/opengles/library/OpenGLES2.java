@@ -89,7 +89,7 @@ public final class OpenGLES2 extends OpenGLES2Native {
 
 	public static void glDrawElements(Program program, PrimitiveData primitiveData) {
 		final Pointer indices =  primitiveData.getIndices();
-		final DataType indicesType = primitiveData.getVertices().getData().capacity() <= 256 ? DataType.GL_UNSIGNED_INT : DataType.GL_UNSIGNED_SHORT;
+		final DataType indicesType = primitiveData.getVertices().getData().capacity() <= 256 ? DataType.GL_UNSIGNED_BYTE : DataType.GL_UNSIGNED_SHORT;
 		final int vertexAttributeHandle = program.getVertexAttributeHandle(primitiveData.getVertices().getVariableName());
 
 		if (vertexAttributeHandle != -1) {
