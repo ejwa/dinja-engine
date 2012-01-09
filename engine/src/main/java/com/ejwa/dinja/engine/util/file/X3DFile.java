@@ -30,7 +30,6 @@ import com.ejwa.dinja.engine.model.file.x3d.Shape;
 import com.ejwa.dinja.engine.model.file.x3d.Transform;
 import com.ejwa.dinja.engine.util.xml.XMLReader;
 import com.ejwa.dinja.engine.model.file.x3d.X3D;
-import com.ejwa.dinja.engine.model.mesh.Face;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
 import com.ejwa.dinja.engine.model.mesh.Vertex;
 import com.ejwa.dinja.engine.util.TextureLoader;
@@ -84,13 +83,9 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 		final List<Vector3f> normals = set.getNormal() == null ? null : set.getNormal().getVectorList();
 		final ListIterator<Vector2f> textureCoordinates = set.getTextureCoordinate() == null ? null : set.getTextureCoordinate().getPointList().listIterator();
 		final List<Integer> faces = set.getCoordIndexList();
-		Face f = new Face();
 
 		for (Integer i : faces) {
-			if (i == -1) {
-				mesh.addFaces(f);
-				f = new Face();
-			} else {
+			if (i != -1) {
 				final Vertex v = new Vertex(coordinates.get(i));
 				setVertexProperties(v, i, normals, textureCoordinates);
 
@@ -99,15 +94,15 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 				 * of adding the newly created one.
 				 */
 				if (mesh.getVertices().contains(v)) {
-					f.addVertices(mesh.getVertices().get(mesh.getVertices().indexOf(v)));
+					mesh.addIndices(mesh.getVertices().get(mesh.getVertices().indexOf(v)));
 				} else {
-					f.addVertices(v);
 					mesh.addVertices(v);
+					mesh.addIndices(v);
 				}
 			}
 		}
 
-		Log.d(getClass().getName(), String.format("Number of faces: %s", mesh.getFaces().size()));
+		Log.d(getClass().getName(), String.format("Number of indices: %s", mesh.getIndices().size()));
 		Log.d(getClass().getName(), String.format("Original number of vertices: %s", coordinates.size()));
 		Log.d(getClass().getName(), String.format("Number of vertices after duplicating for texture coordinates: %s", mesh.getVertices().size()));
 	}

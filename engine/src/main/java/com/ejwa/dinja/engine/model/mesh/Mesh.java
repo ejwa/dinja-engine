@@ -51,7 +51,7 @@ public class Mesh {
 	private Matrix4f modelViewProjectionMatrix = modelMatrix;
 	private final String name;
 	private final PrimitiveType primitiveType;
-	private final List<Face> faces = new LinkedList<Face>();
+	private final List<Vertex> indices = new LinkedList<Vertex>();
 	private Texture texture;
 	private final List<Vertex> vertices = new LinkedList<Vertex>();
 	private final PrimitiveData primitiveData;
@@ -69,9 +69,9 @@ public class Mesh {
 		addVertices(vertices);
 	}
 
-	public Mesh(String name, PrimitiveType primitiveType, Vertex vertices[], Face ...faces) {
+	public Mesh(String name, PrimitiveType primitiveType, Vertex vertices[], Vertex ...indices) {
 		this(name, primitiveType, vertices);
-		addFaces(faces);
+		addIndices(indices);
 
 	}
 
@@ -118,14 +118,12 @@ public class Mesh {
 		this.vertices.addAll(Arrays.asList(vertices));
 	}
 
-	public final void addFaces(Face ...faces) {
-		for (Face f : faces) {
-			if (!vertices.containsAll(f.getVertices())) {
-				throw new GLException("Invalid faces list passed to mesh.");
-			}
-
-			this.faces.add(f);
+	public final void addIndices(Vertex ...indices) {
+		if (!vertices.containsAll(Arrays.asList(indices))) {
+			throw new GLException("Invalid faces list passed to mesh.");
 		}
+
+		this.indices.addAll(Arrays.asList(indices));
 	}
 
 	public PrimitiveType getType() {
@@ -136,8 +134,8 @@ public class Mesh {
 		return vertices;
 	}
 
-	public List<Face> getFaces() {
-		return faces;
+	public List<Vertex> getIndices() {
+		return indices;
 	}
 
 	public Texture getTexture() {
@@ -182,15 +180,13 @@ public class Mesh {
 			primitiveData.addVertexAttributeArray(new Tuple2fVertexAttributeArray(TEXTURE_COORDINATE_ATTRIBUTE_NAME, textureCoords));
 		}
 
-		final List<Integer> indices = new ArrayList<Integer>();
+		final List<Integer> glIndices = new ArrayList<Integer>();
 
-		for (Face f : this.faces) {
-			for (Vertex v : f.getVertices()) {
-				indices.add(vertices.indexOf(v));
-			}
+		for (Vertex i : indices) {
+			glIndices.add(vertices.indexOf(i));
 		}
 
-		primitiveData.setIndices(indices.toArray(new Integer[indices.size()]));
+		primitiveData.setIndices(glIndices.toArray(new Integer[glIndices.size()]));
 	}
 
 	public PrimitiveData getPrimitiveData() {
