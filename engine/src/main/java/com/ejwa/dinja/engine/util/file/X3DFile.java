@@ -82,9 +82,9 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 		final List<Vector3f> coordinates = set.getCoordinate().getPointVectors();
 		final List<Vector3f> normals = set.getNormal() == null ? null : set.getNormal().getVectorList();
 		final ListIterator<Vector2f> textureCoordinates = set.getTextureCoordinate() == null ? null : set.getTextureCoordinate().getPointList().listIterator();
-		final List<Integer> faces = set.getCoordIndexList();
+		final List<Integer> indices = set.getCoordIndexList();
 
-		for (Integer i : faces) {
+		for (Integer i : indices) {
 			if (i != -1) {
 				final Vertex v = new Vertex(coordinates.get(i));
 				setVertexProperties(v, i, normals, textureCoordinates);
