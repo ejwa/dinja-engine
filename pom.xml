@@ -127,6 +127,9 @@
 							</goals>
 						</execution>
 					</executions>
+					<configuration>
+						<docfilessubdirs>true</docfilessubdirs>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
