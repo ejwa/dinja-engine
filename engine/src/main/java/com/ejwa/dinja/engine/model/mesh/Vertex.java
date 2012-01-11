@@ -97,10 +97,26 @@ public class Vertex implements Cloneable {
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Vertex) {
-			return hashCode() == ((Vertex) o).hashCode();
+			final Vertex v = (Vertex) o;
+
+			if (color != null && (!color.equals(v.color))) {
+				return false;
+			}
+
+			if (normal != null && (!normal.equals(v.normal))) {
+				return false;
+			}
+
+			if (position != null && (!position.equals(v.position))) {
+				return false;
+			}
+
+			if (textureCoordinates != null && (!textureCoordinates.equals(v.textureCoordinates))) {
+				return false;
+			}
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override

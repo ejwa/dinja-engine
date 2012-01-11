@@ -20,6 +20,7 @@
  */
 package com.ejwa.dinja.engine.model.mesh;
 
+import com.ejwa.dinja.engine.util.HashedArrayList;
 import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
@@ -31,7 +32,6 @@ import com.ejwa.dinja.opengles.shader.argument.Tuple4fVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.UniformMatrix4f;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import javax.vecmath.Color4f;
 import javax.vecmath.Matrix4f;
@@ -51,9 +51,9 @@ public class Mesh {
 	private Matrix4f modelViewProjectionMatrix = modelMatrix;
 	private final String name;
 	private final PrimitiveType primitiveType;
-	private final List<Vertex> indices = new LinkedList<Vertex>();
+	private final List<Vertex> indices = new ArrayList<Vertex>();
 	private Texture texture;
-	private final List<Vertex> vertices = new LinkedList<Vertex>();
+	private final List<Vertex> vertices = new HashedArrayList<Vertex>();
 	private final PrimitiveData primitiveData;
 
 	public Mesh(String name, PrimitiveType primitiveType) {
