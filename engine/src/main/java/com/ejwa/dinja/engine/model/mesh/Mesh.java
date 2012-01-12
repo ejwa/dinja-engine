@@ -149,20 +149,7 @@ public class Mesh {
 		                         texture.getWidth(), texture.getHeight(), texture.getPixelsRGB565()));
 	}
 
-	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public void updatePrimitiveDataAttributes() {
-		final Color4f colors[] = new Color4f[this.vertices.size()];
-		final Vector3f normals[] = new Vector3f[this.vertices.size()];
-		final Vector3f positions[] = new Vector3f[this.vertices.size()];
-		final Vector2f textureCoords[] = new Vector2f[this.vertices.size()];
-
-		for (int i = 0; i < this.vertices.size(); i++) {
-			colors[i] = this.vertices.get(i).getColor();
-			normals[i] = this.vertices.get(i).getNormal();
-			positions[i] = this.vertices.get(i).getPosition();
-			textureCoords[i] = this.vertices.get(i).getTextureCoordinates();
-		}
-
+	private void updatePrimitiveDataAttributes(Vector3f positions[], Color4f colors[], Vector3f normals[], Vector2f textureCoordinates[]) {
 		primitiveData.setVerticesData(positions);
 		primitiveData.removeVertexAttributeArray(COLOR_ATTRIBUTE_NAME);
 		primitiveData.removeVertexAttributeArray(NORMAL_ATTRIBUTE_NAME);
@@ -176,10 +163,12 @@ public class Mesh {
 			primitiveData.addVertexAttributeArray(new Tuple3fVertexAttributeArray(NORMAL_ATTRIBUTE_NAME, normals));
 		}
 
-		if (textureCoords[0] != null) {
-			primitiveData.addVertexAttributeArray(new Tuple2fVertexAttributeArray(TEXTURE_COORDINATE_ATTRIBUTE_NAME, textureCoords));
+		if (textureCoordinates[0] != null) {
+			primitiveData.addVertexAttributeArray(new Tuple2fVertexAttributeArray(TEXTURE_COORDINATE_ATTRIBUTE_NAME, textureCoordinates));
 		}
+	}
 
+	private void updatePrimitiveDataIndices() {
 		final List<Integer> glIndices = new ArrayList<Integer>();
 
 		for (Vertex i : indices) {
@@ -187,6 +176,24 @@ public class Mesh {
 		}
 
 		primitiveData.setIndices(glIndices.toArray(new Integer[glIndices.size()]));
+	}
+
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+	public void updatePrimitiveData() {
+		final Color4f colors[] = new Color4f[this.vertices.size()];
+		final Vector3f normals[] = new Vector3f[this.vertices.size()];
+		final Vector3f positions[] = new Vector3f[this.vertices.size()];
+		final Vector2f textureCoordinates[] = new Vector2f[this.vertices.size()];
+
+		for (int i = 0; i < this.vertices.size(); i++) {
+			colors[i] = this.vertices.get(i).getColor();
+			normals[i] = this.vertices.get(i).getNormal();
+			positions[i] = this.vertices.get(i).getPosition();
+			textureCoordinates[i] = this.vertices.get(i).getTextureCoordinates();
+		}
+
+		updatePrimitiveDataAttributes(positions, colors, normals, textureCoordinates);
+		updatePrimitiveDataIndices();
 	}
 
 	public PrimitiveData getPrimitiveData() {
