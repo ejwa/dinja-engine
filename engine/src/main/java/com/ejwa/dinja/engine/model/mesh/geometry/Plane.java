@@ -67,12 +67,14 @@ public class Plane extends Mesh {
 			final List<Vertex> indices = new LinkedList<Vertex>();
 
 			for (int x = 0; x < segments + 1; x++) {
-				final float xp = -width / 2 + x * xs;
-				final float yp = height / 2 - y * ys;
-				final Vertex top = new Vertex(new Vector3f(xp, yp - ys, 0));
-				Vertex bottom = new Vertex(new Vector3f(xp, yp, 0));
+				final float xpCurrent = -width / 2 + x * xs;
+				final float ypCurrent = height / 2 - y * ys;
+				final float ypNext = height / 2 - (y + 1) * ys;
 
-				top.setTextureCoordinates(new Vector2f(x * ts, y * ts + ts));
+				final Vertex top = new Vertex(new Vector3f(xpCurrent, ypNext, 0));
+				Vertex bottom = new Vertex(new Vector3f(xpCurrent, ypCurrent, 0));
+
+				top.setTextureCoordinates(new Vector2f(x * ts, (y + 1) * ts));
 				bottom.setTextureCoordinates(new Vector2f(x * ts, y * ts));
 
 				/*
