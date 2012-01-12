@@ -47,8 +47,12 @@ public class Plane extends Mesh {
 	 * @param height The height of the plane.
 	 * @param segments The number of segments on this plane. The plane needs to have at least 1 segment.
 	 */
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public Plane(String name, float width, float height, int segments) {
+		this(name, width, height, segments, true);
+	}
+
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+	protected Plane(String name, float width, float height, int segments, boolean updatePrimitiveData) {
 		super(name, PrimitiveType.GL_TRIANGLE_STRIP);
 
 		if (segments == 0) {
@@ -98,6 +102,8 @@ public class Plane extends Mesh {
 			addIndices(indices.toArray(new Vertex[indices.size()]));
 		}
 
-		updatePrimitiveDataAttributes();
+		if (updatePrimitiveData) {
+			updatePrimitiveData();
+		}
 	}
 }
