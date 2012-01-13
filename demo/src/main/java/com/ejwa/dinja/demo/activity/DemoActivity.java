@@ -48,7 +48,7 @@ public class DemoActivity extends ListActivity {
 			final Class demoToShow;
 
 			switch(position) {
-				case 1: demoToShow = DragBombActivity.class; break;
+				case 1: demoToShow = DragWorldActivity.class; break;
 				case 2: demoToShow = SphereActivity.class; break;
 				default: demoToShow = TiltBombActivity.class; break;
 			}
