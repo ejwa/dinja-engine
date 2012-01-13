@@ -115,6 +115,22 @@ public class HashedArrayList<T> extends ArrayList<T> {
 	}
 
 	@Override
+	public void clear() {
+		super.clear();
+		elementsWithIndex.clear();
+	}
+
+	public void update(int i) {
+		elementsWithIndex.put(get(i), i);
+	}
+
+	public void update() {
+		for (int i = 0; i < size(); i++) {
+			update(i);
+		}
+	}
+
+	@Override
 	public boolean addAll(int i, Collection<? extends T> collection) {
 		throw new UnsupportedOperationException("Insertion of indexed object collection into a hashed list is not supported.");
 	}
