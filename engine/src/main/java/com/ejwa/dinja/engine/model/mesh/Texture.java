@@ -97,7 +97,7 @@ public class Texture {
 	 * Converts the pixel data and returns it in the form RGBA8888, suitable for use together with {@link TextureFormat#GL_RGBA}
 	 * and {@link TextureType#GL_UNSIGNED_BYTE}.
 	 *
-	 * @return Pixel data for this texture in the form RGB565.
+	 * @return Pixel data for this texture in the form RGBA8888.
 	 * @see TextureFormat#GL_RGBA
 	 * @see TextureType#GL_UNSIGNED_BYTE
 	 */
@@ -106,9 +106,9 @@ public class Texture {
 
 		for (int i = 0; i < pixels.length; i++) {
 			convertedPixels[i] |= Color.red(pixels[i]) & 0xff;
-			convertedPixels[i] |= Color.green(pixels[i]) & 0xff00;
-			convertedPixels[i] |= Color.blue(pixels[i]) & 0xff0000;
-			convertedPixels[i] |= Color.alpha(pixels[i]) & 0xff000000;
+			convertedPixels[i] |= Color.green(pixels[i]) << 8 & 0xff00;
+			convertedPixels[i] |= Color.blue(pixels[i]) << 16 & 0xff0000;
+			convertedPixels[i] |= Color.alpha(pixels[i]) << 24 & 0xff000000;
 		}
 
 		return convertedPixels;
