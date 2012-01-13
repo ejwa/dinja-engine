@@ -62,14 +62,14 @@ public class PrimitiveData {
 	}
 
 	public final void setIndices(Integer ...indices) {
-		if (indices.length <= 256) {
-			this.indices = NativeMemory.getBytePointer(this.indices, indices.length);
-		} else {
+		if (vertices.getData().capacity() / 3 >= 256) {
 			this.indices = NativeMemory.getShortPointer(this.indices, indices.length);
+		} else {
+			this.indices = NativeMemory.getBytePointer(this.indices, indices.length);
 		}
 
 		for (int i = 0; i < indices.length; i++) {
-			if (indices[i] >= this.vertices.getData().capacity() / 3) {
+			if (indices[i] >= vertices.getData().capacity() / 3) {
 				throw new GLException(String.format("Indices must point within bounds of vertices (got %d, but " +
 				                                     "maximum is %d)", indices[i], this.vertices.getData().capacity() / 3));
 			}
