@@ -37,6 +37,7 @@ import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.engine.view.Viewable;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.display.GLSurface;
+import com.ejwa.dinja.opengles.display.IFrameTimeListener;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
@@ -132,6 +133,10 @@ public class DinjaActivity extends Activity {
 	 * @see <a href="http://en.wikipedia.org/wiki/Model-View-Controller">Wikipedia.org: Model-View-Controller</a>
 	 */
 	protected final void registerController(Controllable controllable) {
+		if (controllable instanceof IFrameTimeListener) {
+			glSurfaceView.registerFrameTimeListener((IFrameTimeListener) controllable);
+		}
+
 		if (controllable instanceof IFrameUpdateListener) {
 			glSurfaceView.registerFrameUpdateListener((IFrameUpdateListener) controllable);
 		}
@@ -165,6 +170,10 @@ public class DinjaActivity extends Activity {
 	 * @see <a href="http://en.wikipedia.org/wiki/Model-View-Controller">Wikipedia.org: Model-View-Controller</a>
 	 */
 	protected final void unregisterController(Controllable controllable) {
+		if (controllable instanceof IFrameTimeListener) {
+			glSurfaceView.unregisterFrameTimeListener((IFrameTimeListener) controllable);
+		}
+
 		if (controllable instanceof IFrameUpdateListener) {
 			glSurfaceView.unregisterFrameUpdateListener((IFrameUpdateListener) controllable);
 		}

@@ -31,6 +31,7 @@ import java.util.List;
 public class GLSurface extends GLSurfaceView {
 	private final List<PrimitiveData> primitiveDatas = Collections.synchronizedList(new ArrayList<PrimitiveData>());
 	private final List<Program> programs = Collections.synchronizedList(new ArrayList<Program>());
+	private final List<IFrameTimeListener> frameTimeListeners = Collections.synchronizedList(new ArrayList<IFrameTimeListener>());
 	private final List<IFrameUpdateListener> frameUpdateListeners = Collections.synchronizedList(new ArrayList<IFrameUpdateListener>());
 	private final List<ISurfaceChangeListener> surfaceChangeListeners = Collections.synchronizedList(new ArrayList<ISurfaceChangeListener>());
 
@@ -67,6 +68,20 @@ public class GLSurface extends GLSurfaceView {
 
 	public List<Program> getPrograms() {
 		return programs;
+	}
+
+	public void registerFrameTimeListener(IFrameTimeListener frameTimeListener) {
+		if (!frameTimeListeners.contains(frameTimeListener)) {
+			frameTimeListeners.add(frameTimeListener);
+		}
+	}
+
+	public void unregisterFrameTimeListener(IFrameTimeListener frameTimeListener) {
+		frameTimeListeners.remove(frameTimeListener);
+	}
+
+	public List<IFrameTimeListener> getFrameTimeListeners() {
+		return frameTimeListeners;
 	}
 
 	public void registerFrameUpdateListener(IFrameUpdateListener frameUpdateListener) {

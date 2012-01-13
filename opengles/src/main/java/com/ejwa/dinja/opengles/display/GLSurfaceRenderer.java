@@ -24,7 +24,6 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.SystemClock;
 import android.util.Log;
 import com.ejwa.dinja.opengles.Capability;
-import com.ejwa.dinja.opengles.CullFaceMode;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
@@ -51,15 +50,16 @@ public class GLSurfaceRenderer implements Renderer {
 		return msSinceLastFrame;
 	}
 
-	private void callFrameUpdateListeners(long milliSecondsSinceLastFrame) {
-		for (IFrameUpdateListener f : glSurface.getFrameUpdateListeners()) {
-			f.onFrameUpdate(milliSecondsSinceLastFrame);
-		}
-	}
-
 	@Override
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onDrawFrame(GL10 gl) {
-		callFrameUpdateListeners(getMilliSecondsSinceLastFrame());
+		final long enterTime = System.nanoTime();
+		final long timeSinceLastFrame = getMilliSecondsSinceLastFrame();
+
+		for (IFrameUpdateListener f : glSurface.getFrameUpdateListeners()) {
+			f.onFrameUpdate(timeSinceLastFrame);
+		}
+
 		OpenGLES2.glClear(OpenGLES2.GL_DEPTH_BUFFER_BIT | OpenGLES2.GL_COLOR_BUFFER_BIT);
 
 		for (Program program : glSurface.getPrograms()) {
@@ -70,6 +70,11 @@ public class GLSurfaceRenderer implements Renderer {
 					OpenGLES2.glDrawElements(program, p);
 				}
 			}
+		}
+
+		for (IFrameTimeListener f : glSurface.getFrameTimeListeners()) {
+			/* Each frame time callback gets a fresh time... */
+			f.onFrameTime(System.nanoTime() - enterTime);
 		}
 	}
 
