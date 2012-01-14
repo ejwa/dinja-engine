@@ -20,8 +20,6 @@
  */
 package com.ejwa.dinja.engine.view;
 
-import com.ejwa.dinja.opengles.primitive.PrimitiveData;
-
-public interface Viewable extends Iterable<PrimitiveData> {
+public interface Viewable {
 	/* Nothing here yet. */
 }

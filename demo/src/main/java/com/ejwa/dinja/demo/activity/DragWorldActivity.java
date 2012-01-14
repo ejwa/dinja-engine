@@ -29,6 +29,7 @@ import com.ejwa.dinja.engine.model.Scene;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
 import com.ejwa.dinja.engine.model.mesh.geometry.Sphere;
 import com.ejwa.dinja.engine.util.TextureLoader;
+import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 import javax.vecmath.Point2f;
@@ -41,16 +42,19 @@ public class DragWorldActivity extends DinjaActivity {
 		final Sphere sphere = new Sphere("world", 1, 12, 24);
 		sphere.setTexture(TextureLoader.load(getAssets(), "world_map.jpg"));
 
-		registerView(new SceneView(new Scene(new Camera(), sphere)));
-		registerController(new BombMeshController(sphere));
+		final Scene scene = new Scene(new Camera(), sphere);
+
+		registerView(new SceneView(scene));
+		registerView(new DebugView(0.25f, this, scene, sphere));
+		registerController(new WorldMeshController(sphere));
 	}
 
-	private class BombMeshController implements Controllable, IFingerMovementInputListener, IFrameUpdateListener {
+	private class WorldMeshController implements Controllable, IFingerMovementInputListener, IFrameUpdateListener {
 		private final Mesh mesh;
 		private float rotationFromX;
 		private boolean fingerDown;
 
-		public BombMeshController(Mesh mesh) {
+		public WorldMeshController(Mesh mesh) {
 			this.mesh = mesh;
 		}
 

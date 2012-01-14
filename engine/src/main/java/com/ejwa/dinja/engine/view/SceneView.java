@@ -24,7 +24,7 @@ import com.ejwa.dinja.engine.model.Scene;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import java.util.Iterator;
 
-public class SceneView implements Viewable {
+public class SceneView implements Viewable, Iterable<PrimitiveData> {
 	private final Scene scene;
 
 	public SceneView(Scene scene) {

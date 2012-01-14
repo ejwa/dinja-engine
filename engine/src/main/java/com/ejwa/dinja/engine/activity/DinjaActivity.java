@@ -26,6 +26,7 @@ import android.os.Process;
 import android.view.MotionEvent;
 import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
+import com.ejwa.dinja.engine.controller.DebugController;
 import com.ejwa.dinja.engine.controller.SceneController;
 import com.ejwa.dinja.engine.controller.input.FingerMovementInputController;
 import com.ejwa.dinja.engine.controller.input.FingerPositionInputController;
@@ -33,6 +34,7 @@ import com.ejwa.dinja.engine.controller.input.IFingerMovementInputListener;
 import com.ejwa.dinja.engine.controller.input.IFingerPositionInputListener;
 import com.ejwa.dinja.engine.controller.input.ITiltForceInputListener;
 import com.ejwa.dinja.engine.controller.input.TiltForceInputController;
+import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.engine.view.Viewable;
 import com.ejwa.dinja.opengles.GLException;
@@ -214,8 +216,14 @@ public class DinjaActivity extends Activity {
 			registerController(new SceneController(sceneView.getScene()));
 		}
 
-		for (PrimitiveData p : view) {
-			glSurfaceView.registerPrimitiveData(p);
+		if (view instanceof DebugView) {
+			registerController(new DebugController((DebugView) view));
+		}
+
+		if (view instanceof Iterable) {
+			for (PrimitiveData p : (Iterable<PrimitiveData>) view) {
+				glSurfaceView.registerPrimitiveData(p);
+			}
 		}
 	}
 
@@ -229,8 +237,10 @@ public class DinjaActivity extends Activity {
 	 */
 	protected final void unregisterView(Viewable view) {
 		/* TODO: Handle default controllers when unregistering certain views. */
-		for (PrimitiveData p : view) {
-			glSurfaceView.unregisterPrimitiveData(p);
+		if (view instanceof Iterable) {
+			for (PrimitiveData p : (Iterable<PrimitiveData>) view) {
+				glSurfaceView.unregisterPrimitiveData(p);
+			}
 		}
 	}
 
