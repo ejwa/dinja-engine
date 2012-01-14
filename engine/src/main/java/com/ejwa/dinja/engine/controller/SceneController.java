@@ -20,30 +20,30 @@
  */
 package com.ejwa.dinja.engine.controller;
 
-import com.ejwa.dinja.engine.model.Scene;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
+import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 import javax.vecmath.Matrix4f;
 
 public class SceneController implements Controllable, IFrameUpdateListener {
-	private final Scene scene;
+	private final SceneView sceneView;
 
-	public SceneController(Scene scene) {
-		this.scene = scene;
+	public SceneController(SceneView sceneView) {
+		this.sceneView = sceneView;
 	}
 
-	public Scene getScene() {
-		return scene;
-	}
+	/*public Scene getScene() {
+		return sceneView;
+	}*/
 
 	@Override
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		final Matrix4f modelViewProjectionMatrix = new Matrix4f();
 
-		for (Mesh m : scene.getMeshes()) {
-			final Matrix4f projectionMatrix = scene.getCamera().getProjectionMatrix();
-			final Matrix4f viewMatrix = scene.getCamera().getViewMatrix();
+		for (Mesh m : sceneView.getScene().getMeshes()) {
+			final Matrix4f projectionMatrix = sceneView.getScene().getCamera().getProjectionMatrix();
+			final Matrix4f viewMatrix = sceneView.getScene().getCamera().getViewMatrix();
 
 			modelViewProjectionMatrix.mul(projectionMatrix, viewMatrix);
 			modelViewProjectionMatrix.mul(m.getModelMatrix());

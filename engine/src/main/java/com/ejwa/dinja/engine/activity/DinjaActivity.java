@@ -212,8 +212,8 @@ public class DinjaActivity extends Activity {
 	protected final void registerView(Viewable view) {
 		if (view instanceof SceneView) {
 			final SceneView sceneView = (SceneView) view;
-			registerController(new CameraController(sceneView.getScene().getCamera()));
-			registerController(new SceneController(sceneView.getScene()));
+			registerController(new CameraController(sceneView));
+			registerController(new SceneController(sceneView));
 		}
 
 		if (view instanceof DebugView) {

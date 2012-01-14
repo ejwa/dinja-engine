@@ -20,19 +20,19 @@
  */
 package com.ejwa.dinja.engine.controller;
 
-import com.ejwa.dinja.engine.model.Camera;
+import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.GLSurface;
 import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;
 
 public class CameraController implements Controllable, ISurfaceChangeListener {
-	private final Camera camera;
+	private final SceneView sceneView;
 
-	public CameraController(Camera camera) {
-		this.camera = camera;
+	public CameraController(SceneView sceneView) {
+		this.sceneView = sceneView;
 	}
 
 	@Override
 	public void onSurfaceChange(GLSurface surface) {
-		camera.setAspectRatio((float) surface.getWidth() / surface.getHeight());
+		sceneView.getScene().getCamera().setAspectRatio((float) surface.getWidth() / surface.getHeight());
 	}
 }
