@@ -1,0 +1,46 @@
+               GNU LESSER GENERAL PUBLIC LICENSE EXTENSION
+                            15 January 2012
+
+ Copyright (C) 2012 Ejwa Software. <http://www.ejwa.se/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+
+  This extension of the GNU Lesser General Public License incorporates
+the terms and conditions of that license, supplemented by the additional
+permissions listed below.
+
+  0. Additional Definitions.
+
+  As used herein, "this extension" refers to this license extension of the
+GNU Lesser General Public License for this software.
+
+  As used herein, to "Strip" something means to remove certain parts from a
+distribution even if it requires small changes to objects or binaries being
+stripped.
+
+  As used herein, "Obfuscated" means modified beyond recognition or even
+beyond the point where it becomes very difficult to debug.
+
+  A "Dalvik Executable" is a .dex file intended for execution under the
+Android virtual machine.
+
+  1. Combined Works.
+
+  This extension states that you may convey a combined work as described by
+the GNU Lesser General Public License even if you do any of the following;
+
+   a) Link the Application statically with the Library.
+
+   b) Translate binary versions of the Library into a Dalvik Executable.
+
+   c) Strip files, classes, class methods or objects from the Library.
+
+   d) Change any configuration files or build script files in the Library.
+
+  2. Clarifications.
+
+  This extension also includes the following clarifications;
+
+   a) Obfuscated versions of the source code or the compiled binaries of the
+   Library is considered a modified version of the Library.
