@@ -29,7 +29,7 @@ import javax.vecmath.Vector3f;
 
 /**
  * Describes a sphere geometry with a number of rings and segments. The sphere geometry uses triangle strips. The strip is
- * constructed from the bottom up in a similar way that an orange could be peeled. For example, an n-ring, 8 segment sphere is
+ * constructed from the bottom up in a similar way that an orange could be peeled. For example, an n-ring, n-segment sphere is
  * constructed in the following manner:
  * <p>
  * <div style="text-align: center;"><img src="doc-files/sphere_construction.svg" /></div>
