@@ -20,10 +20,12 @@
  */
 package com.ejwa.dinja.engine.model.ease;
 
-public class QuadraticOutEase implements IEase {
+public class QuadraticOutEase extends AbstractEase implements IEase {
 	@Override
 	public float getValue(float timeElapsed, float startValue, float endValue, float duration) {
 		final float percent = timeElapsed / duration;
-		return -endValue * percent * (percent - 2) + startValue;
+		final float value = -(endValue - startValue) * percent * (percent - 2) + startValue;
+
+		return clamp(startValue, endValue, value);
 	}
 }

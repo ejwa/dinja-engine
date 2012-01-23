@@ -20,10 +20,12 @@
  */
 package com.ejwa.dinja.engine.model.ease;
 
-public class CubicOutEase implements IEase {
+public class CubicOutEase extends AbstractEase implements IEase {
 	@Override
 	public float getValue(float timeElapsed, float startValue, float endValue, float duration) {
 		final float percent = timeElapsed / duration - 1;
-		return endValue * (percent * percent * percent + 1) + startValue;
+		final float value = (endValue - startValue) * (percent * percent * percent + 1) + startValue;
+
+		return clamp(startValue, endValue, value);
 	}
 }

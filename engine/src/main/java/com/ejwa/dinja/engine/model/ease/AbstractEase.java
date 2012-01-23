@@ -20,12 +20,19 @@
  */
 package com.ejwa.dinja.engine.model.ease;
 
-public class LinearEase extends AbstractEase implements IEase {
-	@Override
-	public float getValue(float timeElapsed, float startValue, float endValue, float duration) {
-		final float percent = timeElapsed / duration;
-		final float value = (endValue - startValue) * percent + startValue;
 
-		return clamp(startValue, endValue, value);
+public class AbstractEase {
+	protected float clamp(float startValue, float endValue, float value) {
+		final float min = Math.min(startValue, endValue);
+		if (value < min) {
+			return min;
+		}
+
+		final float max = Math.max(startValue, endValue);
+		if (value > max) {
+			return max;
+		}
+
+		return value;
 	}
 }
