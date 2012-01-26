@@ -28,6 +28,8 @@ import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.controller.DebugController;
 import com.ejwa.dinja.engine.controller.SceneController;
+import com.ejwa.dinja.engine.controller.animator.AnimatorController;
+import com.ejwa.dinja.engine.controller.animator.IAnimator;
 import com.ejwa.dinja.engine.controller.input.FingerMovementInputController;
 import com.ejwa.dinja.engine.controller.input.FingerPositionInputController;
 import com.ejwa.dinja.engine.controller.input.IFingerMovementInputListener;
@@ -140,7 +142,11 @@ public class DinjaActivity extends Activity {
 		}
 
 		if (controllable instanceof IFrameUpdateListener) {
-			glSurfaceView.registerFrameUpdateListener((IFrameUpdateListener) controllable);
+			if (controllable instanceof IAnimator) {
+				glSurfaceView.registerFrameUpdateListener(new AnimatorController((IAnimator) controllable, glSurfaceView));
+			} else {
+				glSurfaceView.registerFrameUpdateListener((IFrameUpdateListener) controllable);
+			}
 		}
 
 		if (controllable instanceof ISurfaceChangeListener) {
