@@ -23,7 +23,7 @@ package com.ejwa.dinja.engine.controller.animator;
 import com.ejwa.dinja.engine.model.ease.IEase;
 import com.ejwa.dinja.engine.model.properties.Scalable;
 
-public class ScaleAnimator extends AbstractAnimator<Scalable, Float> {
+public class ScaleAnimator extends BaseAnimator<Scalable, Float> {
 	public ScaleAnimator(Scalable scalable, float destination, float duration, Class<? extends IEase> ease) {
 		super(scalable, scalable.getScaler().get(), destination, duration, ease);
 	}

@@ -25,7 +25,7 @@ import com.ejwa.dinja.engine.model.ease.EaseFactory;
 import com.ejwa.dinja.engine.model.ease.IEase;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 
-public class AbstractAnimator<A, T> implements Controllable, IAnimator, IFrameUpdateListener {
+public class BaseAnimator<A, T> implements Controllable, IAnimator, IFrameUpdateListener {
 	private IAnimatorListener animatorListener;
 	private boolean completed;
 	private boolean paused;
@@ -37,13 +37,13 @@ public class AbstractAnimator<A, T> implements Controllable, IAnimator, IFrameUp
 	protected final IEase ease;
 	protected float time;
 
-	public AbstractAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination,
+	public BaseAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination,
 	                        float duration, Class<? extends IEase> ease) {
 		this(animatable, origin, destination, duration, ease);
 		this.animatorListener = animatorListener;
 	}
 
-	public AbstractAnimator(A animatable, T origin, T destination, float duration, Class<? extends IEase> ease) {
+	public BaseAnimator(A animatable, T origin, T destination, float duration, Class<? extends IEase> ease) {
 		this.animatable = animatable;
 		this.duration = duration;
 		this.origin = origin;
@@ -60,15 +60,21 @@ public class AbstractAnimator<A, T> implements Controllable, IAnimator, IFrameUp
 	public synchronized void pause() {
 		if (!paused && animatorListener instanceof IAnimatorPausListener) {
 			paused = true;
-			((IAnimatorPausListener) animatorListener).onAnimatorPaused();
+
+			if (animatorListener instanceof IAnimatorPausListener) {
+				((IAnimatorPausListener) animatorListener).onAnimatorPaused();
+			}
 		}
 	}
 
 	@Override
 	public synchronized void resume() {
-		if (paused && animatorListener instanceof IAnimatorPausListener) {
+		if (paused) {
 			paused = false;
-			((IAnimatorPausListener) animatorListener).onAnimatorResumed();
+
+			if (animatorListener instanceof IAnimatorPausListener) {
+				((IAnimatorPausListener) animatorListener).onAnimatorResumed();
+			}
 		}
 	}
 
@@ -80,21 +86,24 @@ public class AbstractAnimator<A, T> implements Controllable, IAnimator, IFrameUp
 	private void complete() {
 		if (!completed) {
 			completed = true;
-			animatorListener.onAnimatorCompleted();
+
+			if (animatorListener != null) {
+				animatorListener.onAnimatorCompleted();
+			}
 		}
 	}
 
 	@Override
 	public synchronized void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		if (!paused) {
-			if (time == 0 && milliSecondsSinceLastFrame > 0) {
+			if (time == 0 && milliSecondsSinceLastFrame > 0 && animatorListener != null) {
 				animatorListener.onAnimatorStarted();
 			} else if (time > duration) {
 				complete();
 				return; /* Don't move frame forward */
 			}
 
-			time += milliSecondsSinceLastFrame;
+			time += milliSecondsSinceLastFrame / 1000f;
 		}
 	}
 }

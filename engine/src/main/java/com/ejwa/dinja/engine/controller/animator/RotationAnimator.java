@@ -24,7 +24,7 @@ import com.ejwa.dinja.engine.model.ease.IEase;
 import com.ejwa.dinja.engine.model.properties.Rotatable;
 import javax.vecmath.Quat4f;
 
-public class RotationAnimator extends AbstractAnimator<Rotatable, Quat4f> {
+public class RotationAnimator extends BaseAnimator<Rotatable, Quat4f> {
 	public RotationAnimator(Rotatable rotatable, Quat4f destination, float duration, Class<? extends IEase> ease) {
 		super(rotatable, rotatable.getRotator().get(), destination, duration, ease);
 	}

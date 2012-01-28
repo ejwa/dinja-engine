@@ -24,7 +24,7 @@ import com.ejwa.dinja.engine.model.ease.IEase;
 import com.ejwa.dinja.engine.model.properties.Translatable;
 import javax.vecmath.Vector3f;
 
-public class TranslationAnimator extends AbstractAnimator<Translatable, Vector3f> {
+public class TranslationAnimator extends BaseAnimator<Translatable, Vector3f> {
 	public TranslationAnimator(Translatable translatable, Vector3f destination, float duration, Class<? extends IEase> ease) {
 		super(translatable, translatable.getTranslator().get(), destination, duration, ease);
 	}
