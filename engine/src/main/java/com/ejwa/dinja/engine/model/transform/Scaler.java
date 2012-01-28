@@ -24,16 +24,13 @@ import javax.vecmath.Matrix4f;
 
 public class Scaler {
 	private final Matrix4f baseMatrix;
-	private final Matrix4f scaleMatrix = new Matrix4f();
 
 	public Scaler(Matrix4f baseMatrix) {
 		this.baseMatrix = baseMatrix;
 	}
 
 	public void scale(float change) {
-		scaleMatrix.setZero();
-		scaleMatrix.setScale(change);
-		baseMatrix .mul(scaleMatrix, baseMatrix);
+		baseMatrix.setScale(change * get());
 	}
 
 	public float get() {
@@ -41,6 +38,6 @@ public class Scaler {
 	}
 
 	public void set(float scale) {
-		baseMatrix.set(scale);
+		baseMatrix.setScale(scale);
 	}
 }

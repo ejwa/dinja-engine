@@ -48,7 +48,7 @@ public class Translator {
 	}
 
 	public void move(Vector3f distance) {
-		translationMatrix.setZero();
+		translationMatrix.setIdentity();
 		translationMatrix.setTranslation(distance);
 		baseMatrix.mul(translationMatrix, baseMatrix);
 	}
@@ -60,6 +60,6 @@ public class Translator {
 	}
 
 	public void set(Vector3f position) {
-		baseMatrix.set(position);
+		baseMatrix.setTranslation(position);
 	}
 }

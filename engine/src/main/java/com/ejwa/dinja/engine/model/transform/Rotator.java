@@ -20,33 +20,42 @@
  */
 package com.ejwa.dinja.engine.model.transform;
 
+import javax.vecmath.Matrix3f;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
 
 public class Rotator {
 	private final Matrix4f baseMatrix;
-	private final Matrix4f rotationMatrix = new Matrix4f();
+	private final Matrix3f currentRotation = new Matrix3f();
+	private final Matrix3f rotationMatrix = new Matrix3f();
 
 	public Rotator(Matrix4f baseMatrix) {
+		rotationMatrix.setIdentity();
 		this.baseMatrix = baseMatrix;
 	}
 
 	public void rotateX(float angle) {
-		rotationMatrix.setZero();
+		rotationMatrix.setIdentity();
 		rotationMatrix.rotX(angle);
-		baseMatrix.mul(rotationMatrix, baseMatrix);
+		rotate(rotationMatrix);
 	}
 
 	public void rotateY(float angle) {
-		rotationMatrix.setZero();
+		rotationMatrix.setIdentity();
 		rotationMatrix.rotY(angle);
-		baseMatrix.mul(rotationMatrix, baseMatrix);
+		rotate(rotationMatrix);
 	}
 
 	public void rotateZ(float angle) {
-		rotationMatrix.setZero();
+		rotationMatrix.setIdentity();
 		rotationMatrix.rotZ(angle);
-		baseMatrix.mul(rotationMatrix, baseMatrix);
+		rotate(rotationMatrix);
+	}
+
+	public void rotate(Matrix3f rotationMatrix) {
+		baseMatrix.get(currentRotation);
+		currentRotation.mul(rotationMatrix, currentRotation);
+		baseMatrix.setRotation(currentRotation);
 	}
 
 	public Quat4f get() {
@@ -56,6 +65,6 @@ public class Rotator {
 	}
 
 	public void set(Quat4f rotation) {
-		baseMatrix.set(rotation);
+		baseMatrix.setRotation(rotation);
 	}
 }
