@@ -32,10 +32,6 @@ public class SceneController implements Controllable, IFrameUpdateListener {
 		this.sceneView = sceneView;
 	}
 
-	/*public Scene getScene() {
-		return sceneView;
-	}*/
-
 	@Override
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
