@@ -35,7 +35,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class GLSurfaceRenderer implements Renderer {
-	private long previousFrameTime = 0;
+	private long previousFrameTime = -1;
 	private final GLSurface glSurface;
 
 	public GLSurfaceRenderer(GLSurface glSurface) {
@@ -43,11 +43,16 @@ public class GLSurfaceRenderer implements Renderer {
 	}
 
 	private long getMilliSecondsSinceLastFrame() {
-		final long msSinceLastFrame;
+		if (previousFrameTime == -1) {
+			previousFrameTime = SystemClock.uptimeMillis();
+			return 0;
+		} else {
+			final long msSinceLastFrame;
 
-		msSinceLastFrame = SystemClock.uptimeMillis() - previousFrameTime;
-		previousFrameTime = SystemClock.uptimeMillis();
-		return msSinceLastFrame;
+			msSinceLastFrame = SystemClock.uptimeMillis() - previousFrameTime;
+			previousFrameTime = SystemClock.uptimeMillis();
+			return msSinceLastFrame;
+		}
 	}
 
 	@Override
