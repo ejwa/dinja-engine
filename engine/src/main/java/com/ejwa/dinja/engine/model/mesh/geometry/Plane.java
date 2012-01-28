@@ -66,7 +66,7 @@ public class Plane extends Mesh {
 		for (int y = 0; y < segments; y++) {
 			final List<Vertex> indices = new LinkedList<Vertex>();
 
-			for (int x = 0; x < segments + 1; x++) {
+			for (int x = 0; x <= segments; x++) {
 				final float xpCurrent = -width / 2 + x * xs;
 				final float ypCurrent = height / 2 - y * ys;
 				final float ypNext = height / 2 - (y + 1) * ys;
@@ -78,14 +78,14 @@ public class Plane extends Mesh {
 				bottom.setTextureCoordinates(new Vector2f(x * ts, y * ts));
 
 				/*
-				 * If we are past the first row, we scrap the new vertex and re-use the old vertex that should
+				 * If there is a match, we scrap the new vertex and re-use the old vertex that should
 				 * be there...
 				 */
-				if (y > 0 && getVertices().indexOf(bottom) != -1) {
+				if (getVertices().indexOf(bottom) == -1) {
+					addVertices(bottom, top);
+				} else {
 					bottom = getVertices().get(getVertices().indexOf(bottom));
 					addVertices(top);
-				} else {
-					addVertices(bottom, top);
 				}
 
 				/*
