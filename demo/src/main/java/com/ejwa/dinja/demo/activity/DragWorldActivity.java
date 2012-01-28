@@ -71,7 +71,7 @@ public class DragWorldActivity extends DinjaActivity {
 
 		@Override
 		public void onFrameUpdate(long milliSecondsSinceLastFrame) {
-			mesh.rotateY(rotationFromX * milliSecondsSinceLastFrame);
+			mesh.getRotator().rotateY(rotationFromX * milliSecondsSinceLastFrame);
 
 			if (!fingerDown) {
 				rotationFromX *= 0.95f;

@@ -26,12 +26,12 @@ import javax.vecmath.Quat4f;
 
 public class RotationAnimator extends AbstractAnimator<Rotatable, Quat4f> {
 	public RotationAnimator(Rotatable rotatable, Quat4f destination, float duration, Class<? extends IEase> ease) {
-		super(rotatable, rotatable.getRotation(), destination, duration, ease);
+		super(rotatable, rotatable.getRotator().get(), destination, duration, ease);
 	}
 
 	public RotationAnimator(IAnimatorListener animatorListener, Rotatable rotatable,
 	                           Quat4f destination, float duration, Class<? extends IEase> ease) {
-		super(animatorListener, rotatable, rotatable.getRotation(), destination, duration, ease);
+		super(animatorListener, rotatable, rotatable.getRotator().get(), destination, duration, ease);
 	}
 
 	@Override
@@ -43,6 +43,6 @@ public class RotationAnimator extends AbstractAnimator<Rotatable, Quat4f> {
 		final float z = ease.getValue(time, origin.z, destination.z, duration);
 		final float w = ease.getValue(time, origin.w, destination.w, duration);
 
-		animatable.getRotation().set(x, y, z, w);
+		animatable.getRotator().set(new Quat4f(x, y, z, w));
 	}
 }

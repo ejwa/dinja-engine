@@ -25,12 +25,12 @@ import com.ejwa.dinja.engine.model.properties.Scalable;
 
 public class ScaleAnimator extends AbstractAnimator<Scalable, Float> {
 	public ScaleAnimator(Scalable scalable, float destination, float duration, Class<? extends IEase> ease) {
-		super(scalable, scalable.getScale(), destination, duration, ease);
+		super(scalable, scalable.getScaler().get(), destination, duration, ease);
 	}
 
 	public ScaleAnimator(IAnimatorListener animatorListener, Scalable scalable,
 	                           float destination, float duration, Class<? extends IEase> ease) {
-		super(animatorListener, scalable, scalable.getScale(), destination, duration, ease);
+		super(animatorListener, scalable, scalable.getScaler().get(), destination, duration, ease);
 	}
 
 	@Override
@@ -38,6 +38,6 @@ public class ScaleAnimator extends AbstractAnimator<Scalable, Float> {
 		super.onFrameUpdate(milliSecondsSinceLastFrame);
 
 		final float scale = ease.getValue(time, origin, destination, duration);
-		animatable.setScale(scale);
+		animatable.getScaler().set(scale);
 	}
 }

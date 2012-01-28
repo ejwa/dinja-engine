@@ -20,9 +20,8 @@
  */
 package com.ejwa.dinja.engine.model.properties;
 
-import javax.vecmath.Vector3f;
+import com.ejwa.dinja.engine.model.transform.Translator;
 
 public interface Translatable {
-	Vector3f getLocation();
-	void setLocation(Vector3f location);
+	Translator getTranslator();
 }

@@ -26,12 +26,12 @@ import javax.vecmath.Vector3f;
 
 public class TranslationAnimator extends AbstractAnimator<Translatable, Vector3f> {
 	public TranslationAnimator(Translatable translatable, Vector3f destination, float duration, Class<? extends IEase> ease) {
-		super(translatable, translatable.getLocation(), destination, duration, ease);
+		super(translatable, translatable.getTranslator().get(), destination, duration, ease);
 	}
 
 	public TranslationAnimator(IAnimatorListener animatorListener, Translatable translatable,
 	                           Vector3f destination, float duration, Class<? extends IEase> ease) {
-		super(animatorListener, translatable, translatable.getLocation(), destination, duration, ease);
+		super(animatorListener, translatable, translatable.getTranslator().get(), destination, duration, ease);
 	}
 
 	@Override
@@ -42,6 +42,6 @@ public class TranslationAnimator extends AbstractAnimator<Translatable, Vector3f
 		final float y = ease.getValue(time, origin.y, destination.y, duration);
 		final float z = ease.getValue(time, origin.z, destination.z, duration);
 
-		animatable.getLocation().set(x, y, z);
+		animatable.getTranslator().set(new Vector3f(x, y, z));
 	}
 }

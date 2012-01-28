@@ -20,7 +20,8 @@
  */
 package com.ejwa.dinja.engine.model.properties;
 
+import com.ejwa.dinja.engine.model.transform.Scaler;
+
 public interface Scalable {
-	float getScale();
-	void setScale(float scale);
+	Scaler getScaler();
 }

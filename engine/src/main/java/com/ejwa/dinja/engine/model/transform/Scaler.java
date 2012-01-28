@@ -18,10 +18,29 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model.properties;
+package com.ejwa.dinja.engine.model.transform;
 
-import com.ejwa.dinja.engine.model.transform.Rotator;
+import javax.vecmath.Matrix4f;
 
-public interface Rotatable {
-	Rotator getRotator();
+public class Scaler {
+	private final Matrix4f baseMatrix;
+	private final Matrix4f scaleMatrix = new Matrix4f();
+
+	public Scaler(Matrix4f baseMatrix) {
+		this.baseMatrix = baseMatrix;
+	}
+
+	public void scale(float change) {
+		scaleMatrix.setZero();
+		scaleMatrix.setScale(change);
+		baseMatrix .mul(scaleMatrix, baseMatrix);
+	}
+
+	public float get() {
+		return baseMatrix.getScale();
+	}
+
+	public void set(float scale) {
+		baseMatrix.set(scale);
+	}
 }

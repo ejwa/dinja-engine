@@ -20,6 +20,12 @@
  */
 package com.ejwa.dinja.engine.model.mesh;
 
+import com.ejwa.dinja.engine.model.properties.Rotatable;
+import com.ejwa.dinja.engine.model.properties.Scalable;
+import com.ejwa.dinja.engine.model.properties.Translatable;
+import com.ejwa.dinja.engine.model.transform.Rotator;
+import com.ejwa.dinja.engine.model.transform.Scaler;
+import com.ejwa.dinja.engine.model.transform.Translator;
 import com.ejwa.dinja.engine.util.HashedArrayList;
 import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.GLException;
@@ -38,29 +44,34 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
-public class Mesh {
-	private static final String MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME = "uModelViewProjectionMatrix";
-	private static final String VERTEX_COORDINATE_ATTRIBUTE_NAME = "aPosition";
+public class Mesh implements Rotatable, Scalable, Translatable {
 	private static final String COLOR_ATTRIBUTE_NAME = "aColor";
+	private static final String MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME = "uModelViewProjectionMatrix";
 	private static final String NORMAL_ATTRIBUTE_NAME = "aNormal";
 	private static final String TEXTURE_COORDINATE_ATTRIBUTE_NAME = "aTexCoord";
 	private static final String TEXTURE_SAMPLER_NAME = "sTexture";
+	private static final String VERTEX_COORDINATE_ATTRIBUTE_NAME = "aPosition";
 
-	private final Matrix4f translationMatrix = new Matrix4f();
-	private final Matrix4f modelMatrix = new Matrix4f();
-	private Matrix4f modelViewProjectionMatrix = modelMatrix;
-	private final String name;
-	private final PrimitiveType primitiveType;
 	private final List<Vertex> indices = new ArrayList<Vertex>();
+	private final Matrix4f modelMatrix = new Matrix4f();
+	private final String name;
+	private final PrimitiveData primitiveData;
+	private final PrimitiveType primitiveType;
 	private Texture texture;
 	private final List<Vertex> vertices = new HashedArrayList<Vertex>();
-	private final PrimitiveData primitiveData;
+
+	private final Rotator rotator = new Rotator(modelMatrix);
+	private final Scaler scaler = new Scaler(modelMatrix);
+	private final Translator translator = new Translator(modelMatrix);
 
 	public Mesh(String name, PrimitiveType primitiveType) {
 		this.name = name;
 		this.primitiveType = primitiveType;
-		modelMatrix.setIdentity();
 		primitiveData = new PrimitiveData(primitiveType, VERTEX_COORDINATE_ATTRIBUTE_NAME);
+		modelMatrix.setIdentity();
+
+		final Matrix4f modelViewProjectionMatrix = new Matrix4f();
+		modelViewProjectionMatrix.setIdentity();
 		primitiveData.addUniform(new UniformMatrix4f(MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME, modelViewProjectionMatrix));
 	}
 
@@ -75,34 +86,23 @@ public class Mesh {
 
 	}
 
+	public List<Vertex> getIndices() {
+		return indices;
+	}
+
+	public final void addIndices(Vertex ...indices) {
+		if (!vertices.containsAll(Arrays.asList(indices))) {
+			throw new GLException("Invalid faces list passed to mesh.");
+		}
+
+		this.indices.addAll(Arrays.asList(indices));
+	}
+
 	public Matrix4f getModelMatrix() {
 		return modelMatrix;
 	}
 
-	public void rotateX(float angle) {
-		translationMatrix.setZero();
-		translationMatrix.rotX(angle);
-		modelMatrix.mul(translationMatrix);
-	}
-
-	public void rotateY(float angle) {
-		translationMatrix.setZero();
-		translationMatrix.rotY(angle);
-		modelMatrix.mul(translationMatrix);
-	}
-
-	public void rotateZ(float angle) {
-		translationMatrix.setZero();
-		translationMatrix.rotZ(angle);
-		modelMatrix.mul(translationMatrix);
-	}
-
-	public Matrix4f getModelViewProjectionMatrix() {
-		return modelViewProjectionMatrix;
-	}
-
 	public void setModelViewProjectionMatrix(Matrix4f modelViewProjectionMatrix) {
-		this.modelViewProjectionMatrix = modelViewProjectionMatrix;
 		primitiveData.getUniforms().get(MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME).set(modelViewProjectionMatrix);
 	}
 
@@ -114,30 +114,6 @@ public class Mesh {
 		return primitiveType;
 	}
 
-	public final void addVertices(Vertex ...vertices) {
-		this.vertices.addAll(Arrays.asList(vertices));
-	}
-
-	public final void addIndices(Vertex ...indices) {
-		if (!vertices.containsAll(Arrays.asList(indices))) {
-			throw new GLException("Invalid faces list passed to mesh.");
-		}
-
-		this.indices.addAll(Arrays.asList(indices));
-	}
-
-	public PrimitiveType getType() {
-		return primitiveType;
-	}
-
-	public List<Vertex> getVertices() {
-		return vertices;
-	}
-
-	public List<Vertex> getIndices() {
-		return indices;
-	}
-
 	public Texture getTexture() {
 		return texture;
 	}
@@ -147,6 +123,14 @@ public class Mesh {
 
 		primitiveData.addSampler(new TextureRGB565Sampler(TEXTURE_SAMPLER_NAME, ActiveTexture.GL_TEXTURE0,
 		                         texture.getWidth(), texture.getHeight(), texture.getPixelsRGB565()));
+	}
+
+	public List<Vertex> getVertices() {
+		return vertices;
+	}
+
+	public final void addVertices(Vertex ...vertices) {
+		this.vertices.addAll(Arrays.asList(vertices));
 	}
 
 	private void updatePrimitiveDataAttributes(Vector3f positions[], Color4f colors[], Vector3f normals[], Vector2f textureCoordinates[]) {
@@ -198,5 +182,20 @@ public class Mesh {
 
 	public PrimitiveData getPrimitiveData() {
 		return primitiveData;
+	}
+
+	@Override
+	public Rotator getRotator() {
+		return rotator;
+	}
+
+	@Override
+	public Scaler getScaler() {
+		return scaler;
+	}
+
+	@Override
+	public Translator getTranslator() {
+		return translator;
 	}
 }
