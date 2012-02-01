@@ -25,6 +25,8 @@ import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 public interface IAnimator extends IFrameUpdateListener {
 	IAnimatorListener getAnimatorListener();
 	void pause();
+	void restart();
 	void resume();
+	void reverse();
 	boolean isCompleted();
 }

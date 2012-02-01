@@ -23,18 +23,17 @@ package com.ejwa.dinja.engine.controller.animator;
 import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.model.ease.EaseFactory;
 import com.ejwa.dinja.engine.model.ease.IEase;
-import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 
-public class BaseAnimator<A, T> implements Controllable, IAnimator, IFrameUpdateListener {
+public class BaseAnimator<A, T> implements Controllable, IAnimator {
 	private IAnimatorListener animatorListener;
 	private boolean completed;
 	private boolean paused;
 
 	protected final A animatable;
-	protected final T origin;
-	protected final T destination;
+	protected T origin;
+	protected T destination;
 	protected final float duration;
-	protected final IEase ease;
+	protected IEase ease;
 	protected float time;
 
 	public BaseAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination,
@@ -43,16 +42,25 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator, IFrameUpdate
 		this.animatorListener = animatorListener;
 	}
 
+	public BaseAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination, float duration) {
+		this(animatable, origin, destination, duration);
+		this.animatorListener = animatorListener;
+	}
+
 	public BaseAnimator(A animatable, T origin, T destination, float duration, Class<? extends IEase> ease) {
+		this(animatable, origin, destination, duration);
+		this.ease = EaseFactory.get(ease);
+	}
+
+	public BaseAnimator(A animatable, T origin, T destination, float duration) {
 		this.animatable = animatable;
 		this.duration = duration;
 		this.origin = origin;
 		this.destination = destination;
-		this.ease = EaseFactory.get(ease);
 	}
 
 	@Override
-	public IAnimatorListener getAnimatorListener() {
+	public synchronized IAnimatorListener getAnimatorListener() {
 		return animatorListener;
 	}
 
@@ -68,6 +76,13 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator, IFrameUpdate
 	}
 
 	@Override
+	public synchronized void restart() {
+		resume();
+		setCompleted(false);
+		time = 0;
+	}
+
+	@Override
 	public synchronized void resume() {
 		if (paused) {
 			paused = false;
@@ -79,8 +94,21 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator, IFrameUpdate
 	}
 
 	@Override
+	public synchronized void reverse() {
+		final T tmp = origin;
+
+		origin = destination;
+		destination = tmp;
+		restart();
+	}
+
+	@Override
 	public synchronized boolean isCompleted() {
 		return completed;
+	}
+
+	public synchronized void setCompleted(boolean completed) {
+		this.completed = completed;
 	}
 
 	private void complete() {
@@ -95,15 +123,17 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator, IFrameUpdate
 
 	@Override
 	public synchronized void onFrameUpdate(long milliSecondsSinceLastFrame) {
-		if (!paused) {
-			if (time == 0 && milliSecondsSinceLastFrame > 0 && animatorListener != null) {
+		if (!paused && !completed) {
+			if (animatorListener != null && time == 0) {
 				animatorListener.onAnimatorStarted();
-			} else if (time > duration) {
-				complete();
-				return; /* Don't move frame forward */
 			}
 
-			time += milliSecondsSinceLastFrame / 1000f;
+			if (time < duration) {
+				time += milliSecondsSinceLastFrame / 1000f;
+			} else {
+				time = duration;
+				complete();
+			}
 		}
 	}
 }
