@@ -4,6 +4,7 @@
 	<string-array name="demos">
 		<item>Dinja Bomb (Tilt)\n\nA texturized dinja bomb object controlled with a TiltForceInputController.</item>
 		<item>World (Drag)\n\nA texturized world sphere controlled with a DragController.</item>
+		<item>Dancing Letters (Animated)\n\nSome dancing letters animated using animators.</item>
 		<item>Sphere (Custom Shader)\n\nA rotating sphere with a custom shader attached.</item>
 	</string-array>
 </resources>
