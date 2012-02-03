@@ -29,8 +29,6 @@ import com.ejwa.dinja.opengles.shader.argument.Tuple3fVertexAttributeArray;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.ShortPointer;
-import java.util.HashMap;
-import java.util.Map;
 import org.openmali.vecmath2.Vector3f;
 
 /* TODO: Things like uniform.getData().deallocate() should happen in the uniform finalize method, and not here... */
@@ -38,9 +36,9 @@ public class PrimitiveData {
 	private final PrimitiveType primitiveType;
 	private Pointer indices;
 	private final Tuple3fVertexAttributeArray vertices;
-	private final Map<String, AbstractSampler> samplers = new HashMap<String, AbstractSampler>();
-	private final Map<String, AbstractUniform> uniforms = new HashMap<String, AbstractUniform>();
-	private final Map<String, AbstractVertexAttributeArray> vertexAttributeArrays = new HashMap<String, AbstractVertexAttributeArray>();
+	private final PrimitiveDataArgument<AbstractSampler> samplers = new PrimitiveDataArgument<AbstractSampler>();
+	private final PrimitiveDataArgument<AbstractUniform> uniforms = new PrimitiveDataArgument<AbstractUniform>();
+	private final PrimitiveDataArgument<AbstractVertexAttributeArray> vertexAttributeArrays = new PrimitiveDataArgument<AbstractVertexAttributeArray>();
 
 	public PrimitiveData(PrimitiveType primitiveType, String vertexCoordVariableName) {
 		this.primitiveType = primitiveType;
@@ -102,7 +100,7 @@ public class PrimitiveData {
 		}
 	}
 
-	public Map<String, AbstractSampler> getSamplers() {
+	public PrimitiveDataArgument<AbstractSampler> getSamplers() {
 		return samplers;
 	}
 
@@ -118,7 +116,7 @@ public class PrimitiveData {
 		}
 	}
 
-	public Map<String, AbstractUniform> getUniforms() {
+	public PrimitiveDataArgument<AbstractUniform> getUniforms() {
 		return uniforms;
 	}
 
@@ -134,7 +132,7 @@ public class PrimitiveData {
 		}
 	}
 
-	public Map<String, AbstractVertexAttributeArray> getVertexAttributeArrays() {
+	public PrimitiveDataArgument<AbstractVertexAttributeArray> getVertexAttributeArrays() {
 		return vertexAttributeArrays;
 	}
 
@@ -143,7 +141,7 @@ public class PrimitiveData {
 		if (indices != null) { indices.deallocate(); }
 		if (vertices != null) { vertices.getData().deallocate(); }
 
-		for (AbstractVertexAttributeArray a : vertexAttributeArrays.values()) {
+		for (AbstractVertexAttributeArray a : vertexAttributeArrays) {
 			a.getData().deallocate();
 		}
 

@@ -115,14 +115,14 @@ public class GLSurfaceRenderer implements Renderer {
 
 			synchronized (glSurface.getPrimitiveDatas()) {
 				for (PrimitiveData p : glSurface.getPrimitiveDatas()) {
-					final Set<String> attributes = p.getVertexAttributeArrays().keySet();
-					final Set<String> uniforms = p.getUniforms().keySet();
+					final Set<String> attributes = p.getVertexAttributeArrays().getNames();
+					final Set<String> uniforms = p.getUniforms().getNames();
 
 					program.registerVertexAttributeHandles(p.getVertices().getVariableName());
 					program.registerVertexAttributeHandles(attributes.toArray(new String[attributes.size()]));
 					program.registerUniformHandles(uniforms.toArray(new String[uniforms.size()]));
 
-					for (AbstractSampler s : p.getSamplers().values()) {
+					for (AbstractSampler s : p.getSamplers()) {
 						program.registerUniformHandles(s.getVariableName());
 						s.bind();
 					}

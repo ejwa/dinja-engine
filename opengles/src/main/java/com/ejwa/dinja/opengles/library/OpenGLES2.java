@@ -102,18 +102,21 @@ public final class OpenGLES2 extends OpenGLES2Native {
 			glEnableVertexAttribArray(vertexAttributeHandle);
 		}
 
-		for (AbstractUniform u : primitiveData.getUniforms().values()) {
+		for (int i = 0; i < primitiveData.getUniforms().size(); i++) {
+			final AbstractUniform u = primitiveData.getUniforms().get(i);
 			final int uniformHandle = program.getUniformHandle(u.getVariableName());
 			u.send(uniformHandle);
 		}
 
-		for (AbstractVertexAttributeArray vAttributeArray : primitiveData.getVertexAttributeArrays().values()) {
-			final int vAttributeArrayHandle = program.getVertexAttributeHandle(vAttributeArray.getVariableName());
-			glVertexAttribPointer(vAttributeArrayHandle, vAttributeArray.getComponents(), DataType.GL_FLOAT.getId(), false, 0, vAttributeArray.getData());
+		for (int i = 0; i < primitiveData.getVertexAttributeArrays().size(); i++) {
+			final AbstractVertexAttributeArray va = primitiveData.getVertexAttributeArrays().get(i);
+			final int vAttributeArrayHandle = program.getVertexAttributeHandle(va.getVariableName());
+			glVertexAttribPointer(vAttributeArrayHandle, va.getComponents(), DataType.GL_FLOAT.getId(), false, 0, va.getData());
 			glEnableVertexAttribArray(vAttributeArrayHandle);
 		}
 
-		for (AbstractSampler s : primitiveData.getSamplers().values()) {
+		for (int i = 0; i < primitiveData.getSamplers().size(); i++) {
+			final AbstractSampler s = primitiveData.getSamplers().get(i);
 			final int samplerHandle = program.getUniformHandle(s.getVariableName());
 			s.send(samplerHandle);
 		}
