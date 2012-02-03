@@ -22,7 +22,7 @@ package com.ejwa.dinja.engine.controller.animator;
 
 import com.ejwa.dinja.engine.model.ease.IEase;
 import com.ejwa.dinja.engine.model.properties.Translatable;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Vector3f;
 
 public class TranslationAnimator extends BaseAnimator<Translatable, Vector3f> {
 	public TranslationAnimator(Translatable translatable, Vector3f destination, float duration, Class<? extends IEase> ease) {
@@ -38,9 +38,9 @@ public class TranslationAnimator extends BaseAnimator<Translatable, Vector3f> {
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		super.onFrameUpdate(milliSecondsSinceLastFrame);
 
-		final float x = ease.getValue(time, origin.x, destination.x, duration);
-		final float y = ease.getValue(time, origin.y, destination.y, duration);
-		final float z = ease.getValue(time, origin.z, destination.z, duration);
+		final float x = ease.getValue(time, origin.getX(), destination.getX(), duration);
+		final float y = ease.getValue(time, origin.getY(), destination.getY(), duration);
+		final float z = ease.getValue(time, origin.getZ(), destination.getZ(), duration);
 
 		animatable.getTranslator().set(new Vector3f(x, y, z));
 	}

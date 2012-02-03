@@ -23,7 +23,7 @@ package com.ejwa.dinja.opengles.shader.argument;
 import com.ejwa.dinja.opengles.library.NativeMemory;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.googlecode.javacpp.FloatPointer;
-import javax.vecmath.Matrix4f;
+import org.openmali.vecmath2.Matrix4f;
 
 public class UniformMatrix4f extends AbstractUniform<Matrix4f, FloatPointer> {
 	public UniformMatrix4f(String variableName) {
@@ -42,7 +42,7 @@ public class UniformMatrix4f extends AbstractUniform<Matrix4f, FloatPointer> {
 
 		for (int i = 0; i < components / 4; i++) {
 			for (int j = 0; j < components / 4; j++) {
-				data.put((i * 4) + j, value.getElement(j, i));
+				data.put((i * 4) + j, value.get(j, i));
 			}
 		}
 	}

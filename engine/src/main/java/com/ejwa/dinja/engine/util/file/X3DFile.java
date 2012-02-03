@@ -37,8 +37,8 @@ import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Vector2f;
+import org.openmali.vecmath2.Vector3f;
 
 public class X3DFile extends XMLReader<X3D> implements IFile {
 	private static final String REQUIRED_FILE_VERSION = "3.0";
@@ -72,7 +72,7 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 
 		if (textureCoordinates != null) {
 			final Vector2f uv = textureCoordinates.next();
-			uv.y = 1f - uv.y;
+			uv.setY(1f - uv.getY());
 			v.setTextureCoordinates(uv);
 		}
 	}

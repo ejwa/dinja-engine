@@ -25,8 +25,8 @@ import com.ejwa.dinja.engine.model.mesh.Vertex;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import java.util.LinkedList;
 import java.util.List;
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Vector2f;
+import org.openmali.vecmath2.Vector3f;
 
 /**
  * Describes a plane geometry which is a flat rectangle mesh with no depth. If you need depth, there is also a {@link Cube}

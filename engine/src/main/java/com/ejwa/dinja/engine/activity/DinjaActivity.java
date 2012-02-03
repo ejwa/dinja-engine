@@ -51,6 +51,7 @@ import com.ejwa.dinja.opengles.shader.VertexShader;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import org.openmali.FastMath;
 
 /**
  * The base class for a dinja engine activity, which all applications should use.
@@ -60,6 +61,8 @@ import java.util.Map;
  * @since 0.1
  */
 public class DinjaActivity extends Activity {
+	private static final int FASTMATH_PRECISION = 0x4000;
+
 	private GLSurface glSurfaceView;
 	private Map<ITiltForceInputListener, TiltForceInputController> tiltForceListeners;
 	private Map<IFingerPositionInputListener, FingerPositionInputController> fingerPositionListeners;
@@ -82,6 +85,7 @@ public class DinjaActivity extends Activity {
 		fingerPositionListeners = new HashMap<IFingerPositionInputListener, FingerPositionInputController>();
 		fingerMovementListeners = new HashMap<IFingerMovementInputListener, FingerMovementInputController>();
 
+		FastMath.setPrecision(FASTMATH_PRECISION);
 		glSurfaceView = new GLSurface(getApplication());
 		setContentView(glSurfaceView);
 	}

@@ -20,12 +20,12 @@
  */
 package com.ejwa.dinja.engine.model.mesh;
 
-import javax.vecmath.Color4f;
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Colorf;
+import org.openmali.vecmath2.Vector2f;
+import org.openmali.vecmath2.Vector3f;
 
 public class Vertex implements Cloneable {
-	private Color4f color;
+	private Colorf color;
 	private Vector3f normal;
 	private Vector3f position;
 	private Vector2f textureCoordinates;
@@ -44,16 +44,16 @@ public class Vertex implements Cloneable {
 		this.normal = normal;
 	}
 
-	public Vertex(Vector3f position, Vector3f normal, Color4f color) {
+	public Vertex(Vector3f position, Vector3f normal, Colorf color) {
 		this(position, normal);
 		this.color = color;
 	}
 
-	public Color4f getColor() {
+	public Colorf getColor() {
 		return color;
 	}
 
-	public void setColor(Color4f color) {
+	public void setColor(Colorf color) {
 		this.color = color;
 	}
 

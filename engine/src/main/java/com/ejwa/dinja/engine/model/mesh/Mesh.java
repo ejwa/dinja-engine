@@ -34,15 +34,15 @@ import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import com.ejwa.dinja.opengles.shader.argument.TextureRGB565Sampler;
 import com.ejwa.dinja.opengles.shader.argument.Tuple2fVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.Tuple3fVertexAttributeArray;
-import com.ejwa.dinja.opengles.shader.argument.Tuple4fVertexAttributeArray;
+import com.ejwa.dinja.opengles.shader.argument.ColorfVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.UniformMatrix4f;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.vecmath.Color4f;
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Colorf;
+import org.openmali.vecmath2.Matrix4f;
+import org.openmali.vecmath2.Vector2f;
+import org.openmali.vecmath2.Vector3f;
 
 public class Mesh implements Rotatable, Scalable, Translatable {
 	private static final String COLOR_ATTRIBUTE_NAME = "aColor";
@@ -133,14 +133,14 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 		this.vertices.addAll(Arrays.asList(vertices));
 	}
 
-	private void updatePrimitiveDataAttributes(Vector3f positions[], Color4f colors[], Vector3f normals[], Vector2f textureCoordinates[]) {
+	private void updatePrimitiveDataAttributes(Vector3f positions[], Colorf colors[], Vector3f normals[], Vector2f textureCoordinates[]) {
 		primitiveData.setVerticesData(positions);
 		primitiveData.removeVertexAttributeArray(COLOR_ATTRIBUTE_NAME);
 		primitiveData.removeVertexAttributeArray(NORMAL_ATTRIBUTE_NAME);
 		primitiveData.removeVertexAttributeArray(TEXTURE_COORDINATE_ATTRIBUTE_NAME);
 
 		if (colors[0] != null) {
-			primitiveData.addVertexAttributeArray(new Tuple4fVertexAttributeArray(COLOR_ATTRIBUTE_NAME, colors));
+			primitiveData.addVertexAttributeArray(new ColorfVertexAttributeArray(COLOR_ATTRIBUTE_NAME, colors));
 		}
 
 		if (normals[0] != null) {
@@ -164,7 +164,7 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void updatePrimitiveData() {
-		final Color4f colors[] = new Color4f[this.vertices.size()];
+		final Colorf colors[] = new Colorf[this.vertices.size()];
 		final Vector3f normals[] = new Vector3f[this.vertices.size()];
 		final Vector3f positions[] = new Vector3f[this.vertices.size()];
 		final Vector2f textureCoordinates[] = new Vector2f[this.vertices.size()];

@@ -21,7 +21,7 @@
 package com.ejwa.dinja.engine.model.file.x3d;
 
 import com.ejwa.dinja.engine.util.StringConverter;
-import javax.vecmath.Color3f;
+import org.openmali.vecmath2.Colorf;
 import org.simpleframework.xml.Attribute;
 
 public class Background extends BaseDef {
@@ -35,8 +35,8 @@ public class Background extends BaseDef {
 		return groundColor;
 	}
 
-	public Color3f getGroundColorVector() {
-		return new Color3f(StringConverter.getVector3FromString(groundColor, " "));
+	public Colorf getGroundColorVector() {
+		return StringConverter.getColor3FromString(groundColor, " ");
 	}
 
 	public void setGroundColor(String groundColor) {
@@ -47,8 +47,8 @@ public class Background extends BaseDef {
 		return skyColor;
 	}
 
-	public Color3f getSkyColorVector() {
-		return new Color3f(StringConverter.getVector3FromString(skyColor, " "));
+	public Colorf getSkyColorVector() {
+		return StringConverter.getColor3FromString(skyColor, " ");
 	}
 
 	public void setSkyColor(String skyColor) {

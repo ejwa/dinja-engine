@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.engine.controller.input;
 
-import javax.vecmath.Point2f;
+import org.openmali.vecmath2.Point2f;
 
 public interface IFingerMovementInputListener {
 	void onFingerMovementInput(Point2f startPosition, Point2f endPosition, float angle);

@@ -22,7 +22,7 @@ package com.ejwa.dinja.opengles.shader.argument;
 
 import com.ejwa.dinja.opengles.library.NativeMemory;
 import com.googlecode.javacpp.FloatPointer;
-import javax.vecmath.Tuple3f;
+import org.openmali.vecmath2.Tuple3f;
 
 public class Tuple3fVertexAttributeArray extends AbstractVertexAttributeArray<Tuple3f, FloatPointer> {
 	public Tuple3fVertexAttributeArray(String variableName) {
@@ -38,9 +38,9 @@ public class Tuple3fVertexAttributeArray extends AbstractVertexAttributeArray<Tu
 		data = NativeMemory.getFloatPointer(data, values.length * components);
 
 		for (int i = 0; i < values.length; i++) {
-			data.put((i * components), values[i].x);
-			data.put((i * components) + 1, values[i].y);
-			data.put((i * components) + 2, values[i].z);
+			data.put((i * components), values[i].getX());
+			data.put((i * components) + 1, values[i].getY());
+			data.put((i * components) + 2, values[i].getZ());
 		}
 	}
 }

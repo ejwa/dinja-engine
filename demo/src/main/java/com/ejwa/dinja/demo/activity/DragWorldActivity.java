@@ -32,7 +32,7 @@ import com.ejwa.dinja.engine.util.TextureLoader;
 import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
-import javax.vecmath.Point2f;
+import org.openmali.vecmath2.Point2f;
 
 public class DragWorldActivity extends DinjaActivity {
 	@Override
@@ -60,7 +60,7 @@ public class DragWorldActivity extends DinjaActivity {
 
 		@Override
 		public void onFingerMovementInput(Point2f startPosition, Point2f endPosition, float angle) {
-			rotationFromX = (endPosition.x - startPosition.x) / 100;
+			rotationFromX = (endPosition.getX() - startPosition.getX()) / 100;
 			fingerDown = true;
 		}
 

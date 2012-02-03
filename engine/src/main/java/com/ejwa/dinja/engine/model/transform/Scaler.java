@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.engine.model.transform;
 
-import javax.vecmath.Matrix4f;
+import org.openmali.vecmath2.Matrix4f;
 
 public class Scaler {
 	private final Matrix4f baseMatrix;

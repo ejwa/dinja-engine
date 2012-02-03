@@ -27,8 +27,8 @@
 			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>java3d</groupId>
-			<artifactId>vecmath</artifactId>
+			<groupId>org.openmali</groupId>
+			<artifactId>openmali</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>

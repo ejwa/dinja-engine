@@ -21,8 +21,8 @@
 package com.ejwa.dinja.engine.model.file.x3d;
 
 import com.ejwa.dinja.engine.util.StringConverter;
-import javax.vecmath.Color3f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Colorf;
+import org.openmali.vecmath2.Vector3f;
 import org.simpleframework.xml.Attribute;
 
 public class PointLight extends BaseDef implements Transformable {
@@ -53,8 +53,8 @@ public class PointLight extends BaseDef implements Transformable {
 		return color;
 	}
 
-	public Color3f getColorVector() {
-		return new Color3f(StringConverter.getVector3FromString(color, " "));
+	public Colorf getColorVector() {
+		return StringConverter.getColor3FromString(color, " ");
 	}
 
 	public void setColor(String color) {

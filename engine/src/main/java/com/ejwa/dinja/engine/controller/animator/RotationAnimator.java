@@ -22,15 +22,15 @@ package com.ejwa.dinja.engine.controller.animator;
 
 import com.ejwa.dinja.engine.model.ease.IEase;
 import com.ejwa.dinja.engine.model.properties.Rotatable;
-import javax.vecmath.Quat4f;
+import org.openmali.vecmath2.Quaternion4f;
 
-public class RotationAnimator extends BaseAnimator<Rotatable, Quat4f> {
-	public RotationAnimator(Rotatable rotatable, Quat4f destination, float duration, Class<? extends IEase> ease) {
+public class RotationAnimator extends BaseAnimator<Rotatable, Quaternion4f> {
+	public RotationAnimator(Rotatable rotatable, Quaternion4f destination, float duration, Class<? extends IEase> ease) {
 		super(rotatable, rotatable.getRotator().get(), destination, duration, ease);
 	}
 
 	public RotationAnimator(IAnimatorListener animatorListener, Rotatable rotatable,
-	                           Quat4f destination, float duration, Class<? extends IEase> ease) {
+	                           Quaternion4f destination, float duration, Class<? extends IEase> ease) {
 		super(animatorListener, rotatable, rotatable.getRotator().get(), destination, duration, ease);
 	}
 
@@ -38,11 +38,11 @@ public class RotationAnimator extends BaseAnimator<Rotatable, Quat4f> {
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		super.onFrameUpdate(milliSecondsSinceLastFrame);
 
-		final float x = ease.getValue(time, origin.x, destination.x, duration);
-		final float y = ease.getValue(time, origin.y, destination.y, duration);
-		final float z = ease.getValue(time, origin.z, destination.z, duration);
-		final float w = ease.getValue(time, origin.w, destination.w, duration);
+		final float x = ease.getValue(time, origin.getA(), destination.getA(), duration);
+		final float y = ease.getValue(time, origin.getB(), destination.getB(), duration);
+		final float z = ease.getValue(time, origin.getC(), destination.getC(), duration);
+		final float w = ease.getValue(time, origin.getD(), destination.getD(), duration);
 
-		animatable.getRotator().set(new Quat4f(x, y, z, w));
+		animatable.getRotator().set(new Quaternion4f(x, y, z, w));
 	}
 }

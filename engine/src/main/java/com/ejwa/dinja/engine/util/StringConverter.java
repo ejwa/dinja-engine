@@ -22,10 +22,12 @@ package com.ejwa.dinja.engine.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
-import javax.vecmath.Vector4f;
+import org.openmali.vecmath2.Colorf;
+import org.openmali.vecmath2.Vector2f;
+import org.openmali.vecmath2.Vector3f;
+import org.openmali.vecmath2.Vector4f;
 
+@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 public final class StringConverter {
 	private StringConverter() {
 		/* No instances of this class allowed. */
@@ -35,7 +37,6 @@ public final class StringConverter {
 		return getVector2ListFromString(source, separator).get(0);
 	}
 
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public static List<Vector2f> getVector2ListFromString(String source, String separator) {
 		final List<Float> values = getFloatListFromString(source, separator);
 		final List<Vector2f> vectors = new ArrayList<Vector2f>();
@@ -47,11 +48,26 @@ public final class StringConverter {
 		return vectors;
 	}
 
+	public static Colorf getColor3FromString(String source, String separator) {
+		final Vector3f color = getVector3ListFromString(source, separator).get(0);
+		return new Colorf(color.getX(), color.getY(), color.getZ());
+	}
+
+	public static List<Colorf> getColor3ListFromString(String source, String separator) {
+		final List<Float> values = getFloatListFromString(source, separator);
+		final List<Colorf> vectors = new ArrayList<Colorf>();
+
+		for (int i = 0; i < values.size(); i += 3) {
+			vectors.add(new Colorf(values.get(i), values.get(i + 1), values.get(i + 2)));
+		}
+
+		return vectors;
+	}
+
 	public static Vector3f getVector3FromString(String source, String separator) {
 		return getVector3ListFromString(source, separator).get(0);
 	}
 
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public static List<Vector3f> getVector3ListFromString(String source, String separator) {
 		final List<Float> values = getFloatListFromString(source, separator);
 		final List<Vector3f> vectors = new ArrayList<Vector3f>();
@@ -67,7 +83,6 @@ public final class StringConverter {
 		return getVector4ListFromString(source, separator).get(0);
 	}
 
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public static List<Vector4f> getVector4ListFromString(String source, String separator) {
 		final List<Float> values = getFloatListFromString(source, separator);
 		final List<Vector4f> vectors = new ArrayList<Vector4f>();

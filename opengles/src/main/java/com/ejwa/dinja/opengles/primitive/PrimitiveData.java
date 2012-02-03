@@ -31,7 +31,7 @@ import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.ShortPointer;
 import java.util.HashMap;
 import java.util.Map;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Vector3f;
 
 /* TODO: Things like uniform.getData().deallocate() should happen in the uniform finalize method, and not here... */
 public class PrimitiveData {

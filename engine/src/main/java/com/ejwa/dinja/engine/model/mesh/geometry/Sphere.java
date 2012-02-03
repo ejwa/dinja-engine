@@ -24,8 +24,8 @@ import android.util.FloatMath;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
 import com.ejwa.dinja.engine.model.mesh.Vertex;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Vector2f;
+import org.openmali.vecmath2.Vector3f;
 
 /**
  * Describes a sphere geometry with a number of rings and segments. The sphere geometry uses triangle strips. The strip is

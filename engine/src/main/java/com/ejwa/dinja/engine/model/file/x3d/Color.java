@@ -22,7 +22,7 @@ package com.ejwa.dinja.engine.model.file.x3d;
 
 import com.ejwa.dinja.engine.util.StringConverter;
 import java.util.List;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Colorf;
 import org.simpleframework.xml.Attribute;
 
 @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
@@ -34,8 +34,8 @@ public class Color {
 		return color;
 	}
 
-	public List<Vector3f> getColorList() {
-		return StringConverter.getVector3ListFromString(color, " ");
+	public List<Colorf> getColorList() {
+		return StringConverter.getColor3ListFromString(color, " ");
 	}
 
 	public void setColor(String color) {

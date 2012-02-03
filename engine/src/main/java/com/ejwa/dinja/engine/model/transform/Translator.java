@@ -20,8 +20,8 @@
  */
 package com.ejwa.dinja.engine.model.transform;
 
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Matrix4f;
+import org.openmali.vecmath2.Vector3f;
 
 public class Translator {
 	private final Matrix4f baseMatrix;

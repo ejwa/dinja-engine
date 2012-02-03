@@ -20,9 +20,9 @@
  */
 package com.ejwa.dinja.engine.model.transform;
 
-import javax.vecmath.Matrix3f;
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Quat4f;
+import org.openmali.vecmath2.Matrix3f;
+import org.openmali.vecmath2.Matrix4f;
+import org.openmali.vecmath2.Quaternion4f;
 
 public class Rotator {
 	private final Matrix4f baseMatrix;
@@ -58,13 +58,13 @@ public class Rotator {
 		baseMatrix.setRotation(currentRotation);
 	}
 
-	public Quat4f get() {
-		final Quat4f rotation = new Quat4f();
+	public Quaternion4f get() {
+		final Quaternion4f rotation = new Quaternion4f();
 		baseMatrix.get(rotation);
 		return rotation;
 	}
 
-	public void set(Quat4f rotation) {
+	public void set(Quaternion4f rotation) {
 		baseMatrix.setRotation(rotation);
 	}
 }

@@ -22,7 +22,8 @@ package com.ejwa.dinja.engine.controller.input;
 
 import android.view.MotionEvent;
 import com.ejwa.dinja.opengles.display.GLSurface;
-import javax.vecmath.Point2f;
+import org.openmali.FastMath;
+import org.openmali.vecmath2.Point2f;
 
 public class FingerMovementInputController {
 	private final IFingerMovementInputListener fingerMovementInputListener;
@@ -47,7 +48,7 @@ public class FingerMovementInputController {
 				angle = 0;
 			} else {
 				endPosition.set(x, y);
-				angle = (float) Math.atan2(endPosition.y - startPosition.y, endPosition.x - startPosition.x);
+				angle = FastMath.atan2(endPosition.getY() - startPosition.getY(), endPosition.getX() - startPosition.getX());
 			}
 
 			fingerMovementInputListener.onFingerMovementInput(startPosition, endPosition, angle);

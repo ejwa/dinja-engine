@@ -66,7 +66,7 @@ public class HeightMap extends Plane {
 				pixel = pixels[i];
 			}
 
-			v.getPosition().z = depth * (pixel & 0xff) / 255f;
+			v.getPosition().setZ(depth * (pixel & 0xff) / 255f);
 			i++;
 		}
 

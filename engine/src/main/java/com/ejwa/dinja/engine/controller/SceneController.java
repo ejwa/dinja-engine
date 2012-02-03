@@ -23,7 +23,7 @@ package com.ejwa.dinja.engine.controller;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
-import javax.vecmath.Matrix4f;
+import org.openmali.vecmath2.Matrix4f;
 
 public class SceneController implements Controllable, IFrameUpdateListener {
 	private final SceneView sceneView;

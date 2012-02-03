@@ -22,7 +22,7 @@ package com.ejwa.dinja.engine.model.file.x3d;
 
 import com.ejwa.dinja.engine.util.StringConverter;
 import java.util.List;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Vector3f;
 import org.simpleframework.xml.Attribute;
 
 public class Normal extends BaseDef {

@@ -21,8 +21,8 @@
 package com.ejwa.dinja.engine.model;
 
 import android.opengl.Matrix;
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
+import org.openmali.vecmath2.Matrix4f;
+import org.openmali.vecmath2.Vector3f;
 
 public class Camera {
 	private static final float DEFAULT_ASPECT_RATIO = 16 / 9.6f;
@@ -50,13 +50,14 @@ public class Camera {
 	public Matrix4f getProjectionMatrix() {
 		if (recalculateProjectionMatrix) {
 			final float size = nearPlane * (float) Math.tan((Math.toRadians(fieldOfView)) / 2.0);
-			final float projectionMatrixValues[] = new float[16];
+			final float pv[] = new float[16];
 
 			synchronized (this) {
-				Matrix.frustumM(projectionMatrixValues, 0, -size, size, -size / aspectRatio, size / aspectRatio, nearPlane, farPlane);
+				Matrix.frustumM(pv, 0, -size, size, -size / aspectRatio, size / aspectRatio, nearPlane, farPlane);
 			}
 
-			projectionMatrix.set(projectionMatrixValues);
+			projectionMatrix.set(pv[0], pv[1], pv[2], pv[3], pv[4], pv[5], pv[6], pv[7], pv[8], pv[9],
+			                     pv[10], pv[11], pv[12], pv[13], pv[14], pv[15]);
 			projectionMatrix.transpose();
 			recalculateProjectionMatrix = false;
 		}
@@ -81,11 +82,11 @@ public class Camera {
 			/* Calculate u */
 			u.cross(s, f);
 
-			viewMatrix.setRow(0, s.x, s.y, s.z, 0);
-			viewMatrix.setRow(1, u.x, u.y, u.z, 0);
-			viewMatrix.setRow(2, -f.x, -f.y, -f.z, 0);
+			viewMatrix.setRow(0, s.getX(), s.getY(), s.getZ(), 0);
+			viewMatrix.setRow(1, u.getX(), u.getY(), u.getZ(), 0);
+			viewMatrix.setRow(2, -f.getX(), -f.getY(), -f.getZ(), 0);
 			viewMatrix.setRow(3, 0, 0, 0, 1);
-			viewMatrix.setTranslation(new Vector3f(-location.x, -location.y, -location.z));
+			viewMatrix.setTranslation(new Vector3f(-location.getX(), -location.getY(), -location.getZ()));
 			recalculateProjectionMatrix = false;
 		}
 
