@@ -42,6 +42,8 @@ public class TranslationAnimator extends BaseAnimator<Translatable, Vector3f> {
 		final float y = ease.getValue(time, origin.getY(), destination.getY(), duration);
 		final float z = ease.getValue(time, origin.getZ(), destination.getZ(), duration);
 
-		animatable.getTranslator().set(new Vector3f(x, y, z));
+		final Vector3f translation = Vector3f.fromPool(x, y, z);
+		animatable.getTranslator().set(translation);
+		Vector3f.toPool(translation);
 	}
 }

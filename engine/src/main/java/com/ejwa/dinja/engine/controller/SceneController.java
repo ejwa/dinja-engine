@@ -35,15 +35,18 @@ public class SceneController implements Controllable, IFrameUpdateListener {
 	@Override
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
-		final Matrix4f modelViewProjectionMatrix = new Matrix4f();
+		final Matrix4f modelViewProjectionMatrix = Matrix4f.fromPool();
 
-		for (Mesh m : sceneView.getScene().getMeshes()) {
+		for (int i = 0; i < sceneView.getScene().getMeshes().size(); i++) {
+			final Mesh mesh = sceneView.getScene().getMeshes().get(i);
 			final Matrix4f projectionMatrix = sceneView.getScene().getCamera().getProjectionMatrix();
 			final Matrix4f viewMatrix = sceneView.getScene().getCamera().getViewMatrix();
 
 			modelViewProjectionMatrix.mul(projectionMatrix, viewMatrix);
-			modelViewProjectionMatrix.mul(m.getModelMatrix());
-			m.setModelViewProjectionMatrix(modelViewProjectionMatrix);
+			modelViewProjectionMatrix.mul(mesh.getModelMatrix());
+			mesh.setModelViewProjectionMatrix(modelViewProjectionMatrix);
 		}
+
+		Matrix4f.toPool(modelViewProjectionMatrix);
 	}
 }

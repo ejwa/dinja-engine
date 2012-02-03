@@ -43,6 +43,8 @@ public class RotationAnimator extends BaseAnimator<Rotatable, Quaternion4f> {
 		final float z = ease.getValue(time, origin.getC(), destination.getC(), duration);
 		final float w = ease.getValue(time, origin.getD(), destination.getD(), duration);
 
-		animatable.getRotator().set(new Quaternion4f(x, y, z, w));
+		final Quaternion4f quaternion = Quaternion4f.fromPool(x, y, z, w);
+		animatable.getRotator().set(quaternion);
+		Quaternion4f.toPool(quaternion);
 	}
 }

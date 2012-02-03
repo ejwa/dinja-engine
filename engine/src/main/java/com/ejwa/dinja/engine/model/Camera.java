@@ -49,7 +49,7 @@ public class Camera {
 
 	public Matrix4f getProjectionMatrix() {
 		if (recalculateProjectionMatrix) {
-			final float size = nearPlane * (float) Math.tan((Math.toRadians(fieldOfView)) / 2.0);
+			final float size = nearPlane * (float) Math.tan(Math.toRadians(fieldOfView) / 2.0);
 			final float pv[] = new float[16];
 
 			synchronized (this) {
@@ -67,9 +67,10 @@ public class Camera {
 
 	public Matrix4f getViewMatrix() {
 		if (recalculateViewMatrix) {
-			final Vector3f f = new Vector3f();
-			final Vector3f s = new Vector3f();
-			final Vector3f u = new Vector3f();
+			final Vector3f f = Vector3f.fromPool();
+			final Vector3f s = Vector3f.fromPool();
+			final Vector3f u = Vector3f.fromPool();
+			final Vector3f translation = Vector3f.fromPool();
 
 			/* Calculate f */
 			f.sub(lookDirection, location);
@@ -86,8 +87,14 @@ public class Camera {
 			viewMatrix.setRow(1, u.getX(), u.getY(), u.getZ(), 0);
 			viewMatrix.setRow(2, -f.getX(), -f.getY(), -f.getZ(), 0);
 			viewMatrix.setRow(3, 0, 0, 0, 1);
-			viewMatrix.setTranslation(new Vector3f(-location.getX(), -location.getY(), -location.getZ()));
+			translation.set(-location.getX(), -location.getY(), -location.getZ());
+			viewMatrix.setTranslation(translation);
 			recalculateProjectionMatrix = false;
+
+			Vector3f.toPool(f);
+			Vector3f.toPool(s);
+			Vector3f.toPool(u);
+			Vector3f.toPool(translation);
 		}
 
 		return viewMatrix;
