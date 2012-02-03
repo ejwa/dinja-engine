@@ -60,19 +60,24 @@ public class DebugController implements Controllable, IFrameTimeListener {
 
 		@Override
 		public void run() {
-			for (Camera c : debugView.getCameraDebugTexts().keySet()) {
-				debugView.getCameraDebugTexts().get(c).setText("Camera view matrix:\n" + c.getViewMatrix());
+			for (int i = 0; i < debugView.getCameraDebugTexts().size(); i++) {
+				final Camera c = debugView.getCameraDebugTexts().get(i).getA();
+				debugView.getCameraDebugTexts().get(i).getB().setText("Camera view matrix:\n" + c.getViewMatrix());
 			}
 
-			for (Mesh m : debugView.getMeshDebugTexts().keySet()) {
-				debugView.getMeshDebugTexts().get(m).setText(
+			for (int i = 0; i < debugView.getMeshDebugTexts().size(); i++) {
+				final Mesh m = debugView.getMeshDebugTexts().get(i).getA();
+
+				debugView.getMeshDebugTexts().get(i).getB().setText(
 					"Mesh name: " + m.getName() + "\n" +
 					"Mesh model matrix:\n" + m.getModelMatrix()
 				);
 			}
 
-			for (Scene s : debugView.getSceneDebugTexts().keySet()) {
-				debugView.getSceneDebugTexts().get(s).setText(
+			for (int i = 0; i < debugView.getSceneDebugTexts().size(); i++) {
+				final Scene s = debugView.getSceneDebugTexts().get(i).getA();
+
+				debugView.getSceneDebugTexts().get(i).getB().setText(
 					"Frames per second: " + (int) (1000000000f / getNanoSecondsForFrame()) + "\n" +
 					"Meshes in scene: " + s.getMeshes().size()
 				);

@@ -61,23 +61,27 @@ public class GLSurfaceRenderer implements Renderer {
 		final long enterTime = System.nanoTime();
 		final long timeSinceLastFrame = getMilliSecondsSinceLastFrame();
 
-		for (IFrameUpdateListener f : glSurface.getFrameUpdateListeners()) {
+		for (int i = 0; i < glSurface.getFrameUpdateListeners().size(); i++) {
+			final IFrameUpdateListener f = glSurface.getFrameUpdateListeners().get(i);
 			f.onFrameUpdate(timeSinceLastFrame);
 		}
 
 		OpenGLES2.glClear(OpenGLES2.GL_DEPTH_BUFFER_BIT | OpenGLES2.GL_COLOR_BUFFER_BIT);
 
-		for (Program program : glSurface.getPrograms()) {
+		for (int i = 0; i < glSurface.getPrograms().size(); i++) {
+			final Program program = glSurface.getPrograms().get(i);
 			program.use();
 
 			synchronized (glSurface.getPrimitiveDatas()) {
-				for (PrimitiveData p : glSurface.getPrimitiveDatas()) {
-					OpenGLES2.glDrawElements(program, p);
+				for (int j = 0; j < glSurface.getPrimitiveDatas().size(); j++) {
+					OpenGLES2.glDrawElements(program, glSurface.getPrimitiveDatas().get(j));
 				}
 			}
 		}
 
-		for (IFrameTimeListener f : glSurface.getFrameTimeListeners()) {
+		for (int i = 0; i < glSurface.getFrameTimeListeners().size(); i++) {
+			final IFrameTimeListener f = glSurface.getFrameTimeListeners().get(i);
+
 			/* Each frame time callback gets a fresh time... */
 			f.onFrameTime(System.nanoTime() - enterTime);
 		}

@@ -27,15 +27,16 @@ import android.widget.TextView;
 import com.ejwa.dinja.engine.model.Camera;
 import com.ejwa.dinja.engine.model.Scene;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
-import java.util.HashMap;
-import java.util.Map;
+import com.ejwa.dinja.engine.util.Tuple;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DebugView implements Viewable {
 	private final Activity activity;
 	private final float updatesPerSecond;
-	private final Map<Camera, TextView> cameraDebugTexts = new HashMap<Camera, TextView>();
-	private final Map<Mesh, TextView> meshDebugTexts = new HashMap<Mesh, TextView>();
-	private final Map<Scene, TextView> sceneDebugTexts = new HashMap<Scene, TextView>();
+	private final List<Tuple<Camera, TextView>> cameraDebugTexts = new ArrayList<Tuple<Camera, TextView>>();
+	private final List<Tuple<Mesh, TextView>> meshDebugTexts = new ArrayList<Tuple<Mesh, TextView>>();
+	private final List<Tuple<Scene, TextView>> sceneDebugTexts = new ArrayList<Tuple<Scene, TextView>>();
 
 	public DebugView(Activity activity, Object ...debuggableObjects) {
 		this(1, activity ,debuggableObjects);
@@ -53,11 +54,11 @@ public class DebugView implements Viewable {
 			final TextView textView = new TextView(activity);
 
 			if (o instanceof Camera) {
-				cameraDebugTexts.put((Camera) o, textView);
+				cameraDebugTexts.add(new Tuple((Camera) o, textView));
 			} else if (o instanceof Mesh) {
-				meshDebugTexts.put((Mesh) o, textView);
+				meshDebugTexts.add(new Tuple((Mesh) o, textView));
 			} else if (o instanceof Scene) {
-				sceneDebugTexts.put((Scene) o, textView);
+				sceneDebugTexts.add(new Tuple((Scene) o, textView));
 			} else {
 				throw new IllegalArgumentException("Debuggable objects need to be one of the following: " +
 				                                   "Camera, Mesh or Scene.");
@@ -78,15 +79,15 @@ public class DebugView implements Viewable {
 		return updatesPerSecond;
 	}
 
-	public Map<Camera, TextView> getCameraDebugTexts() {
+	public List<Tuple<Camera, TextView>> getCameraDebugTexts() {
 		return cameraDebugTexts;
 	}
 
-	public Map<Mesh, TextView> getMeshDebugTexts() {
+	public List<Tuple<Mesh, TextView>> getMeshDebugTexts() {
 		return meshDebugTexts;
 	}
 
-	public Map<Scene, TextView> getSceneDebugTexts() {
+	public List<Tuple<Scene, TextView>> getSceneDebugTexts() {
 		return sceneDebugTexts;
 	}
 }
