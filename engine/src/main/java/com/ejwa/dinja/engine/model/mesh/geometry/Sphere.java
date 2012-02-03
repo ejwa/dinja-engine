@@ -60,14 +60,14 @@ public class Sphere extends Mesh {
 		for (int i = 0; i <= rings; i++) {
 			final float r = radius * FloatMath.sin(i * deltaRingAngle);
 			final float y = radius * FloatMath.cos(i * deltaRingAngle);
-			final float rNext = radius * FloatMath.sin((i + 1) * deltaRingAngle);
-			final float yNext = radius * FloatMath.cos((i + 1) * deltaRingAngle);
+			final float rNext = radius * (float) Math.sin((i + 1) * deltaRingAngle);
+			final float yNext = radius * (float) Math.cos((i + 1) * deltaRingAngle);
 
 			for (int j = 0; j <= segments; j++) {
-				final float x = r * FloatMath.sin(j * deltaSegmentAngle);
-				final float z = r * FloatMath.cos(j * deltaSegmentAngle);
-				final float xNext = rNext * FloatMath.sin(j * deltaSegmentAngle);
-				final float zNext = rNext * FloatMath.cos(j * deltaSegmentAngle);
+				final float x = r * (float) Math.sin(j * deltaSegmentAngle);
+				final float z = r * (float) Math.cos(j * deltaSegmentAngle);
+				final float xNext = rNext * (float) Math.sin(j * deltaSegmentAngle);
+				final float zNext = rNext * (float) Math.cos(j * deltaSegmentAngle);
 
 				final Vertex top = new Vertex(new Vector3f(xNext, yNext, zNext));
 				Vertex bottom = new Vertex(new Vector3f(x, y, z));
