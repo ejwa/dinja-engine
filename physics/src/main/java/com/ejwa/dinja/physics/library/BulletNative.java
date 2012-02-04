@@ -29,7 +29,8 @@ import com.googlecode.javacpp.annotation.Const;
 import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.Platform;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.UseSingleton", "PMD.AvoidUsingShortType"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidUsingShortType", "PMD.MissingStaticMethodInNonInstantiatableClass",
+                   "PMD.ShortMethodName", "PMD.ExcessivePublicCount"})
 @Platform(include = {"BulletCollision/BroadphaseCollision/btBroadphaseInterface.h",
                      "BulletCollision/BroadphaseCollision/btDispatcher.h",
                      "BulletCollision/CollisionDispatch/btCollisionDispatcher.h",
@@ -49,17 +50,17 @@ import com.googlecode.javacpp.annotation.Platform;
                      "BulletDynamics/Dynamics/btRigidBody.h",
                      "LinearMath/btDefaultMotionState.h", "LinearMath/btMotionState.h",
                      "LinearMath/btTransform.h", "LinearMath/btQuaternion.h"}, link = "bullet")
-class BulletNative {
+public class BulletNative {
 	static { Loader.load(); }
 
-	protected BulletNative() {
-		/* Only inheriting classes can make instances of this class. */
+	private BulletNative() {
+		/* No instances of this class allowed. */
 	}
 
 	@Name("btBoxShape")
 	public static class BoxShape extends PolyhedralConvexShape {
 		static { Loader.load(); }
-		@Allocator public native void allocate(@Const @ByRef BulletVector3 boxHalfExtents);
+		@Allocator public native void allocate(@Const @ByRef Vector3 boxHalfExtents);
 	}
 
 	@Name("btBroadphaseInterface")
@@ -81,7 +82,7 @@ class BulletNative {
 	@Name("btCollisionShape")
 	public static class CollisionShape extends Pointer {
 		static { Loader.load(); }
-		public native void calculateLocalInertia(float mass, @ByRef BulletVector3 inertia);
+		public native void calculateLocalInertia(float mass, @ByRef Vector3 inertia);
 	}
 
 	@Name("btConcaveShape")
@@ -112,7 +113,7 @@ class BulletNative {
 	@Name("btDefaultMotionState")
 	public static class DefaultMotionState extends MotionState {
 		static { Loader.load(); }
-		@Allocator public native void allocate(@Const @ByRef BulletTransform startTrans, @Const @ByRef BulletTransform centerOfMassOffset);
+		@Allocator public native void allocate(@Const @ByRef Transform startTrans, @Const @ByRef Transform centerOfMassOffset);
 	}
 
 	@Name("btDbvtBroadphase")
@@ -128,31 +129,65 @@ class BulletNative {
 	@Name("btDynamicsWorld")
 	public static class DynamicsWorld extends Pointer {
 		static { Loader.load(); }
+	}
+
+	@Name("btDiscreteDynamicsWorld")
+	public static class DiscreteDynamicsWorld extends DynamicsWorld {
+		static { Loader.load(); }
+		@Allocator public native void allocate(Dispatcher dispatcher, IBroadphase broadphase,
+		                                       ConstraintSolver constraintSolver,
+		                                       CollisionConfiguration collisionConfiguration);
 		public native void stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep);
-		public native void setGravity(@Const @ByRef BulletVector3 gravity);
-                public native @ByVal BulletVector3 getGravity();
+		public native void setGravity(@Const @ByRef Vector3 gravity);
+                public native @ByVal Vector3 getGravity();
 		public native void synchronizeMotionStates();
 		public native void addRigidBody(RigidBody body);
 		public native void addRigidBody(RigidBody body, short group, short mask);
 		public native void removeRigidBody(RigidBody body);
 	}
 
-	@Name("btDiscreteDynamicsWorld")
-	public static class DiscreteDynamicsWorld extends DynamicsWorld {
+	@Name("btMatrix3x3")
+	public static class Matrix3 extends Pointer {
 		static { Loader.load(); }
-		@Allocator public native void allocate(Dispatcher dispatcher, IBroadphase pairCache, ConstraintSolver constraintSolver, CollisionConfiguration collisionConfiguration);
+		@Allocator public native void allocate(@Const @ByRef float xx, @Const @ByRef float xy, @Const @ByRef float xz,
+		                                       @Const @ByRef float yx, @Const @ByRef float yy, @Const @ByRef float yz,
+		                                       @Const @ByRef float zx, @Const @ByRef float zy, @Const @ByRef float zz);
+		@Allocator public native void allocate(@Const @ByRef Quaternion q);
+		public native @Const @ByRef Vector3 getColumn(int i);
+		public native @Const @ByRef Vector3 getRow(int i);
+		public native void getRotation(@ByRef Quaternion q);
+		public native void setValue(@Const @ByRef float xx, @Const @ByRef float xy, @Const @ByRef float xz,
+		                            @Const @ByRef float yx, @Const @ByRef float yy, @Const @ByRef float yz,
+		                            @Const @ByRef float zx, @Const @ByRef float zy, @Const @ByRef float zz);
+
 	}
 
 	@Name("btMotionState")
 	public static class MotionState extends Pointer {
 		static { Loader.load(); }
-                public native void getWorldTransform(@ByRef BulletTransform worldTransform);
-                public native void setWorldTransform(@ByRef @Const BulletTransform worldTransform);
+                public native void getWorldTransform(@ByRef Transform worldTransform);
+                public native void setWorldTransform(@ByRef @Const Transform worldTransform);
 	}
 
 	@Name("btPolyhedralConvexShape")
 	public static class PolyhedralConvexShape extends ConvexInternalShape {
 		static { Loader.load(); }
+	}
+
+	@Name("btQuaternion")
+	public static class Quaternion extends Pointer {
+		static { Loader.load(); }
+		@Allocator public native void allocate(@Const @ByRef float x, @Const @ByRef float y, @Const @ByRef float z, @Const @ByRef float w);
+		public native @ByVal float getAngle();
+		public native @ByVal Vector3 getAxis();
+		public native @Const @ByRef float getX();
+		public native void setX(float x);
+		public native @Const @ByRef float getY();
+		public native void setY(float y);
+		public native @Const @ByRef float getZ();
+		public native void setZ(float z);
+		public native @Const @ByRef float w();
+		public native void setW(float z);
 	}
 
 	@Name("btRigidBody")
@@ -166,7 +201,8 @@ class BulletNative {
 	@Name("btRigidBody::btRigidBodyConstructionInfo")
 	public static class RigidBodyConstructionInfo extends Pointer {
 		static { Loader.load(); }
-		@Allocator public native void allocate(float mass, MotionState motionState, CollisionShape collisionShape, @Const @ByRef BulletVector3 localInertia);
+		@Allocator public native void allocate(float mass, MotionState motionState, CollisionShape collisionShape,
+		                                       @Const @ByRef Vector3 localInertia);
 	}
 
 	@Name("btSequentialImpulseConstraintSolver")
@@ -183,30 +219,36 @@ class BulletNative {
 	@Name("btStaticPlaneShape")
 	public static class StaticPlaneShape extends ConcaveShape {
 		static { Loader.load(); }
-		@Allocator public native void allocate(@Const @ByRef BulletVector3 planeNormal, float planeConstant);
+		@Allocator public native void allocate(@Const @ByRef Vector3 planeNormal, float planeConstant);
 	}
 
 	@Name("btTransform")
-	public static class BulletTransform extends Pointer {
+	public static class Transform extends Pointer {
 		static { Loader.load(); }
-		@Allocator public native void allocate(@Const @ByRef BulletQuaternion q, @Const @ByRef BulletVector3 v);
+		@Allocator public native void allocate(@Const @ByRef Quaternion basis, @Const @ByRef Vector3 origin);
+		@Allocator public native void allocate(@Const @ByRef Matrix3 basis, @Const @ByRef Vector3 origin);
+		public native @Const @ByRef Matrix3 getBasis();
+		public native void setBasis(@Const @ByRef Matrix3 basis);
+		public native @Const @ByRef Vector3 getOrigin();
+		public native void setOrigin(@Const @ByRef Vector3 origin);
+		public native @ByVal Quaternion getRotation();
+		public native void setRotation(@Const @ByRef Quaternion rotation);
 	}
 
 	@Name("btVector3")
-	public static class BulletVector3 extends Pointer {
+	public static class Vector3 extends Pointer {
 		static { Loader.load(); }
 		@Allocator public native void allocate(@Const @ByRef float x, @Const @ByRef float y, @Const @ByRef float z);
-		@Allocator public native void allocate(@Const @ByRef BulletVector3 v);
-		@Name("operator+=") public native @ByRef BulletVector3 add(@Const @ByRef BulletVector3 v);
-		@Name("operator-=") public native @ByRef BulletVector3 sub(@Const @ByRef BulletVector3 v);
-		@Name("operator*=") public native @ByRef BulletVector3 mul(@Const @ByRef float s);
-		@Name("operator/=") public native @ByRef BulletVector3 div(@Const @ByRef float s);
-		public native float dot(@Const @ByRef BulletVector3 v);
-	}
-
-	@Name("btQuaternion")
-	public static class BulletQuaternion extends Pointer {
-		static { Loader.load(); }
-		@Allocator public native void allocate(@Const @ByRef float x, @Const @ByRef float y, @Const @ByRef float z, @Const @ByRef float w);
+		public native @Const @ByRef float getX();
+		public native void setX(float x);
+		public native @Const @ByRef float getY();
+		public native void setY(float y);
+		public native @Const @ByRef float getZ();
+		public native void setZ(float z);
+		@Name("operator+=") public native @ByRef Vector3 add(@Const @ByRef Vector3 v);
+		@Name("operator-=") public native @ByRef Vector3 sub(@Const @ByRef Vector3 v);
+		@Name("operator*=") public native @ByRef Vector3 mul(@Const @ByRef float s);
+		@Name("operator/=") public native @ByRef Vector3 div(@Const @ByRef float s);
+		public native float dot(@Const @ByRef Vector3 v);
 	}
 }
