@@ -18,18 +18,23 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.physics.library;
+package com.ejwa.dinja.physics.collision.shape;
 
+import com.ejwa.dinja.physics.library.BulletNative;
 import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.annotation.Allocator;
+import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.Platform;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidUsingShortType", "PMD.MissingStaticMethodInNonInstantiatableClass",
-                   "PMD.ShortMethodName", "PMD.ExcessivePublicCount"})
-@Platform(link = "bullet")
-public final class BulletNative {
-	static { Loader.load(); }
+@Platform(include = "BulletCollision/CollisionShapes/btSphereShape.h", link = "bullet")
+@Name("btSphereShape")
+public class SphereShape extends ConvexInternalShape {
+	static { Loader.load(BulletNative.class); }
 
-	private BulletNative() {
-		/* No instances of this class allowed. */
+	@Allocator private native void allocate(float radius);
+
+	public SphereShape(float radius) {
+		super();
+		allocate(radius);
 	}
 }

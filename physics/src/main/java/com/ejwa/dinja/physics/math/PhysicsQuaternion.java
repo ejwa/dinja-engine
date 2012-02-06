@@ -23,11 +23,22 @@ package com.ejwa.dinja.physics.math;
 import com.ejwa.dinja.physics.library.BulletNative;
 import com.ejwa.dinja.physics.pool.Pool;
 import com.ejwa.dinja.physics.pool.Poolable;
+import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.Pointer;
+import com.googlecode.javacpp.annotation.Allocator;
+import com.googlecode.javacpp.annotation.ByRef;
+import com.googlecode.javacpp.annotation.ByVal;
+import com.googlecode.javacpp.annotation.Const;
+import com.googlecode.javacpp.annotation.Name;
+import com.googlecode.javacpp.annotation.Platform;
 import org.openmali.vecmath2.Quaternion4f;
 import org.openmali.vecmath2.Vector3f;
 
-public class PhysicsQuaternion implements Poolable<PhysicsQuaternion> {
-	private final BulletNative.Quaternion quaternion = new BulletNative.Quaternion();
+@SuppressWarnings("PMD.ShortMethodName")
+@Platform(include = "LinearMath/btQuaternion.h", link = "bullet")
+@Name("btQuaternion")
+public class PhysicsQuaternion extends Pointer implements Poolable<PhysicsQuaternion> {
+	static { Loader.load(BulletNative.class); }
 
 	private static final ThreadLocal<Pool<PhysicsQuaternion>> POOL = new ThreadLocal<Pool<PhysicsQuaternion>>() {
 		@Override
@@ -36,64 +47,22 @@ public class PhysicsQuaternion implements Poolable<PhysicsQuaternion> {
 		}
 	};
 
-	public PhysicsQuaternion(float x, float y, float z, float w) {
-		quaternion.allocate(x, y, z, w);
-	}
+	@Allocator private native void allocate(@Const @ByRef float x, @Const @ByRef float y, @Const @ByRef float z, @Const @ByRef float w);
+	public native @Const @ByRef float getX();
+	public native void setX(float x);
+	public native @Const @ByRef float getY();
+	public native void setY(float y);
+	public native @Const @ByRef float getZ();
+	public native void setZ(float z);
+	private native @Const @ByRef float w();
+	public float getW() { return w(); };
+	public native void setW(float z);
+	public native float getAngle();
+	public native @ByVal PhysicsVector3 getAxis();
 
-	public PhysicsQuaternion(Quaternion4f q) {
-		this(q.getA(), q.getB(), q.getC(), q.getD());
-	}
-
-	public float getAngle() {
-		return quaternion.getAngle();
-	}
-
-	public Vector3f getAxis() {
-		final Vector3f result = new Vector3f();
-		getAxis(result);
-
-		return result;
-	}
-
-	public void getAxis(Vector3f axis) {
-		final BulletNative.Vector3 vector = quaternion.getAxis();
-
-		axis.setX(vector.getX());
-		axis.setY(vector.getY());
-		axis.setZ(vector.getZ());
-		vector.deallocate(); /* Passed by value */
-	}
-
-	public float getX() {
-		return quaternion.getX();
-	}
-
-	public float getY() {
-		return quaternion.getY();
-	}
-
-	public float getZ() {
-		return quaternion.getZ();
-	}
-
-	public float getW() {
-		return quaternion.w();
-	}
-
-	public void setX(float x) {
-		quaternion.setX(x);
-	}
-
-	public void setY(float y) {
-		quaternion.setY(y);
-	}
-
-	public void setZ(float z) {
-		quaternion.setZ(z);
-	}
-
-	public void setW(float w) {
-		quaternion.setW(w);
+	public PhysicsQuaternion() {
+		super();
+		allocate(0, 0, 0, 0);
 	}
 
 	public void set(float x, float y, float z, float w) {
@@ -101,8 +70,30 @@ public class PhysicsQuaternion implements Poolable<PhysicsQuaternion> {
 		setZ(z); setW(w);
 	}
 
+	public void set(Quaternion4f quaternion) {
+		set(quaternion.getA(), quaternion.getB(), quaternion.getC(), quaternion.getD());
+	}
+
+	public void getAxis(Vector3f axis) {
+		final PhysicsVector3 vector = getAxis();
+
+		axis.setX(vector.getX());
+		axis.setY(vector.getY());
+		axis.setZ(vector.getZ());
+	}
+
 	public static PhysicsQuaternion fromPool() {
-		return POOL.get().allocate();
+		return POOL.get().allocateCleared();
+	}
+
+	public static PhysicsQuaternion fromPool(float x, float y, float z, float w) {
+		final PhysicsQuaternion quaternion = POOL.get().allocate();
+		quaternion.set(x, y, z, w);
+		return quaternion;
+	}
+
+	public static PhysicsQuaternion fromPool(Quaternion4f quaternion) {
+		return fromPool(quaternion.getA(), quaternion.getB(), quaternion.getC(), quaternion.getD());
 	}
 
 	public static void toPool(PhysicsQuaternion q) {
@@ -110,13 +101,7 @@ public class PhysicsQuaternion implements Poolable<PhysicsQuaternion> {
 	}
 
 	@Override
-	public void initialize() {
+	public void clear() {
 		set(0, 0, 0, 0);
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		quaternion.deallocate();
-		super.finalize();
 	}
 }

@@ -18,18 +18,19 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.physics.library;
+package com.ejwa.dinja.physics.dynamics;
 
-import com.googlecode.javacpp.Loader;
-import com.googlecode.javacpp.annotation.Platform;
+import org.openmali.vecmath2.Vector3f;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidUsingShortType", "PMD.MissingStaticMethodInNonInstantiatableClass",
-                   "PMD.ShortMethodName", "PMD.ExcessivePublicCount"})
-@Platform(link = "bullet")
-public final class BulletNative {
-	static { Loader.load(); }
-
-	private BulletNative() {
-		/* No instances of this class allowed. */
-	}
+@SuppressWarnings("PMD.AvoidUsingShortType")
+public interface IDynamicsWorld {
+	void addRigidBody(RigidBody body);
+	void addRigidBody(RigidBody body, short group, short mask);
+	void removeRigidBody(RigidBody body);
+	void getGravity(Vector3f gravity);
+	void setGravity(Vector3f gravity);
+	void setGravity(float x, float y, float z);
+	void stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep);
+	void stepSimulation(float timeStep);
+	void synchronizeMotionStates();
 }

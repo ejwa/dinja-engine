@@ -18,18 +18,25 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.physics.library;
+package com.ejwa.dinja.physics.collision.dispatch;
 
+import com.ejwa.dinja.physics.collision.CollisionConfiguration;
+import com.ejwa.dinja.physics.collision.ICollisionConfiguration;
+import com.ejwa.dinja.physics.library.BulletNative;
 import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.annotation.Allocator;
+import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.Platform;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidUsingShortType", "PMD.MissingStaticMethodInNonInstantiatableClass",
-                   "PMD.ShortMethodName", "PMD.ExcessivePublicCount"})
-@Platform(link = "bullet")
-public final class BulletNative {
-	static { Loader.load(); }
+@Platform(include = "BulletCollision/CollisionDispatch/btCollisionDispatcher.h", link = "bullet")
+@Name("btCollisionDispatcher")
+public class CollisionDispatcher extends Dispatcher implements IDispatcher {
+	static { Loader.load(BulletNative.class); }
 
-	private BulletNative() {
-		/* No instances of this class allowed. */
+	@Allocator private native void allocate(CollisionConfiguration collisionConfiguration);
+
+	public CollisionDispatcher(ICollisionConfiguration collisionConfiguration) {
+		super();
+		allocate((CollisionConfiguration) collisionConfiguration);
 	}
 }

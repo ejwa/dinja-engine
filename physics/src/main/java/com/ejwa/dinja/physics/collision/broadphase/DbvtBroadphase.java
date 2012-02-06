@@ -18,18 +18,15 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.physics.library;
+package com.ejwa.dinja.physics.collision.broadphase;
 
+import com.ejwa.dinja.physics.library.BulletNative;
 import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.Platform;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidUsingShortType", "PMD.MissingStaticMethodInNonInstantiatableClass",
-                   "PMD.ShortMethodName", "PMD.ExcessivePublicCount"})
-@Platform(link = "bullet")
-public final class BulletNative {
-	static { Loader.load(); }
-
-	private BulletNative() {
-		/* No instances of this class allowed. */
-	}
+@Platform(include = "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h", link = "bullet")
+@Name("btDbvtBroadphase")
+public class DbvtBroadphase extends Broadphase implements IBroadphase {
+	static { Loader.load(BulletNative.class); }
 }

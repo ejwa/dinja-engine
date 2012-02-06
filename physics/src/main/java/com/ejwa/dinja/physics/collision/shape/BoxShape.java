@@ -18,18 +18,35 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.physics.library;
+package com.ejwa.dinja.physics.collision.shape;
 
+import com.ejwa.dinja.physics.library.BulletNative;
+import com.ejwa.dinja.physics.math.PhysicsVector3;
 import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.annotation.Allocator;
+import com.googlecode.javacpp.annotation.ByRef;
+import com.googlecode.javacpp.annotation.Const;
+import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.Platform;
+import org.openmali.vecmath2.Vector3f;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidUsingShortType", "PMD.MissingStaticMethodInNonInstantiatableClass",
-                   "PMD.ShortMethodName", "PMD.ExcessivePublicCount"})
-@Platform(link = "bullet")
-public final class BulletNative {
-	static { Loader.load(); }
+@Platform(include = "BulletCollision/CollisionShapes/btBoxShape.h", link = "bullet")
+@Name("btBoxShape")
+public class BoxShape extends PolyhedralConvexShape {
+	static { Loader.load(BulletNative.class); }
 
-	private BulletNative() {
-		/* No instances of this class allowed. */
+	@Allocator private native void allocate(@Const @ByRef PhysicsVector3 boxHalfExtents);
+
+	public BoxShape(PhysicsVector3 boxHalfExtents) {
+		super();
+		allocate(boxHalfExtents);
+	}
+
+	public BoxShape(Vector3f boxHalfExtents) {
+		super();
+		final PhysicsVector3 v = new PhysicsVector3();
+
+		v.set(boxHalfExtents);
+		allocate(v);
 	}
 }

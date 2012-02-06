@@ -23,12 +23,26 @@ package com.ejwa.dinja.physics.math;
 import com.ejwa.dinja.physics.library.BulletNative;
 import com.ejwa.dinja.physics.pool.Pool;
 import com.ejwa.dinja.physics.pool.Poolable;
+import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.Pointer;
+import com.googlecode.javacpp.annotation.Allocator;
+import com.googlecode.javacpp.annotation.ByRef;
+import com.googlecode.javacpp.annotation.ByVal;
+import com.googlecode.javacpp.annotation.Const;
+import com.googlecode.javacpp.annotation.Name;
+import com.googlecode.javacpp.annotation.Platform;
 import org.openmali.vecmath2.Matrix3f;
+import org.openmali.vecmath2.Matrix4f;
 import org.openmali.vecmath2.Quaternion4f;
 import org.openmali.vecmath2.Vector3f;
 
-public class PhysicsTransform implements Poolable<PhysicsTransform> {
-	private final BulletNative.Transform transform = new BulletNative.Transform();
+@Platform(include = "LinearMath/btTransform.h", link = "bullet")
+@Name("btTransform")
+public class PhysicsTransform extends Pointer implements Poolable<PhysicsTransform> {
+	static { Loader.load(BulletNative.class); }
+
+	private final PhysicsMatrix3 basis = new PhysicsMatrix3();
+	private final PhysicsVector3 origin = new PhysicsVector3();
 
 	private static final ThreadLocal<Pool<PhysicsTransform>> POOL = new ThreadLocal<Pool<PhysicsTransform>>() {
 		@Override
@@ -37,93 +51,106 @@ public class PhysicsTransform implements Poolable<PhysicsTransform> {
 		}
 	};
 
-	public PhysicsTransform(Quaternion4f basis, Vector3f origin) {
-		final BulletNative.Quaternion q = new BulletNative.Quaternion();
-		final BulletNative.Vector3 v = new BulletNative.Vector3();
+	@Allocator private native void allocate(@Const @ByRef PhysicsMatrix3 basis, @Const @ByRef PhysicsVector3 origin);
+	public native @Const @ByRef PhysicsMatrix3 getBasis();
+	public native void setBasis(@Const @ByRef PhysicsMatrix3 basis);
+	public native @Const @ByRef PhysicsVector3 getOrigin();
+	public native void setOrigin(@Const @ByRef PhysicsVector3 origin);
+	public native @ByVal PhysicsQuaternion getRotation();
+	public native void setRotation(@Const @ByRef PhysicsQuaternion rotation);
 
-		q.allocate(basis.getA(), basis.getB(), basis.getC(), basis.getD());
-		v.allocate(origin.getX(), origin.getY(), origin.getZ());
-		transform.allocate(q, v);
-	}
-
-	public PhysicsTransform(Matrix3f basis, Vector3f origin) {
-		final BulletNative.Matrix3 m = new BulletNative.Matrix3();
-		final BulletNative.Vector3 v = new BulletNative.Vector3();
-
-		m.allocate(basis.get(0, 0), basis.get(0, 1), basis.get(0, 2),
-		           basis.get(1, 0), basis.get(1, 1), basis.get(1, 2),
-		           basis.get(2, 0), basis.get(2, 1), basis.get(2, 2));
-		v.allocate(origin.getX(), origin.getY(), origin.getZ());
-		transform.allocate(m, v);
-	}
-
-	public Matrix3f getBasis() {
-		final Matrix3f result = new Matrix3f();
-		getBasis(result);
-
-		return result;
+	public PhysicsTransform() {
+		super();
+		allocate(basis, origin);
 	}
 
 	public void getBasis(Matrix3f basis) {
-		final BulletNative.Matrix3 matrix = transform.getBasis();
-		final BulletNative.Vector3 r0 = matrix.getRow(0);
-		final BulletNative.Vector3 r1 = matrix.getRow(1);
-		final BulletNative.Vector3 r2 = matrix.getRow(2);
-
-		basis.set(r0.getX(), r0.getY(), r0.getZ(),
-		          r1.getX(), r1.getY(), r1.getZ(),
-		          r2.getX(), r2.getY(), r2.getZ());
-
+		this.basis.getValue(basis);
 	}
 
 	public void setBasis(Matrix3f basis) {
-		final BulletNative.Matrix3 matrix = transform.getBasis();
-
-		matrix.setValue(basis.get(0, 0), basis.get(0, 1), basis.get(0, 2),
-		                basis.get(1, 0), basis.get(1, 1), basis.get(1, 2),
-		                basis.get(2, 0), basis.get(2, 1), basis.get(2, 2));
-		transform.setBasis(matrix);
-	}
-
-	public Vector3f getOrigin() {
-		final Vector3f result = new Vector3f();
-		getOrigin(result);
-
-		return result;
-	}
-
-	public void setOrigin(Vector3f origin) {
-		final BulletNative.Vector3 vector = transform.getOrigin();
-
-		vector.setX(origin.getX());
-		vector.setY(origin.getY());
-		vector.setZ(origin.getZ());
-		transform.setOrigin(vector);
+		this.basis.setValue(basis);
+		setBasis(this.basis);
 	}
 
 	public void getOrigin(Vector3f origin) {
-		final BulletNative.Vector3 vector = transform.getOrigin();
-		origin.set(vector.getX(), vector.getY(), vector.getZ());
+		final PhysicsVector3 v = getOrigin();
+		origin.set(v.getX(), v.getY(), v.getZ());
 	}
 
-
-	public Quaternion4f getRotation() {
-		final Quaternion4f result = new Quaternion4f();
-		getRotation(result);
-
-		return result;
+	public void setOrigin(Vector3f origin) {
+		this.origin.set(origin);
+		setOrigin(this.origin);
 	}
 
 	public void getRotation(Quaternion4f rotation) {
-		final BulletNative.Quaternion quaternion = transform.getRotation();
-
-		rotation.set(quaternion.getX(), quaternion.getY(), quaternion.getZ(), quaternion.w());
-		quaternion.deallocate(); /* Passed by value */
+		final PhysicsQuaternion q = getRotation();
+		rotation.set(q.getX(), q.getY(), q.getZ(), q.getW());
 	}
 
+	public void setRotation(Quaternion4f rotation) {
+		final PhysicsQuaternion q = getRotation();
+		q.set(rotation);
+		setRotation(q);
+	}
+
+	public Matrix4f getTransformationMatrix() {
+		final Matrix4f transformationMatrix = new Matrix4f();
+		getTransformationMatrix(transformationMatrix);
+		return transformationMatrix;
+	}
+
+	public void getTransformationMatrix(Matrix4f transformationMatrix) {
+		final Matrix3f m = Matrix3f.fromPool();
+		final Vector3f v = Vector3f.fromPool();
+
+		basis.getValue(m);
+		origin.get(v);
+		transformationMatrix.set(m);
+		transformationMatrix.setTranslation(v);
+
+		Matrix3f.toPool(m);
+		Vector3f.toPool(v);
+	}
+
+	public void setTransformationMatrix(Matrix4f transformationMatrix) {
+		final Matrix3f m = Matrix3f.fromPool();
+		final Vector3f v = Vector3f.fromPool();
+
+		transformationMatrix.get(m, v);
+		basis.setValue(m);
+		origin.set(v);
+		setBasis(basis);
+		setOrigin(origin);
+
+		Matrix3f.toPool(m);
+		Vector3f.toPool(v);
+	}
 
 	public static PhysicsTransform fromPool() {
-		return POOL.get().allocate();
+		return POOL.get().allocateCleared();
+	}
+
+	public static PhysicsTransform fromPool(Matrix4f transformationMatrix) {
+		final PhysicsTransform transform = POOL.get().allocate();
+		transform.setTransformationMatrix(transformationMatrix);
+		return transform;
+	}
+
+	public static PhysicsTransform fromPool(Quaternion4f basis, Vector3f origin) {
+		final PhysicsTransform transform = POOL.get().allocate();
+
+		transform.setRotation(basis);
+		transform.setOrigin(origin);
+		return transform;
+	}
+
+	public static PhysicsTransform fromPool(Matrix3f basis, Vector3f origin) {
+		final PhysicsTransform transform = POOL.get().allocate();
+
+		transform.setBasis(basis);
+		transform.setOrigin(origin);
+		return transform;
 	}
 
 	public static void toPool(PhysicsTransform t) {
@@ -131,17 +158,10 @@ public class PhysicsTransform implements Poolable<PhysicsTransform> {
 	}
 
 	@Override
-	public void initialize() {
-		final Matrix3f basis = Matrix3f.fromPool();
-		final Vector3f origin = Vector3f.fromPool();
-
+	public void clear() {
+		basis.clear();
+		origin.clear();
 		setBasis(basis);
 		setOrigin(origin);
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		transform.deallocate();
-		super.finalize();
 	}
 }

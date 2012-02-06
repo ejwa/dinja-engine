@@ -23,10 +23,20 @@ package com.ejwa.dinja.physics.math;
 import com.ejwa.dinja.physics.library.BulletNative;
 import com.ejwa.dinja.physics.pool.Pool;
 import com.ejwa.dinja.physics.pool.Poolable;
+import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.Pointer;
+import com.googlecode.javacpp.annotation.Allocator;
+import com.googlecode.javacpp.annotation.ByRef;
+import com.googlecode.javacpp.annotation.Const;
+import com.googlecode.javacpp.annotation.Name;
+import com.googlecode.javacpp.annotation.Platform;
 import org.openmali.vecmath2.Vector3f;
 
-public class PhysicsVector3 implements Poolable<PhysicsVector3> {
-	private final BulletNative.Vector3 vector = new BulletNative.Vector3();
+@SuppressWarnings("PMD.TooManyMethods")
+@Platform(include = "LinearMath/btVector3.h", link = "bullet")
+@Name("btVector3")
+public class PhysicsVector3 extends Pointer implements Poolable<PhysicsVector3> {
+	static { Loader.load(BulletNative.class); }
 
 	private static final ThreadLocal<Pool<PhysicsVector3>> POOL = new ThreadLocal<Pool<PhysicsVector3>>() {
 		@Override
@@ -35,74 +45,81 @@ public class PhysicsVector3 implements Poolable<PhysicsVector3> {
 		}
 	};
 
-	public PhysicsVector3(float x, float y, float z) {
-		vector.allocate(x, y, z);
+	@Allocator private native void allocate(@Const @ByRef float x, @Const @ByRef float y, @Const @ByRef float z);
+	public native @Const @ByRef float getX();
+	public native void setX(float x);
+	public native @Const @ByRef float getY();
+	public native void setY(float y);
+	public native @Const @ByRef float getZ();
+	public native void setZ(float z);
+	@Name("operator+=") public native void add(@Const @ByRef PhysicsVector3 v);
+	@Name("operator-=") public native void sub(@Const @ByRef PhysicsVector3 v);
+	@Name("operator*=") public native void mul(@Const @ByRef float s);
+	@Name("operator/=") public native void div(@Const @ByRef float s);
+	public native float dot(@Const @ByRef PhysicsVector3 v);
+
+	public PhysicsVector3() {
+		super();
+		allocate(0, 0, 0);
 	}
 
-	public PhysicsVector3(Vector3f v) {
-		this(v.getX(), v.getY(), v.getZ());
+	public Vector3f get() {
+		final Vector3f v = new Vector3f();
+		get(v);
+		return v;
 	}
 
-	public float getX() {
-		return vector.getX();
-	}
-
-	public float getY() {
-		return vector.getY();
-	}
-
-	public float getZ() {
-		return vector.getZ();
-	}
-
-	public void setX(float x) {
-		vector.setX(x);
-	}
-
-	public void setY(float y) {
-		vector.setY(y);
-	}
-
-	public void setZ(float z) {
-		vector.setZ(z);
+	public void get(Vector3f vector) {
+		vector.set(getX(), getY(), getZ());
 	}
 
 	public void set(float x, float y, float z) {
-		vector.setX(x);
-		vector.setY(y);
-		vector.setZ(z);
+		setX(x);
+		setY(y);
+		setZ(z);
+	}
+
+	public void set(Vector3f v) {
+		set(v.getX(), v.getY(), v.getZ());
 	}
 
 	public void add(Vector3f v) {
 		final PhysicsVector3 pv = fromPool();
-		vector.add(pv.vector);
+		pv.set(v);
+		add(pv);
 		toPool(pv);
 	}
 
 	public void sub(Vector3f v) {
 		final PhysicsVector3 pv = fromPool();
-		vector.sub(pv.vector);
+		pv.set(v);
+		sub(pv);
 		toPool(pv);
-	}
-
-	public void mul(float s) {
-		vector.mul(s);
-	}
-
-	public void div(float s) {
-		vector.div(s);
 	}
 
 	public float dot(Vector3f v) {
 		final PhysicsVector3 pv = fromPool();
-		final float result = vector.dot(pv.vector);
+		pv.set(v);
+		final float result = dot(pv);
 
 		toPool(pv);
 		return result;
 	}
 
 	public static PhysicsVector3 fromPool() {
-		return POOL.get().allocate();
+		return POOL.get().allocateCleared();
+	}
+
+	public static PhysicsVector3 fromPool(float x, float y, float z) {
+		final PhysicsVector3 v = POOL.get().allocate();
+		v.set(x, y, z);
+		return v;
+	}
+
+	public static PhysicsVector3 fromPool(Vector3f v) {
+		final PhysicsVector3 pv = POOL.get().allocate();
+		pv.set(v);
+		return pv;
 	}
 
 	public static void toPool(PhysicsVector3 v) {
@@ -110,13 +127,7 @@ public class PhysicsVector3 implements Poolable<PhysicsVector3> {
 	}
 
 	@Override
-	public void initialize() {
+	public void clear() {
 		set(0, 0, 0);
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		vector.deallocate();
-		super.finalize();
 	}
 }
