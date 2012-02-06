@@ -21,5 +21,5 @@
 package com.ejwa.dinja.physics.pool;
 
 public interface Poolable<T> {
-	void initialize();
+	void clear();
 }

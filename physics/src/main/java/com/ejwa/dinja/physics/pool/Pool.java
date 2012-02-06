@@ -37,7 +37,7 @@ public class Pool<T extends Poolable<T>> {
 	}
 
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public T allocate() {
+	private T allocate(boolean clear) {
 		T object;
 
 		if (n > 0) {
@@ -50,8 +50,19 @@ public class Pool<T extends Poolable<T>> {
 			}
 		}
 
-		object.initialize();
+		if (clear) {
+			object.clear();
+		}
+
 		return object;
+	}
+
+	public T allocate() {
+		return allocate(false);
+	}
+
+	public T allocateCleared() {
+		return allocate(true);
 	}
 
 	public void free(T object) {
