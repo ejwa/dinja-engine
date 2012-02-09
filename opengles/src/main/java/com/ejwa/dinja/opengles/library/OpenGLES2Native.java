@@ -90,6 +90,8 @@ class OpenGLES2Native {
 	protected static native void glGenTextures(int n, @Cast("unsigned int *") IntPointer textures);
 	public static native void glPixelStorei(int paramName, int param);
 
+	protected static native void glBlendFunc(int sourceFactor, int destinationFactor);
+
 	public static native void glBindBuffer(int target, int buffer);
 	protected static native void glGenBuffers(int n, @Cast("unsigned int *") IntPointer buffers);
 }
