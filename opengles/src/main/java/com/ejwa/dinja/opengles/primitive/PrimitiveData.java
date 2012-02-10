@@ -20,6 +20,8 @@
  */
 package com.ejwa.dinja.opengles.primitive;
 
+import com.ejwa.dinja.opengles.BlendDestinationFactor;
+import com.ejwa.dinja.opengles.BlendSourceFactor;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.NativeMemory;
 import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
@@ -33,6 +35,8 @@ import org.openmali.vecmath2.Vector3f;
 
 /* TODO: Things like uniform.getData().deallocate() should happen in the uniform finalize method, and not here... */
 public class PrimitiveData {
+	private BlendSourceFactor blendSourceFactor = BlendSourceFactor.GL_ONE;
+	private BlendDestinationFactor blendDestinationFactor = BlendDestinationFactor.GL_ZERO;
 	private final PrimitiveType primitiveType;
 	private Pointer indices;
 	private final Tuple3fVertexAttributeArray vertices;
@@ -49,6 +53,19 @@ public class PrimitiveData {
 		this(primitiveType, vertexCoordVariableName);
 		setVerticesData(vertices);
 		setIndices(indices);
+	}
+
+	public BlendDestinationFactor getBlendDestinationFactor() {
+		return blendDestinationFactor;
+	}
+
+	public BlendSourceFactor getBlendSourceFactor() {
+		return blendSourceFactor;
+	}
+
+	public void setBlendFactor(BlendSourceFactor blendSourceFactor, BlendDestinationFactor blendDestionationFactor) {
+		this.blendSourceFactor = blendSourceFactor;
+		this.blendDestinationFactor = blendDestionationFactor;
 	}
 
 	public PrimitiveType getPrimitiveType() {

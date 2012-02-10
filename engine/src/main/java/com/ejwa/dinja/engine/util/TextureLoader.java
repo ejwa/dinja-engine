@@ -23,6 +23,7 @@ package com.ejwa.dinja.engine.util;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import com.ejwa.dinja.engine.model.file.FileResourceException;
 import com.ejwa.dinja.engine.model.mesh.Texture;
 import java.io.IOException;
@@ -45,6 +46,7 @@ public final class TextureLoader {
 	 * @param fileName Name of the texture file (asset) to load.
 	 * @return The created texture.
 	 */
+	@SuppressWarnings("PMD.ProtectLogD")
 	public static Texture load(AssetManager assetManager, String fileName) {
 		try {
 			final Bitmap bitmap = BitmapFactory.decodeStream(assetManager.open(fileName));
@@ -54,10 +56,15 @@ public final class TextureLoader {
 			}
 
 			final int pixels[] = new int[bitmap.getWidth() * bitmap.getHeight()];
+			final boolean hasAlpha = bitmap.getConfig() == Bitmap.Config.ARGB_8888 ? true : false;
+
 			bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+			Log.d(TextureLoader.class.getName(), String.format("Loaded %dx%d bitmap \"%s\" in format %s.",
+			      bitmap.getWidth(), bitmap.getHeight(), fileName, bitmap.getConfig()));
 			bitmap.recycle();
 
-			return new Texture(bitmap.getWidth(), bitmap.getHeight(), pixels);
+			return new Texture(bitmap.getWidth(), bitmap.getHeight(), hasAlpha, pixels);
 		} catch (IOException ex) {
 			throw new FileResourceException(String.format("Failed to load texture '%s' (%s).",
 			                                fileName, ex.getMessage()), ex);

@@ -22,6 +22,7 @@ package com.ejwa.dinja.opengles.library;
 
 import com.ejwa.dinja.opengles.BlendDestinationFactor;
 import com.ejwa.dinja.opengles.BlendSourceFactor;
+import com.ejwa.dinja.opengles.Capability;
 import com.ejwa.dinja.opengles.DataType;
 import com.ejwa.dinja.opengles.TextureFormat;
 import com.ejwa.dinja.opengles.TextureTarget;
@@ -123,6 +124,7 @@ public final class OpenGLES2 extends OpenGLES2Native {
 			s.send(samplerHandle);
 		}
 
+		glBlendFunc(primitiveData.getBlendSourceFactor(), primitiveData.getBlendDestinationFactor());
 		OpenGLES2Native.glDrawElements(primitiveData.getPrimitiveType().getId(), indices.capacity(), indicesType.getId(), indices);
 	}
 

@@ -21,8 +21,6 @@
 package com.ejwa.dinja.engine.model.mesh;
 
 import android.graphics.Color;
-import com.ejwa.dinja.opengles.TextureFormat;
-import com.ejwa.dinja.opengles.TextureType;
 
 /**
  * Describes texture data to be used together with a mesh.
@@ -33,6 +31,7 @@ import com.ejwa.dinja.opengles.TextureType;
 public class Texture {
 	private final int width;
 	private final int height;
+	private boolean hasAlpha;
 	private final int pixels[];
 
 	/**
@@ -40,10 +39,11 @@ public class Texture {
 	 *
 	 * @param width The width of the texture. Has to be a multiple of 2.
 	 * @param height The height of the texture. Has to be a multiple of 2.
+	 * @param hasAlpha Specify true if the pixel-data has usable alpha values. Otherwise, specify false.
 	 * @param pixels An array of pixels, Each <code>int</code> in the array describes pixel data in the form ARGB, with eight
 	 *               bits for each color component.
 	 */
-	public Texture(int width, int height, int ...pixels) {
+	public Texture(int width, int height, boolean hasAlpha, int ...pixels) {
 		this.width = width;
 		this.height = height;
 
@@ -51,6 +51,7 @@ public class Texture {
 			throw new IllegalArgumentException("Texture dimensions are not a multiple of 2.");
 		}
 
+		this.hasAlpha = hasAlpha;
 		this.pixels = pixels;
 	}
 
@@ -70,6 +71,26 @@ public class Texture {
 	 */
 	public int getHeight() {
 		return height;
+	}
+
+	/**
+	 * Returns if the current texture has valid alpha values.
+	 *
+	 * @return true if the texture has valid alpha values.
+	 */
+	public boolean isHasAlpha() {
+		return hasAlpha;
+	}
+
+	/**
+	 * Sets if the current texture has valid alpha values. This value is used by Dinja Engine to check if the current
+	 * texture has valid alpha values or not. Set it to false on a image with alpha values to ignore the alpha channel of
+	 * the image. In effect, if set to false, Dinja Engine will fetch color values using {@link #getPixelsRGB565}.
+	 *
+	 * @param hasAlpha true if alpha values should be fetched from the texture, otherwise false.
+	 */
+	public void setHasAlpha(boolean hasAlpha) {
+		this.hasAlpha = hasAlpha;
 	}
 
 	/**

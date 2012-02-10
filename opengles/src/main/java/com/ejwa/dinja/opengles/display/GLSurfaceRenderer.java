@@ -92,6 +92,7 @@ public class GLSurfaceRenderer implements Renderer {
 		OpenGLES2.glViewport(0, 0, width, height);
 		Capability.GL_DEPTH_TEST.enable();
 		Capability.GL_CULL_FACE.enable();
+		Capability.GL_BLEND.enable();
 
 		for (ISurfaceChangeListener s : glSurface.getSurfaceChangeListeners()) {
 			s.onSurfaceChange(glSurface);

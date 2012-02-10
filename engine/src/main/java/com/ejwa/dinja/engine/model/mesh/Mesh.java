@@ -28,9 +28,12 @@ import com.ejwa.dinja.engine.model.transform.Scaler;
 import com.ejwa.dinja.engine.model.transform.Translator;
 import com.ejwa.dinja.engine.util.HashedArrayList;
 import com.ejwa.dinja.opengles.ActiveTexture;
+import com.ejwa.dinja.opengles.BlendDestinationFactor;
+import com.ejwa.dinja.opengles.BlendSourceFactor;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import com.ejwa.dinja.opengles.shader.argument.TextureRGB565Sampler;
+import com.ejwa.dinja.opengles.shader.argument.TextureRGBA8888Sampler;
 import com.ejwa.dinja.opengles.shader.argument.UniformMatrix4f;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,8 +106,17 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 	public void setTexture(Texture texture) {
 		this.texture = texture;
 
-		primitiveData.addSampler(new TextureRGB565Sampler(TEXTURE_SAMPLER_NAME, ActiveTexture.GL_TEXTURE0,
-		                         texture.getWidth(), texture.getHeight(), texture.getPixelsRGB565()));
+		if (texture.isHasAlpha()) {
+			meshPrimitiveData.addSampler(new TextureRGBA8888Sampler(MeshPrimitiveData.TEXTURE_SAMPLER_NAME,
+			                             ActiveTexture.GL_TEXTURE0, texture.getWidth(), texture.getHeight(),
+			                             texture.getPixelsRGBA8888()));
+			meshPrimitiveData.setBlendFactor(BlendSourceFactor.GL_SRC_ALPHA,
+			                                 BlendDestinationFactor.GL_ONE_MINUS_SRC_ALPHA);
+		} else  {
+			meshPrimitiveData.addSampler(new TextureRGB565Sampler(MeshPrimitiveData.TEXTURE_SAMPLER_NAME,
+			                             ActiveTexture.GL_TEXTURE0, texture.getWidth(), texture.getHeight(),
+			                             texture.getPixelsRGB565()));
+		}
 	}
 
 	public List<Vertex> getVertices() {

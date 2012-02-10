@@ -22,6 +22,7 @@ package com.ejwa.dinja.opengles.library;
 
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.FloatPointer;
+import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.ShortPointer;
 
@@ -44,6 +45,11 @@ public final class NativeMemory extends OpenGLES2Native {
 	public static FloatPointer getFloatPointer(Pointer pointer, int size) {
 		checkPointer(pointer);
 		return new FloatPointer(size);
+	}
+
+	public static IntPointer getIntPointer(Pointer pointer, int size) {
+		checkPointer(pointer);
+		return new IntPointer(size);
 	}
 
 	public static ShortPointer getShortPointer(Pointer pointer, int size) {

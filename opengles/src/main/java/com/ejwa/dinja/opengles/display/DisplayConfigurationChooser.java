@@ -21,16 +21,17 @@
 package com.ejwa.dinja.opengles.display;
 
 import android.opengl.GLSurfaceView.EGLConfigChooser;
+import android.util.Log;
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
 
 class DisplayConfigurationChooser implements EGLConfigChooser {
 	private static final int EGL_OPENGL_ES2_BIT = 4;
-	private static final int RED_BITS = 5;
-	private static final int GREEN_BITS = 6;
-	private static final int BLUE_BITS = 5;
-	private static final int ALPHA_BITS = 0;
+	private static final int RED_BITS = 8;
+	private static final int GREEN_BITS = 8;
+	private static final int BLUE_BITS = 8;
+	private static final int ALPHA_BITS = 8;
 	private static final int DEPTH_BITS = 8;
 	private static final int STENCIL_BITS = 0;
 
@@ -39,6 +40,7 @@ class DisplayConfigurationChooser implements EGLConfigChooser {
 		EGL10.EGL_RED_SIZE, 4,
 		EGL10.EGL_GREEN_SIZE, 4,
 		EGL10.EGL_BLUE_SIZE, 4,
+		EGL10.EGL_ALPHA_SIZE, 8,
 		EGL10.EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT /* Enables 2.0 rendering */,
 		EGL10.EGL_NONE
 	};
@@ -54,6 +56,7 @@ class DisplayConfigurationChooser implements EGLConfigChooser {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.ProtectLogD")
 	public EGLConfig chooseConfig(EGL10 egl, EGLDisplay display) {
 		final int numConfigurations[] = new int[1];
 		egl.eglChooseConfig(display, configuration, null, 0, numConfigurations);
@@ -76,8 +79,13 @@ class DisplayConfigurationChooser implements EGLConfigChooser {
 			final int bBits = findAttribute(egl, display, c, EGL10.EGL_BLUE_SIZE);
 			final int aBits = findAttribute(egl, display, c, EGL10.EGL_ALPHA_SIZE);
 
+			Log.d(DisplayConfigurationChooser.class.getName(),
+			      String.format("Found display with format [R: %d, G: %d, B: %d, A: %d, S: %d, D: %d].", rBits,
+			      gBits, bBits, aBits, sBits, dBits));
+
 			if (dBits >= DEPTH_BITS && sBits >= STENCIL_BITS &&
 			    rBits == RED_BITS && gBits == GREEN_BITS && bBits == BLUE_BITS && aBits == ALPHA_BITS) {
+				Log.d(DisplayConfigurationChooser.class.getName(), "Selected the previously detected display.");
 				return c;
 			}
 		}
