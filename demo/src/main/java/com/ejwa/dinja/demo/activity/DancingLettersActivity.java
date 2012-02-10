@@ -44,12 +44,12 @@ public class DancingLettersActivity extends DinjaActivity {
 		super.onCreate(savedInstanceState);
 
 		final Quaternion4f letterRotation = new Quaternion4f(0, 0, -0.15f, 1);
-		final DancingLetter letterD = new DancingLetter("D", "dinja_txt_d.png", -1, 0.25f, 0.5f, 0.5f, letterRotation);
-		final DancingLetter letterI = new DancingLetter("I", "dinja_txt_i.png", -0.5f, 0.25f, 0.5f, 0.5f, letterRotation);
-		final DancingLetter letterN = new DancingLetter("N", "dinja_txt_n.png", 0, 0.25f, 0.5f, 0.5f, letterRotation);
-		final DancingLetter letterJ = new DancingLetter("J", "dinja_txt_j.png", 0.5f, 0.25f, 0.5f, 0.5f, letterRotation);
-		final DancingLetter letterA = new DancingLetter("A", "dinja_txt_a.png", 1, 0.25f, 0.5f, 0.5f, letterRotation);
-		final DancingLetter lettersEngine = new DancingLetter("ENGINE", "dinja_txt_engine.png", 0, -0.25f, 2.4f, 0.3f);
+		final DancingLetter letterD = new DancingLetter("D", "dinja_txt_d.png", -1, 0.25f, 0, 0.5f, 0.5f, letterRotation);
+		final DancingLetter letterI = new DancingLetter("I", "dinja_txt_i.png", -0.5f, 0.25f, 1, 0.5f, 0.5f, letterRotation);
+		final DancingLetter letterN = new DancingLetter("N", "dinja_txt_n.png", 0, 0.25f, 2, 0.5f, 0.5f, letterRotation);
+		final DancingLetter letterJ = new DancingLetter("J", "dinja_txt_j.png", 0.5f, 0.25f, 3, 0.5f, 0.5f, letterRotation);
+		final DancingLetter letterA = new DancingLetter("A", "dinja_txt_a.png", 1, 0.25f, 4, 0.5f, 0.5f, letterRotation);
+		final DancingLetter lettersEngine = new DancingLetter("ENGINE", "dinja_txt_engine.png", 0, -0.25f, 5, 2.4f, 0.3f);
 		final Scene scene = new Scene(new Camera(), letterD, letterI, letterN, letterJ, letterA, lettersEngine);
 
 		registerView(new SceneView(scene));
@@ -77,14 +77,14 @@ public class DancingLettersActivity extends DinjaActivity {
 	}
 
 	private class DancingLetter extends Plane {
-		public DancingLetter(String name, String textureName, float x, float y, float width, float height) {
+		public DancingLetter(String name, String textureName, float x, float y, int zLayer, float width, float height) {
 			super(name, width, height, 1);
 			setTexture(TextureLoader.load(getAssets(), textureName));
-			getTranslator().set(new Vector3f(x, y, 0));
+			getTranslator().set(new Vector3f(x, y, zLayer * 0.01f));
 		}
 
-		public DancingLetter(String name, String textureName, float x, float y, float width, float height, Quaternion4f rotation) {
-			this(name, textureName, x, y, width, height);
+		public DancingLetter(String name, String textureName, float x, float y, int zLayer, float width, float height, Quaternion4f rotation) {
+			this(name, textureName, x, y, zLayer, width, height);
 			getRotator().set(rotation);
 		}
 	}
