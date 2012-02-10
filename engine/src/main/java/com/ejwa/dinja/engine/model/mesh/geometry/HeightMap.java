@@ -71,6 +71,6 @@ public class HeightMap extends Plane {
 		}
 
 		((HashedArrayList) getVertices()).update();
-		updatePrimitiveData();
+		getMeshPrimitiveData().update();
 	}
 }

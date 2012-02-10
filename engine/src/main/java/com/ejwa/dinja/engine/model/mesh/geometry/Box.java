@@ -83,6 +83,6 @@ public class Box extends Mesh {
 
 		addVertices(vertices);
 		addIndices(vertices);
-		updatePrimitiveData();
+		getMeshPrimitiveData().update();
 	}
 }

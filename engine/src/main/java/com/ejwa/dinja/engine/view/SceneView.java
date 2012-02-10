@@ -50,7 +50,7 @@ public class SceneView implements Viewable, Iterable<PrimitiveData> {
 
 		@Override
 		public PrimitiveData next() {
-			return scene.getMeshes().get(pos++).getPrimitiveData();
+			return scene.getMeshes().get(pos++).getMeshPrimitiveData();
 		}
 
 		@Override

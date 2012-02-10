@@ -123,7 +123,7 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 
 					addMeshVertices(mesh, shape.getIndexedFaceSet());
 					loadMeshTextures(mesh, shape.getAppearance());
-					mesh.updatePrimitiveData();
+					mesh.getMeshPrimitiveData().update();
 					meshes.add(mesh);
 				}
 			}

@@ -90,6 +90,6 @@ public class Sphere extends Mesh {
 			}
 		}
 
-		updatePrimitiveData();
+		getMeshPrimitiveData().update();
 	}
 }

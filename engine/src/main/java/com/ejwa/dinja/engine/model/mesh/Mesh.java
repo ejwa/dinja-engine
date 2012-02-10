@@ -29,34 +29,19 @@ import com.ejwa.dinja.engine.model.transform.Translator;
 import com.ejwa.dinja.engine.util.HashedArrayList;
 import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.GLException;
-import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import com.ejwa.dinja.opengles.shader.argument.TextureRGB565Sampler;
-import com.ejwa.dinja.opengles.shader.argument.Tuple2fVertexAttributeArray;
-import com.ejwa.dinja.opengles.shader.argument.Tuple3fVertexAttributeArray;
-import com.ejwa.dinja.opengles.shader.argument.ColorfVertexAttributeArray;
 import com.ejwa.dinja.opengles.shader.argument.UniformMatrix4f;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openmali.vecmath2.Colorf;
 import org.openmali.vecmath2.Matrix4f;
-import org.openmali.vecmath2.Vector2f;
-import org.openmali.vecmath2.Vector3f;
 
 public class Mesh implements Rotatable, Scalable, Translatable {
-	private static final String COLOR_ATTRIBUTE_NAME = "aColor";
-	private static final String MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME = "uModelViewProjectionMatrix";
-	private static final String NORMAL_ATTRIBUTE_NAME = "aNormal";
-	private static final String TEXTURE_COORDINATE_ATTRIBUTE_NAME = "aTexCoord";
-	private static final String TEXTURE_SAMPLER_NAME = "sTexture";
-	private static final String VERTEX_COORDINATE_ATTRIBUTE_NAME = "aPosition";
-
 	private final List<Vertex> indices = new ArrayList<Vertex>();
 	private final Matrix4f modelMatrix = new Matrix4f();
 	private final String name;
-	private final PrimitiveData primitiveData;
-	private final PrimitiveType primitiveType;
+	private final MeshPrimitiveData meshPrimitiveData;
 	private Texture texture;
 	private final List<Vertex> vertices = new HashedArrayList<Vertex>();
 
@@ -66,13 +51,14 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 
 	public Mesh(String name, PrimitiveType primitiveType) {
 		this.name = name;
-		this.primitiveType = primitiveType;
-		primitiveData = new PrimitiveData(primitiveType, VERTEX_COORDINATE_ATTRIBUTE_NAME);
+		meshPrimitiveData = new MeshPrimitiveData(primitiveType, MeshPrimitiveData.VERTEX_COORDINATE_ATTRIBUTE_NAME,
+		                                          vertices, indices);
 		modelMatrix.setIdentity();
 
 		final Matrix4f modelViewProjectionMatrix = new Matrix4f();
 		modelViewProjectionMatrix.setIdentity();
-		primitiveData.addUniform(new UniformMatrix4f(MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME, modelViewProjectionMatrix));
+		meshPrimitiveData.addUniform(new UniformMatrix4f(MeshPrimitiveData.MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME,
+		                             modelViewProjectionMatrix));
 	}
 
 	public Mesh(String name, PrimitiveType type, Vertex ...vertices) {
@@ -103,15 +89,11 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 	}
 
 	public void setModelViewProjectionMatrix(Matrix4f modelViewProjectionMatrix) {
-		primitiveData.getUniforms().get(MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME).set(modelViewProjectionMatrix);
+		meshPrimitiveData.getUniforms().get(MeshPrimitiveData.MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME).set(modelViewProjectionMatrix);
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public PrimitiveType getPrimitiveType() {
-		return primitiveType;
 	}
 
 	public Texture getTexture() {
@@ -133,55 +115,8 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 		this.vertices.addAll(Arrays.asList(vertices));
 	}
 
-	private void updatePrimitiveDataAttributes(Vector3f positions[], Colorf colors[], Vector3f normals[], Vector2f textureCoordinates[]) {
-		primitiveData.setVerticesData(positions);
-		primitiveData.removeVertexAttributeArray(COLOR_ATTRIBUTE_NAME);
-		primitiveData.removeVertexAttributeArray(NORMAL_ATTRIBUTE_NAME);
-		primitiveData.removeVertexAttributeArray(TEXTURE_COORDINATE_ATTRIBUTE_NAME);
-
-		if (colors[0] != null) {
-			primitiveData.addVertexAttributeArray(new ColorfVertexAttributeArray(COLOR_ATTRIBUTE_NAME, colors));
-		}
-
-		if (normals[0] != null) {
-			primitiveData.addVertexAttributeArray(new Tuple3fVertexAttributeArray(NORMAL_ATTRIBUTE_NAME, normals));
-		}
-
-		if (textureCoordinates[0] != null) {
-			primitiveData.addVertexAttributeArray(new Tuple2fVertexAttributeArray(TEXTURE_COORDINATE_ATTRIBUTE_NAME, textureCoordinates));
-		}
-	}
-
-	private void updatePrimitiveDataIndices() {
-		final List<Integer> glIndices = new ArrayList<Integer>();
-
-		for (Vertex i : indices) {
-			glIndices.add(vertices.indexOf(i));
-		}
-
-		primitiveData.setIndices(glIndices.toArray(new Integer[glIndices.size()]));
-	}
-
-	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public void updatePrimitiveData() {
-		final Colorf colors[] = new Colorf[this.vertices.size()];
-		final Vector3f normals[] = new Vector3f[this.vertices.size()];
-		final Vector3f positions[] = new Vector3f[this.vertices.size()];
-		final Vector2f textureCoordinates[] = new Vector2f[this.vertices.size()];
-
-		for (int i = 0; i < this.vertices.size(); i++) {
-			colors[i] = this.vertices.get(i).getColor();
-			normals[i] = this.vertices.get(i).getNormal();
-			positions[i] = this.vertices.get(i).getPosition();
-			textureCoordinates[i] = this.vertices.get(i).getTextureCoordinates();
-		}
-
-		updatePrimitiveDataAttributes(positions, colors, normals, textureCoordinates);
-		updatePrimitiveDataIndices();
-	}
-
-	public PrimitiveData getPrimitiveData() {
-		return primitiveData;
+	public MeshPrimitiveData getMeshPrimitiveData() {
+		return meshPrimitiveData;
 	}
 
 	@Override

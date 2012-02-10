@@ -105,7 +105,7 @@ public class Plane extends Mesh {
 		}
 
 		if (updatePrimitiveData) {
-			updatePrimitiveData();
+			getMeshPrimitiveData().update();
 		}
 	}
 }
