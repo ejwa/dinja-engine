@@ -85,4 +85,37 @@ public class Box extends Mesh {
 		addIndices(vertices);
 		getMeshPrimitiveData().update();
 	}
+
+	private void setBoxFaceTextureCoordinates(int offset, Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+		getVertices().get(offset).setTextureCoordinates(uv1);
+		getVertices().get(offset + 1).setTextureCoordinates(uv2);
+		getVertices().get(offset + 2).setTextureCoordinates(uv3);
+		getVertices().get(offset + 3).setTextureCoordinates(uv4);
+		getMeshPrimitiveData().update();
+	}
+
+	public void setFrontFaceTextureCoordinates(Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+		 setBoxFaceTextureCoordinates(0, uv1, uv2, uv3, uv4);
+	}
+
+	public void setTopFaceTextureCoordinates(Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+		setBoxFaceTextureCoordinates(4, uv1, uv2, uv3, uv4);
+
+	}
+
+	public void setLeftFaceTextureCoordinates(Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+		setBoxFaceTextureCoordinates(8, uv1, uv2, uv3, uv4);
+	}
+
+	public void setBottomFaceTextureCoordinates(Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+		setBoxFaceTextureCoordinates(12, uv1, uv2, uv3, uv4);
+	}
+
+	public void setRightFaceTextureCoordinates(Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+		setBoxFaceTextureCoordinates(16, uv1, uv2, uv3, uv4);
+	}
+
+	public void setBackFaceTextureCoordinates(Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+		setBoxFaceTextureCoordinates(20, uv1, uv2, uv3, uv4);
+	}
 }
