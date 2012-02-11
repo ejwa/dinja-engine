@@ -19,24 +19,12 @@
 			<artifactId>opengles</artifactId>
 			<version>0.1-SNAPSHOT</version>
 			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>com.googlecode</groupId>
-					<artifactId>javacpp</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ejwa.dinja</groupId>
 			<artifactId>physics</artifactId>
 			<version>0.1-SNAPSHOT</version>
 			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>com.googlecode</groupId>
-					<artifactId>javacpp</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
