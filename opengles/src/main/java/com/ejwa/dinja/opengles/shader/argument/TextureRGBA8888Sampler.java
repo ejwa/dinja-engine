@@ -23,25 +23,15 @@ package com.ejwa.dinja.opengles.shader.argument;
 import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.TextureFormat;
 import com.ejwa.dinja.opengles.TextureType;
-import com.ejwa.dinja.opengles.library.NativeMemory;
 import com.googlecode.javacpp.IntPointer;
-import com.googlecode.javacpp.Pointer;
-import org.apache.commons.lang.ArrayUtils;
 
-public class TextureRGBA8888Sampler extends AbstractSampler<Integer[], Pointer> {
-	public TextureRGBA8888Sampler(String textureName, ActiveTexture activeTexture, int width, int height, int ...pixels) {
-		super(textureName, activeTexture, TextureFormat.GL_RGBA, TextureType.GL_UNSIGNED_BYTE,
-		      width, height, ArrayUtils.toObject(pixels));
+public class TextureRGBA8888Sampler extends AbstractSampler<IntPointer> {
+	public TextureRGBA8888Sampler(String textureName, ActiveTexture activeTexture, int width, int height, IntPointer pixels) {
+		super(textureName, activeTexture, TextureFormat.GL_RGBA, TextureType.GL_UNSIGNED_BYTE, width, height, pixels);
 	}
 
 	@Override
-	protected void setData(Integer[] values) {
-		if (data == null) {
-			data = NativeMemory.getIntPointer(data, values.length);
-		}
-
-		for (int i = 0; i < values.length; i++) {
-			((IntPointer) data).put(i, values[i]);
-		}
+	protected void setData(IntPointer pixels) {
+		data = pixels;
 	}
 }

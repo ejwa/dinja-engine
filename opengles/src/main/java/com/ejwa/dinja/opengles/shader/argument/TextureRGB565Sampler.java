@@ -23,25 +23,16 @@ package com.ejwa.dinja.opengles.shader.argument;
 import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.TextureFormat;
 import com.ejwa.dinja.opengles.TextureType;
-import com.ejwa.dinja.opengles.library.NativeMemory;
 import com.googlecode.javacpp.ShortPointer;
-import org.apache.commons.lang.ArrayUtils;
 
 @SuppressWarnings("PMD.AvoidUsingShortType")
-public class TextureRGB565Sampler extends AbstractSampler<Short[], ShortPointer> {
-	public TextureRGB565Sampler(String textureName, ActiveTexture activeTexture, int width, int height, short ...pixels) {
-		super(textureName, activeTexture, TextureFormat.GL_RGB, TextureType.GL_UNSIGNED_SHORT_5_6_5,
-		      width, height, ArrayUtils.toObject(pixels));
+public class TextureRGB565Sampler extends AbstractSampler<ShortPointer> {
+	public TextureRGB565Sampler(String textureName, ActiveTexture activeTexture, int width, int height, ShortPointer pixels) {
+		super(textureName, activeTexture, TextureFormat.GL_RGB, TextureType.GL_UNSIGNED_SHORT_5_6_5, width, height, pixels);
 	}
 
 	@Override
-	protected void setData(Short[] values) {
-		if (data == null) {
-			data = NativeMemory.getShortPointer(data, values.length);
-		}
-
-		for (int i = 0; i < values.length; i++) {
-			data.put(i, values[i]);
-		}
+	protected void setData(ShortPointer pixels) {
+		data = pixels;
 	}
 }

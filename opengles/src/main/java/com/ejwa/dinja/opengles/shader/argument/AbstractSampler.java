@@ -30,7 +30,7 @@ import com.ejwa.dinja.opengles.TextureType;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.googlecode.javacpp.Pointer;
 
-public abstract class AbstractSampler<T, P extends Pointer> extends AbstractUniform<T, P> {
+public abstract class AbstractSampler<T extends Pointer> extends AbstractUniform<T, T> {
 	protected final ActiveTexture activeTexture;
 	protected final TextureFormat textureFormat;
 	protected final TextureType textureType;

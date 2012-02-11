@@ -50,7 +50,7 @@ public class HeightMap extends Plane {
 	public HeightMap(String name, Texture heightMapTexture, float width, float height, float depth) {
 		super(name, width, height, heightMapTexture.getHeight() - 1, false);
 
-		final int pixels[] = heightMapTexture.getPixelsRGBA8888();
+		final int pixels[] = heightMapTexture.getPixelsRGBA8888().asBuffer().array();
 		int i = 0;
 
 		for (Vertex v : getVertices()) {

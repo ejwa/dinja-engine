@@ -21,6 +21,8 @@
 package com.ejwa.dinja.engine.model.mesh;
 
 import android.graphics.Color;
+import com.googlecode.javacpp.IntPointer;
+import com.googlecode.javacpp.ShortPointer;
 
 /**
  * Describes texture data to be used together with a mesh.
@@ -33,6 +35,8 @@ public class Texture {
 	private final int height;
 	private boolean hasAlpha;
 	private final int pixels[];
+	private ShortPointer pixelsRGB565;
+	private IntPointer pixelsRGBA8888;
 
 	/**
 	 * Creates a texture with the given width, height and pixel data.
@@ -97,41 +101,78 @@ public class Texture {
 	 * Converts the pixel data and returns it in the form RGB565, suitable for use together with {@link TextureFormat#GL_RGB}
 	 * and {@link TextureType#GL_UNSIGNED_SHORT_5_6_5}.
 	 *
-	 * @return Pixel data for this texture in the form RGB565.
+	 * @return A pointer to the pixel data for this texture in the form RGB565.
 	 * @see TextureFormat#GL_RGB
 	 * @see TextureType#GL_UNSIGNED_SHORT_5_6_5
 	 */
 	@SuppressWarnings("PMD.AvoidUsingShortType")
-	public short[] getPixelsRGB565() {
-		final short[] convertedPixels = new short[pixels.length];
+	public ShortPointer getPixelsRGB565() {
+		if (pixelsRGB565 == null) {
+			pixelsRGB565 = new ShortPointer(pixels.length);
 
-		for (int i = 0; i < pixels.length; i++) {
-			convertedPixels[i] |= Color.red(pixels[i]) << 8 & 0xf800;
-			convertedPixels[i] |= Color.green(pixels[i]) << 3 & 0x7e0;
-			convertedPixels[i] |= Color.blue(pixels[i]) >>> 3 & 0x1f;
+			for (int i = 0; i < pixels.length; i++) {
+				short pixel = 0;
+
+				pixel |= Color.red(pixels[i]) << 8 & 0xf800;
+				pixel |= Color.green(pixels[i]) << 3 & 0x7e0;
+				pixel |= Color.blue(pixels[i]) >>> 3 & 0x1f;
+				pixelsRGB565.put(i, pixel);
+			}
 		}
 
-		return convertedPixels;
+		return pixelsRGB565;
 	}
 
 	/**
-	 * Converts the pixel data and returns it in the form RGBA8888, suitable for use together with {@link TextureFormat#GL_RGBA}
-	 * and {@link TextureType#GL_UNSIGNED_BYTE}.
+	 * Converts the pixel data and returns it in the form RGB565, suitable for use together with {@link TextureFormat#GL_RGB}
+	 * and {@link TextureType#GL_UNSIGNED_SHORT_5_6_5}.
 	 *
-	 * @return Pixel data for this texture in the form RGBA8888.
+	 * @return An array with the pixel data for this texture in the form RGB565.
+	 * @see TextureFormat#GL_RGB
+	 * @see TextureType#GL_UNSIGNED_SHORT_5_6_5
+	 */
+	@SuppressWarnings("PMD.AvoidUsingShortType")
+	public short[] getPixelsRGB565Array() {
+		final ShortPointer pointer = getPixelsRGB565();
+		return pointer.asBuffer().array();
+	}
+
+	/**
+	 * Converts the pixel data and returns it in the form RGBA8888, suitable for use together with
+	 * {@link TextureFormat#GL_RGBA} and {@link TextureType#GL_UNSIGNED_BYTE}.
+	 *
+	 * @return A pointer to the pixel data for this texture in the form RGBA8888.
 	 * @see TextureFormat#GL_RGBA
 	 * @see TextureType#GL_UNSIGNED_BYTE
 	 */
-	public int[] getPixelsRGBA8888() {
-		final int[] convertedPixels = new int[pixels.length];
+	public IntPointer getPixelsRGBA8888() {
+		if (pixelsRGBA8888 == null) {
+			pixelsRGBA8888 = new IntPointer(pixels.length);
 
-		for (int i = 0; i < pixels.length; i++) {
-			convertedPixels[i] |= Color.red(pixels[i]) & 0xff;
-			convertedPixels[i] |= Color.green(pixels[i]) << 8 & 0xff00;
-			convertedPixels[i] |= Color.blue(pixels[i]) << 16 & 0xff0000;
-			convertedPixels[i] |= Color.alpha(pixels[i]) << 24 & 0xff000000;
+			for (int i = 0; i < pixels.length; i++) {
+				int pixel = 0;
+
+				pixel |= Color.red(pixels[i]) & 0xff;
+				pixel |= Color.green(pixels[i]) << 8 & 0xff00;
+				pixel |= Color.blue(pixels[i]) << 16 & 0xff0000;
+				pixel |= Color.alpha(pixels[i]) << 24 & 0xff000000;
+				pixelsRGBA8888.put(i, pixel);
+			}
 		}
 
-		return convertedPixels;
+		return pixelsRGBA8888;
+	}
+
+	/**
+	 * Converts the pixel data and returns it in the form RGBA8888, suitable for use together with
+	 * {@link TextureFormat#GL_RGBA} and {@link TextureType#GL_UNSIGNED_BYTE}.
+	 *
+	 * @return An array with the pixel data for this texture in the form RGBA8888.
+	 * @see TextureFormat#GL_RGBA
+	 * @see TextureType#GL_UNSIGNED_BYTE
+	 */
+	public int[] getPixelsRGBA8888Array() {
+		final IntPointer pointer = getPixelsRGBA8888();
+		return pointer.asBuffer().array();
 	}
 }
