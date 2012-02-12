@@ -28,21 +28,19 @@ import org.openmali.vecmath2.Matrix4f;
 
 public class SceneController implements Controllable, IFrameUpdateListener {
 	private final SceneView sceneView;
+	private final Matrix4f modelViewProjectionMatrix = new Matrix4f();
 
 	public SceneController(SceneView sceneView) {
 		this.sceneView = sceneView;
 	}
 
 	private void handleMesh(Mesh mesh, Matrix4f propagatedModelMatrix) {
-		final Matrix4f modelViewProjectionMatrix = Matrix4f.fromPool();
 		final Matrix4f projectionMatrix = sceneView.getScene().getCamera().getProjectionMatrix();
 		final Matrix4f viewMatrix = sceneView.getScene().getCamera().getViewMatrix();
 
 		modelViewProjectionMatrix.mul(projectionMatrix, viewMatrix);
 		modelViewProjectionMatrix.mul(propagatedModelMatrix);
-
 		mesh.setModelViewProjectionMatrix(modelViewProjectionMatrix);
-		Matrix4f.toPool(modelViewProjectionMatrix);
 	}
 
 	private void handleChildren(INode node, Matrix4f propagatedModelMatrix) {
