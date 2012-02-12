@@ -89,7 +89,7 @@ public class Camera {
 			viewMatrix.setRow(3, 0, 0, 0, 1);
 			translation.set(-location.getX(), -location.getY(), -location.getZ());
 			viewMatrix.setTranslation(translation);
-			recalculateProjectionMatrix = false;
+			recalculateViewMatrix = false;
 
 			Vector3f.toPool(f);
 			Vector3f.toPool(s);
