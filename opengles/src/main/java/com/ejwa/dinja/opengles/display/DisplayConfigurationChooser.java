@@ -32,8 +32,8 @@ class DisplayConfigurationChooser implements EGLConfigChooser {
 	private static final int GREEN_BITS = 8;
 	private static final int BLUE_BITS = 8;
 	private static final int ALPHA_BITS = 8;
-	private static final int DEPTH_BITS = 8;
-	private static final int STENCIL_BITS = 0;
+	private static final int DEPTH_BITS = 24;
+	private static final int STENCIL_BITS = 8;
 
 	private static int configuration[] = {
 		EGL10.EGL_DEPTH_SIZE, 8,

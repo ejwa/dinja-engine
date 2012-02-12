@@ -21,6 +21,7 @@
 package com.ejwa.dinja.opengles.display;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
@@ -37,8 +38,11 @@ public class GLSurface extends GLSurfaceView {
 
 	public GLSurface(Context context) {
 		super(context);
+
 		setEGLContextFactory(new ContextFactory());
+		setZOrderOnTop(true);
 		setEGLConfigChooser(new DisplayConfigurationChooser());
+		getHolder().setFormat(PixelFormat.RGBA_8888);
 		setRenderer(new GLSurfaceRenderer(this));
 	}
 
