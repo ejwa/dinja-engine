@@ -33,38 +33,39 @@ public class SceneController implements Controllable, IFrameUpdateListener {
 		this.sceneView = sceneView;
 	}
 
-	private void handleMesh(Mesh mesh, Matrix4f modelViewProjectionMatrix) {
+	private void handleMesh(Mesh mesh, Matrix4f propagatedModelMatrix) {
+		final Matrix4f modelViewProjectionMatrix = Matrix4f.fromPool();
 		final Matrix4f projectionMatrix = sceneView.getScene().getCamera().getProjectionMatrix();
 		final Matrix4f viewMatrix = sceneView.getScene().getCamera().getViewMatrix();
 
 		modelViewProjectionMatrix.mul(projectionMatrix, viewMatrix);
-		modelViewProjectionMatrix.mul(mesh.getModelMatrix());
+		modelViewProjectionMatrix.mul(propagatedModelMatrix);
+
 		mesh.setModelViewProjectionMatrix(modelViewProjectionMatrix);
+		Matrix4f.toPool(modelViewProjectionMatrix);
 	}
 
-	private void handleChildren(INode node, Matrix4f modelViewProjectionMatrix) {
-		for (int i = 0; i  < node.getNodes().size(); i++) {
+	private void handleChildren(INode node, Matrix4f propagatedModelMatrix) {
+		final Matrix4f m = Matrix4f.fromPool();
+
+		for (int i = 0; i < node.getNodes().size(); i++) {
 			final INode n = node.getNodes().get(i);
+			m.mul(propagatedModelMatrix, n.getModelMatrix());
 
 			if (!n.getNodes().isEmpty()) {
-				handleChildren(n, modelViewProjectionMatrix);
+				handleChildren(n, m);
 			}
 
 			if (n instanceof Mesh) {
-				handleMesh((Mesh) n, modelViewProjectionMatrix);
+				handleMesh((Mesh) n, m);
 			}
 		}
+
+		Matrix4f.toPool(m);
 	}
 
 	@Override
-	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
-		final Matrix4f modelViewProjectionMatrix = Matrix4f.fromPool();
-
-		if (!sceneView.getScene().getNodes().isEmpty()) {
-			handleChildren(sceneView.getScene(), modelViewProjectionMatrix);
-		}
-
-		Matrix4f.toPool(modelViewProjectionMatrix);
+		handleChildren(sceneView.getScene(), sceneView.getScene().getModelMatrix());
 	}
 }
