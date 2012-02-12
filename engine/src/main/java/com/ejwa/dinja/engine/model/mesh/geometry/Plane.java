@@ -40,6 +40,18 @@ import org.openmali.vecmath2.Vector3f;
  */
 public class Plane extends Mesh {
 	/**
+	 * Creates a plane geometry complete with defined properties such as texture coordinates. This constructor defaults
+	 * to creating a plane with a single segment.
+	 *
+	 * @param name The name of the plane (and mesh).
+	 * @param width The width of the plane.
+	 * @param height The height of the plane.
+	 */
+	public Plane(String name, float width, float height) {
+		this(name, width, height, 1);
+	}
+
+	/**
 	 * Creates a plane geometry complete with defined properties such as texture coordinates.
 	 *
 	 * @param name The name of the plane (and mesh).
