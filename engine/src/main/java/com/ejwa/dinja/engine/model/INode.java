@@ -20,44 +20,14 @@
  */
 package com.ejwa.dinja.engine.model;
 
-import com.ejwa.dinja.engine.model.mesh.Mesh;
+import java.util.List;
+import org.openmali.vecmath2.Matrix4f;
 
-public class Scene extends BaseNode {
-	protected final Camera camera;
-
-	public Scene(Camera camera) {
-		super("Scene");
-		this.camera = camera;
-	}
-
-	public Scene(Camera camera, INode ...nodes) {
-		this(camera);
-		addNodes(nodes);
-	}
-
-	public Camera getCamera() {
-		return camera;
-	}
-
-	private int countMeshes(INode node) {
-		int count = 0;
-
-		for (int i = 0; i < node.getNodes().size(); i++) {
-			final INode n = node.getNodes().get(i);
-
-			if (!n.getNodes().isEmpty()) {
-				count += countMeshes(n);
-			}
-
-			if (n instanceof Mesh) {
-				count++;
-			}
-		}
-
-		return count;
-	}
-
-	public int countMeshes() {
-		return countMeshes(this);
-	}
+public interface INode {
+	Matrix4f getModelMatrix();
+	String getName();
+	void addNodes(INode ...nodes);
+	void removeNodes(INode ...nodes);
+	void removeNodes(String ...nodeNames);
+	public List<INode> getNodes();
 }

@@ -20,9 +20,13 @@
  */
 package com.ejwa.dinja.engine.view;
 
+import com.ejwa.dinja.engine.model.INode;
 import com.ejwa.dinja.engine.model.Scene;
+import com.ejwa.dinja.engine.model.mesh.Mesh;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SceneView implements Viewable, Iterable<PrimitiveData> {
 	private final Scene scene;
@@ -42,20 +46,41 @@ public class SceneView implements Viewable, Iterable<PrimitiveData> {
 
 	private class SceneViewIterator implements Iterator<PrimitiveData> {
 		private int pos = 0;
+		private final List<PrimitiveData> primitiveDataList = new LinkedList<PrimitiveData>();
+
+		public SceneViewIterator() {
+			if (!scene.getNodes().isEmpty()) {
+				handleChildren(scene);
+			}
+		}
+
+		private void handleChildren(INode node) {
+			for (int i = 0; i  < node.getNodes().size(); i++) {
+				final INode n = node.getNodes().get(i);
+
+				if (!n.getNodes().isEmpty()) {
+					handleChildren(n);
+				}
+
+				if (n instanceof Mesh) {
+					primitiveDataList.add(((Mesh) n).getMeshPrimitiveData());
+				}
+			}
+		}
 
 		@Override
 		public boolean hasNext() {
-			return scene.getMeshes().size() > pos;
+			return primitiveDataList.size() > pos;
 		}
 
 		@Override
 		public PrimitiveData next() {
-			return scene.getMeshes().get(pos++).getMeshPrimitiveData();
+			return primitiveDataList.get(pos++);
 		}
 
 		@Override
 		public void remove() {
-			scene.getMeshes().remove(pos);
+			primitiveDataList.remove(pos);
 		}
 	}
 }

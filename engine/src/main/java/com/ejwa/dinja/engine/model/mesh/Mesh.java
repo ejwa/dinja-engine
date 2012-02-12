@@ -20,6 +20,7 @@
  */
 package com.ejwa.dinja.engine.model.mesh;
 
+import com.ejwa.dinja.engine.model.BaseNode;
 import com.ejwa.dinja.engine.model.properties.Rotatable;
 import com.ejwa.dinja.engine.model.properties.Scalable;
 import com.ejwa.dinja.engine.model.properties.Translatable;
@@ -40,10 +41,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.openmali.vecmath2.Matrix4f;
 
-public class Mesh implements Rotatable, Scalable, Translatable {
+public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable {
 	private final List<Vertex> indices = new ArrayList<Vertex>();
-	private final Matrix4f modelMatrix = new Matrix4f();
-	private final String name;
 	private final MeshPrimitiveData meshPrimitiveData;
 	private Texture texture;
 	private final List<Vertex> vertices = new HashedArrayList<Vertex>();
@@ -53,10 +52,10 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 	private final Translator translator = new Translator(modelMatrix);
 
 	public Mesh(String name, PrimitiveType primitiveType) {
-		this.name = name;
+		super(name);
+
 		meshPrimitiveData = new MeshPrimitiveData(primitiveType, MeshPrimitiveData.VERTEX_COORDINATE_ATTRIBUTE_NAME,
 		                                          vertices, indices);
-		modelMatrix.setIdentity();
 
 		final Matrix4f modelViewProjectionMatrix = new Matrix4f();
 		modelViewProjectionMatrix.setIdentity();
@@ -87,16 +86,8 @@ public class Mesh implements Rotatable, Scalable, Translatable {
 		this.indices.addAll(Arrays.asList(indices));
 	}
 
-	public Matrix4f getModelMatrix() {
-		return modelMatrix;
-	}
-
 	public void setModelViewProjectionMatrix(Matrix4f modelViewProjectionMatrix) {
 		meshPrimitiveData.getUniforms().get(MeshPrimitiveData.MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME).set(modelViewProjectionMatrix);
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Texture getTexture() {

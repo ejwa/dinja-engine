@@ -20,6 +20,7 @@
  */
 package com.ejwa.dinja.engine.controller;
 
+import com.ejwa.dinja.engine.model.INode;
 import com.ejwa.dinja.engine.model.mesh.Mesh;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
@@ -32,19 +33,36 @@ public class SceneController implements Controllable, IFrameUpdateListener {
 		this.sceneView = sceneView;
 	}
 
+	private void handleMesh(Mesh mesh, Matrix4f modelViewProjectionMatrix) {
+		final Matrix4f projectionMatrix = sceneView.getScene().getCamera().getProjectionMatrix();
+		final Matrix4f viewMatrix = sceneView.getScene().getCamera().getViewMatrix();
+
+		modelViewProjectionMatrix.mul(projectionMatrix, viewMatrix);
+		modelViewProjectionMatrix.mul(mesh.getModelMatrix());
+		mesh.setModelViewProjectionMatrix(modelViewProjectionMatrix);
+	}
+
+	private void handleChildren(INode node, Matrix4f modelViewProjectionMatrix) {
+		for (int i = 0; i  < node.getNodes().size(); i++) {
+			final INode n = node.getNodes().get(i);
+
+			if (!n.getNodes().isEmpty()) {
+				handleChildren(n, modelViewProjectionMatrix);
+			}
+
+			if (n instanceof Mesh) {
+				handleMesh((Mesh) n, modelViewProjectionMatrix);
+			}
+		}
+	}
+
 	@Override
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		final Matrix4f modelViewProjectionMatrix = Matrix4f.fromPool();
 
-		for (int i = 0; i < sceneView.getScene().getMeshes().size(); i++) {
-			final Mesh mesh = sceneView.getScene().getMeshes().get(i);
-			final Matrix4f projectionMatrix = sceneView.getScene().getCamera().getProjectionMatrix();
-			final Matrix4f viewMatrix = sceneView.getScene().getCamera().getViewMatrix();
-
-			modelViewProjectionMatrix.mul(projectionMatrix, viewMatrix);
-			modelViewProjectionMatrix.mul(mesh.getModelMatrix());
-			mesh.setModelViewProjectionMatrix(modelViewProjectionMatrix);
+		if (!sceneView.getScene().getNodes().isEmpty()) {
+			handleChildren(sceneView.getScene(), modelViewProjectionMatrix);
 		}
 
 		Matrix4f.toPool(modelViewProjectionMatrix);

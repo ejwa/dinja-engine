@@ -233,20 +233,18 @@ public class DinjaActivity extends Activity {
 	 * @see <a href="http://en.wikipedia.org/wiki/Model-View-Controller">Wikipedia.org: Model-View-Controller</a>
 	 */
 	protected final void registerView(Viewable view) {
-		if (view instanceof SceneView) {
-			final SceneView sceneView = (SceneView) view;
-			registerController(new CameraController(sceneView));
-			registerController(new SceneController(sceneView));
-		}
-
 		if (view instanceof DebugView) {
 			registerController(new DebugController((DebugView) view));
 		}
 
-		if (view instanceof Iterable) {
+		if (view instanceof SceneView) {
 			for (PrimitiveData p : (Iterable<PrimitiveData>) view) {
 				glSurfaceView.registerPrimitiveData(p);
 			}
+
+			final SceneView sceneView = (SceneView) view;
+			registerController(new CameraController(sceneView));
+			registerController(new SceneController(sceneView));
 		}
 	}
 

@@ -79,7 +79,7 @@ public class DebugController implements Controllable, IFrameTimeListener {
 
 				debugView.getSceneDebugTexts().get(i).getB().setText(
 					"Frames per second: " + (int) (1000000000f / getNanoSecondsForFrame()) + "\n" +
-					"Meshes in scene: " + s.getMeshes().size()
+					"Meshes in scene: " + s.countMeshes()
 				);
 			}
 		}
