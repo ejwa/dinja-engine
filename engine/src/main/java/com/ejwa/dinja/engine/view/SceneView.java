@@ -20,9 +20,9 @@
  */
 package com.ejwa.dinja.engine.view;
 
-import com.ejwa.dinja.engine.model.INode;
-import com.ejwa.dinja.engine.model.Scene;
-import com.ejwa.dinja.engine.model.mesh.Mesh;
+import com.ejwa.dinja.engine.model.node.INode;
+import com.ejwa.dinja.engine.model.node.scene.Scene;
+import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import java.util.Iterator;
 import java.util.LinkedList;

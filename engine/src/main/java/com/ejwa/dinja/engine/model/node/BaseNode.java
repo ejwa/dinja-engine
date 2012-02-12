@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model;
+package com.ejwa.dinja.engine.model.node;
 
 import java.util.Arrays;
 import java.util.LinkedList;

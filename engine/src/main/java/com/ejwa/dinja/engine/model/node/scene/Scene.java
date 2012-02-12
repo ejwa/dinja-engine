@@ -18,36 +18,49 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model;
+package com.ejwa.dinja.engine.model.node.scene;
 
-import com.ejwa.dinja.engine.model.properties.Rotatable;
-import com.ejwa.dinja.engine.model.properties.Scalable;
-import com.ejwa.dinja.engine.model.properties.Translatable;
-import com.ejwa.dinja.engine.model.transform.Rotator;
-import com.ejwa.dinja.engine.model.transform.Scaler;
-import com.ejwa.dinja.engine.model.transform.Translator;
+import com.ejwa.dinja.engine.model.Camera;
+import com.ejwa.dinja.engine.model.node.INode;
+import com.ejwa.dinja.engine.model.node.BaseNode;
+import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 
-public class Group extends BaseNode implements Rotatable, Scalable, Translatable {
-	private final Rotator rotator = new Rotator(modelMatrix);
-	private final Scaler scaler = new Scaler(modelMatrix);
-	private final Translator translator = new Translator(modelMatrix);
+public class Scene extends BaseNode {
+	protected final Camera camera;
 
-	public Group(String name) {
-		super(name);
+	public Scene(Camera camera) {
+		super("Scene");
+		this.camera = camera;
 	}
 
-	@Override
-	public Rotator getRotator() {
-		return rotator;
+	public Scene(Camera camera, INode ...nodes) {
+		this(camera);
+		addNodes(nodes);
 	}
 
-	@Override
-	public Scaler getScaler() {
-		return scaler;
+	public Camera getCamera() {
+		return camera;
 	}
 
-	@Override
-	public Translator getTranslator() {
-		return translator;
+	private int countMeshes(INode node) {
+		int count = 0;
+
+		for (int i = 0; i < node.getNodes().size(); i++) {
+			final INode n = node.getNodes().get(i);
+
+			if (!n.getNodes().isEmpty()) {
+				count += countMeshes(n);
+			}
+
+			if (n instanceof Mesh) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	public int countMeshes() {
+		return countMeshes(this);
 	}
 }

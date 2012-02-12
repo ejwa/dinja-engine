@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.engine.util.file;
 
-import com.ejwa.dinja.engine.model.mesh.Mesh;
+import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import java.util.List;
 
 public interface IFile {

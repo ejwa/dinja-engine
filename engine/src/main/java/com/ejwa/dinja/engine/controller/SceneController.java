@@ -20,8 +20,8 @@
  */
 package com.ejwa.dinja.engine.controller;
 
-import com.ejwa.dinja.engine.model.INode;
-import com.ejwa.dinja.engine.model.mesh.Mesh;
+import com.ejwa.dinja.engine.model.node.INode;
+import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 import org.openmali.vecmath2.Matrix4f;

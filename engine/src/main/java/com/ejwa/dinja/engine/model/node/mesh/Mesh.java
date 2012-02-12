@@ -18,9 +18,9 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model.mesh;
+package com.ejwa.dinja.engine.model.node.mesh;
 
-import com.ejwa.dinja.engine.model.BaseNode;
+import com.ejwa.dinja.engine.model.node.BaseNode;
 import com.ejwa.dinja.engine.model.properties.Rotatable;
 import com.ejwa.dinja.engine.model.properties.Scalable;
 import com.ejwa.dinja.engine.model.properties.Translatable;

@@ -18,10 +18,10 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model.mesh.geometry;
+package com.ejwa.dinja.engine.model.node.mesh.geometry;
 
-import com.ejwa.dinja.engine.model.mesh.Mesh;
-import com.ejwa.dinja.engine.model.mesh.Vertex;
+import com.ejwa.dinja.engine.model.node.mesh.Mesh;
+import com.ejwa.dinja.engine.model.node.mesh.Vertex;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import org.openmali.vecmath2.Vector2f;
 import org.openmali.vecmath2.Vector3f;
