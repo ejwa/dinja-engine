@@ -28,12 +28,17 @@ import com.ejwa.dinja.engine.model.transform.Scaler;
 import com.ejwa.dinja.engine.model.transform.Translator;
 
 public class Group extends BaseNode implements Rotatable, Scalable, Translatable {
-	private final Rotator rotator = new Rotator(modelMatrix);
-	private final Scaler scaler = new Scaler(modelMatrix);
 	private final Translator translator = new Translator(modelMatrix);
+	private final Rotator rotator = new Rotator(modelMatrix, translator.get());
+	private final Scaler scaler = new Scaler(modelMatrix);
 
 	public Group(String name) {
 		super(name);
+	}
+
+	@Override
+	public Translator getTranslator() {
+		return translator;
 	}
 
 	@Override
@@ -44,10 +49,5 @@ public class Group extends BaseNode implements Rotatable, Scalable, Translatable
 	@Override
 	public Scaler getScaler() {
 		return scaler;
-	}
-
-	@Override
-	public Translator getTranslator() {
-		return translator;
 	}
 }

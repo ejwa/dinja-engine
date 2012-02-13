@@ -29,5 +29,5 @@ public interface INode {
 	void addNodes(INode ...nodes);
 	void removeNodes(INode ...nodes);
 	void removeNodes(String ...nodeNames);
-	public List<INode> getNodes();
+	List<INode> getNodes();
 }

@@ -47,9 +47,9 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 	private Texture texture;
 	private final List<Vertex> vertices = new HashedArrayList<Vertex>();
 
-	private final Rotator rotator = new Rotator(modelMatrix);
-	private final Scaler scaler = new Scaler(modelMatrix);
 	private final Translator translator = new Translator(modelMatrix);
+	private final Rotator rotator = new Rotator(modelMatrix, translator.get());
+	private final Scaler scaler = new Scaler(modelMatrix);
 
 	public Mesh(String name, PrimitiveType primitiveType) {
 		super(name);
@@ -123,6 +123,11 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 	}
 
 	@Override
+	public Translator getTranslator() {
+		return translator;
+	}
+
+	@Override
 	public Rotator getRotator() {
 		return rotator;
 	}
@@ -130,10 +135,5 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 	@Override
 	public Scaler getScaler() {
 		return scaler;
-	}
-
-	@Override
-	public Translator getTranslator() {
-		return translator;
 	}
 }

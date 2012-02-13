@@ -25,7 +25,7 @@ import org.openmali.vecmath2.Vector3f;
 
 public class Translator {
 	private final Matrix4f baseMatrix;
-	private final Matrix4f translationMatrix = new Matrix4f();
+	private final Vector3f translation = new Vector3f();
 
 	public Translator(Matrix4f baseMatrix) {
 		this.baseMatrix = baseMatrix;
@@ -48,18 +48,16 @@ public class Translator {
 	}
 
 	public void move(Vector3f distance) {
-		translationMatrix.setIdentity();
-		translationMatrix.setTranslation(distance);
-		baseMatrix.mul(translationMatrix, baseMatrix);
+		translation.add(distance);
+		baseMatrix.setTranslation(translation);
 	}
 
 	public Vector3f get() {
-		final Vector3f rotation = new Vector3f();
-		baseMatrix.get(rotation);
-		return rotation;
+		return translation;
 	}
 
 	public void set(Vector3f position) {
+		translation.set(position);
 		baseMatrix.setTranslation(position);
 	}
 }
