@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles;
+package com.ejwa.dinja.opengles.error;
 
 public class GLException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

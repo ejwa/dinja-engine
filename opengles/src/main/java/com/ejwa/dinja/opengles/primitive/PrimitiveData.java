@@ -22,7 +22,7 @@ package com.ejwa.dinja.opengles.primitive;
 
 import com.ejwa.dinja.opengles.BlendDestinationFactor;
 import com.ejwa.dinja.opengles.BlendSourceFactor;
-import com.ejwa.dinja.opengles.GLException;
+import com.ejwa.dinja.opengles.error.GLException;
 import com.ejwa.dinja.opengles.library.NativeMemory;
 import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;

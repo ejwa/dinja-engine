@@ -21,8 +21,8 @@
 package com.ejwa.dinja.opengles.shader;
 
 import android.util.Log;
-import com.ejwa.dinja.opengles.GLError;
-import com.ejwa.dinja.opengles.GLException;
+import com.ejwa.dinja.opengles.error.GLError;
+import com.ejwa.dinja.opengles.error.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;

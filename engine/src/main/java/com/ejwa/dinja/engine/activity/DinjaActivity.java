@@ -41,7 +41,7 @@ import com.ejwa.dinja.engine.controller.input.TiltForceInputController;
 import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.engine.view.Viewable;
-import com.ejwa.dinja.opengles.GLException;
+import com.ejwa.dinja.opengles.error.GLException;
 import com.ejwa.dinja.opengles.display.GLSurface;
 import com.ejwa.dinja.opengles.display.IFrameTimeListener;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
