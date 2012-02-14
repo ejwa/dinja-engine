@@ -31,6 +31,7 @@ import com.ejwa.dinja.engine.util.HashedArrayList;
 import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.blend.BlendDestinationFactor;
 import com.ejwa.dinja.opengles.blend.BlendSourceFactor;
+import com.ejwa.dinja.opengles.blend.Blending;
 import com.ejwa.dinja.opengles.error.GLException;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
 import com.ejwa.dinja.opengles.shader.argument.TextureRGB565Sampler;
@@ -101,8 +102,8 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 			meshPrimitiveData.addSampler(new TextureRGBA8888Sampler(MeshPrimitiveData.TEXTURE_SAMPLER_NAME,
 			                             ActiveTexture.GL_TEXTURE0, texture.getWidth(), texture.getHeight(),
 			                             texture.getPixelsRGBA8888()));
-			meshPrimitiveData.setBlendFactor(BlendSourceFactor.GL_SRC_ALPHA,
-			                                 BlendDestinationFactor.GL_ONE_MINUS_SRC_ALPHA);
+			meshPrimitiveData.setBlending(new Blending(BlendSourceFactor.GL_SRC_ALPHA,
+			                              BlendDestinationFactor.GL_ONE_MINUS_SRC_ALPHA));
 		} else  {
 			meshPrimitiveData.addSampler(new TextureRGB565Sampler(MeshPrimitiveData.TEXTURE_SAMPLER_NAME,
 			                             ActiveTexture.GL_TEXTURE0, texture.getWidth(), texture.getHeight(),

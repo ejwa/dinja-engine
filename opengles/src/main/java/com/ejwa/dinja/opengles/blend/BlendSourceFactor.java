@@ -18,9 +18,8 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles;
+package com.ejwa.dinja.opengles.blend;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import javax.microedition.khronos.opengles.GL10;
 
 public enum BlendSourceFactor {
