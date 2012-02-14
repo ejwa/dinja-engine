@@ -21,7 +21,7 @@
 package com.ejwa.dinja.opengles.shader.argument;
 
 import com.ejwa.dinja.opengles.ActiveTexture;
-import com.ejwa.dinja.opengles.PixelStorageMode;
+import com.ejwa.dinja.opengles.texture.PixelStorageMode;
 import com.ejwa.dinja.opengles.texture.TextureFormat;
 import com.ejwa.dinja.opengles.texture.TextureMagnifyFilter;
 import com.ejwa.dinja.opengles.texture.TextureMinifyFilter;
