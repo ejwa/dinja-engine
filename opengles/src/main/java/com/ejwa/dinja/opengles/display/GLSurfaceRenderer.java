@@ -25,6 +25,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import com.ejwa.dinja.opengles.Capability;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
@@ -66,7 +67,7 @@ public class GLSurfaceRenderer implements Renderer {
 			f.onFrameUpdate(timeSinceLastFrame);
 		}
 
-		OpenGLES2.glClear(OpenGLES2.GL_DEPTH_BUFFER_BIT | OpenGLES2.GL_COLOR_BUFFER_BIT);
+		OpenGLES2Native.glClear(OpenGLES2Native.GL_DEPTH_BUFFER_BIT | OpenGLES2Native.GL_COLOR_BUFFER_BIT);
 
 		for (int i = 0; i < glSurface.getPrograms().size(); i++) {
 			final Program program = glSurface.getPrograms().get(i);
@@ -89,7 +90,7 @@ public class GLSurfaceRenderer implements Renderer {
 
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
-		OpenGLES2.glViewport(0, 0, width, height);
+		OpenGLES2Native.glViewport(0, 0, width, height);
 		Capability.GL_DEPTH_TEST.enable();
 		Capability.GL_CULL_FACE.enable();
 		Capability.GL_BLEND.enable();

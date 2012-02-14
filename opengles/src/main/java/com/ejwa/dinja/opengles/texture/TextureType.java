@@ -18,19 +18,20 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles;
+package com.ejwa.dinja.opengles.texture;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
 import javax.microedition.khronos.opengles.GL10;
 
-public enum TextureMagnifyFilter {
-	GL_NEAREST(GL10.GL_NEAREST),
-	GL_LINEAR(GL10.GL_LINEAR);
+public enum TextureType {
+	GL_UNSIGNED_BYTE(GL10.GL_UNSIGNED_BYTE),
+	GL_UNSIGNED_SHORT_5_6_5(GL10.GL_UNSIGNED_SHORT_5_6_5),
+	GL_UNSIGNED_SHORT_4_4_4_4(GL10.GL_UNSIGNED_SHORT_4_4_4_4),
+	GL_UNSIGNED_SHORT_5_5_5_1(GL10.GL_UNSIGNED_SHORT_5_5_5_1);
 
 	private final int id;
-	TextureMagnifyFilter(int id) { this.id = id; }
+	TextureType(int id) { this.id = id; }
 
-	public void set(TextureTarget textureTarget) {
-		OpenGLES2.glTexParameteri(textureTarget.getId(), GL10.GL_TEXTURE_MAG_FILTER, id);
+	public int getId() {
+		return id;
 	}
 }

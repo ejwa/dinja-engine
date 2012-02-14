@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import javax.microedition.khronos.opengles.GL10;
 
 public enum ActiveTexture {
@@ -43,6 +43,6 @@ public enum ActiveTexture {
 	}
 
 	public void set() {
-		OpenGLES2.glActiveTexture(id);
+		OpenGLES2Native.glActiveTexture(id);
 	}
 }

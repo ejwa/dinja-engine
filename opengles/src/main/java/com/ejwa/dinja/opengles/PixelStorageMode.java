@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import javax.microedition.khronos.opengles.GL10;
 
 public enum PixelStorageMode {
@@ -31,6 +31,6 @@ public enum PixelStorageMode {
 	PixelStorageMode(int id) { this.id = id; }
 
 	public void set(int alignment) {
-		OpenGLES2.glPixelStorei(id, alignment);
+		OpenGLES2Native.glPixelStorei(id, alignment);
 	}
 }

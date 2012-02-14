@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import javax.microedition.khronos.opengles.GL10;
 
 public enum Property {
@@ -34,6 +34,6 @@ public enum Property {
 	Property(int id) { this.id = id; }
 
 	public String get() {
-		return OpenGLES2.glGetString(id).getString();
+		return OpenGLES2Native.glGetString(id).getString();
 	}
 }

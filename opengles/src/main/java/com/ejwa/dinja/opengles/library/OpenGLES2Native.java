@@ -32,11 +32,11 @@ import javax.microedition.khronos.opengles.GL10;
 
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.UseSingleton"})
 @Platform(cinclude = "GLES2/gl2.h", link = "GLESv2")
-class OpenGLES2Native {
+public final class OpenGLES2Native {
 	static { Loader.load(); }
 
-	protected OpenGLES2Native() {
-		/* Only inheriting classes can make instances of this class. */
+	private OpenGLES2Native() {
+		/* No instances of this class allowed. */
 	}
 
 	public static final int GL_ES_VERSION_2_0 = 1;
@@ -61,19 +61,19 @@ class OpenGLES2Native {
 	public static native void glUseProgram(int program);
 	public static native void glAttachShader(int program, int shader);
 	public static native void glDetachShader(int program, int shader);
-	protected static native void glGetProgramiv(int program, int paramName, IntPointer params);
-	protected static native void glGetProgramInfoLog(int program, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
+	public static native void glGetProgramiv(int program, int paramName, IntPointer params);
+	public static native void glGetProgramInfoLog(int program, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
 
 	public static native int glCreateShader(int shaderType);
 	public static native void glDeleteShader(int shader);
-	protected static native void glShaderSource(int shader, int count, @Cast("const char **") PointerPointer strings, IntPointer length);
+	public static native void glShaderSource(int shader, int count, @Cast("const char **") PointerPointer strings, IntPointer length);
 	public static native void glCompileShader(int shader);
-	protected static native void glGetShaderiv(int shader, int paramName, IntPointer params);
-	protected static native void glGetShaderInfoLog(int shader, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
+	public static native void glGetShaderiv(int shader, int paramName, IntPointer params);
+	public static native void glGetShaderInfoLog(int shader, int bufferSize, IntPointer length, @Cast("char *") BytePointer infoLog);
 
-	protected static native void glDrawElements(int mode, int count, int type, Pointer indices);
+	public static native void glDrawElements(int mode, int count, int type, Pointer indices);
 
-	protected static native void glVertexAttribPointer(int index, int size, int type, boolean normalized, int stride, Pointer pointer);
+	public static native void glVertexAttribPointer(int index, int size, int type, boolean normalized, int stride, Pointer pointer);
 	public static native void glEnableVertexAttribArray(int index);
 	public static native void glDisableVertexAttribArray(int index);
 	public static native int glGetAttribLocation(int program, String name);
@@ -85,13 +85,13 @@ class OpenGLES2Native {
 
 	public static native void glActiveTexture(int texture);
 	public static native void glTexParameteri(int target, int paramName, int param);
-	protected static native void glTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, Pointer pixels);
-	protected static native void glBindTexture(int target, int texture);
-	protected static native void glGenTextures(int n, @Cast("unsigned int *") IntPointer textures);
+	public static native void glTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, Pointer pixels);
+	public static native void glBindTexture(int target, int texture);
+	public static native void glGenTextures(int n, @Cast("unsigned int *") IntPointer textures);
 	public static native void glPixelStorei(int paramName, int param);
 
-	protected static native void glBlendFunc(int sourceFactor, int destinationFactor);
+	public static native void glBlendFunc(int sourceFactor, int destinationFactor);
 
 	public static native void glBindBuffer(int target, int buffer);
-	protected static native void glGenBuffers(int n, @Cast("unsigned int *") IntPointer buffers);
+	public static native void glGenBuffers(int n, @Cast("unsigned int *") IntPointer buffers);
 }

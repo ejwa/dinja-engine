@@ -21,7 +21,7 @@
 package com.ejwa.dinja.opengles.shader.argument;
 
 import com.ejwa.dinja.opengles.library.NativeMemory;
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.googlecode.javacpp.FloatPointer;
 import org.openmali.vecmath2.Matrix4f;
 
@@ -49,6 +49,6 @@ public class UniformMatrix4f extends AbstractUniform<Matrix4f, FloatPointer> {
 
 	@Override
 	public void send(int handle) {
-		OpenGLES2.glUniformMatrix4fv(handle, 1, false, getData());
+		OpenGLES2Native.glUniformMatrix4fv(handle, 1, false, getData());
 	}
 }

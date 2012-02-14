@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import android.util.Log;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -54,7 +54,7 @@ public final class GLError {
 	}
 
 	public static Code getNext() {
-		final int error = OpenGLES2.glGetError();
+		final int error = OpenGLES2Native.glGetError();
 
 		/*
 		 * Not the most effieicent way of handling this. However, as

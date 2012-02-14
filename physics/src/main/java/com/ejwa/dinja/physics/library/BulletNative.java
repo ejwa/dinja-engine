@@ -23,8 +23,7 @@ package com.ejwa.dinja.physics.library;
 import com.googlecode.javacpp.Loader;
 import com.googlecode.javacpp.annotation.Platform;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidUsingShortType", "PMD.MissingStaticMethodInNonInstantiatableClass",
-                   "PMD.ShortMethodName", "PMD.ExcessivePublicCount"})
+@SuppressWarnings("PMD.MissingStaticMethodInNonInstantiatableClass")
 @Platform(link = "bullet")
 public final class BulletNative {
 	static { Loader.load(); }

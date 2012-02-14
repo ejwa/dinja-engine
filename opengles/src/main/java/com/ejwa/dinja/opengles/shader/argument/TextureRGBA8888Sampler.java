@@ -21,8 +21,8 @@
 package com.ejwa.dinja.opengles.shader.argument;
 
 import com.ejwa.dinja.opengles.ActiveTexture;
-import com.ejwa.dinja.opengles.TextureFormat;
-import com.ejwa.dinja.opengles.TextureType;
+import com.ejwa.dinja.opengles.texture.TextureFormat;
+import com.ejwa.dinja.opengles.texture.TextureType;
 import com.googlecode.javacpp.IntPointer;
 
 public class TextureRGBA8888Sampler extends AbstractSampler<IntPointer> {

@@ -18,18 +18,19 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.opengles;
+package com.ejwa.dinja.opengles.texture;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public enum TextureType {
-	GL_UNSIGNED_BYTE(GL10.GL_UNSIGNED_BYTE),
-	GL_UNSIGNED_SHORT_5_6_5(GL10.GL_UNSIGNED_SHORT_5_6_5),
-	GL_UNSIGNED_SHORT_4_4_4_4(GL10.GL_UNSIGNED_SHORT_4_4_4_4),
-	GL_UNSIGNED_SHORT_5_5_5_1(GL10.GL_UNSIGNED_SHORT_5_5_5_1);
+public enum TextureFormat {
+	GL_ALPHA(GL10.GL_ALPHA),
+	GL_RGB(GL10.GL_RGB),
+	GL_RGBA(GL10.GL_RGBA),
+	GL_LUMINANCE(GL10.GL_LUMINANCE),
+	GL_LUMINANCE_ALPHA(GL10.GL_LUMINANCE_ALPHA);
 
 	private final int id;
-	TextureType(int id) { this.id = id; }
+	TextureFormat(int id) { this.id = id; }
 
 	public int getId() {
 		return id;

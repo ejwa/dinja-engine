@@ -22,12 +22,13 @@ package com.ejwa.dinja.opengles.shader.argument;
 
 import com.ejwa.dinja.opengles.ActiveTexture;
 import com.ejwa.dinja.opengles.PixelStorageMode;
-import com.ejwa.dinja.opengles.TextureFormat;
-import com.ejwa.dinja.opengles.TextureMagnifyFilter;
-import com.ejwa.dinja.opengles.TextureMinifyFilter;
-import com.ejwa.dinja.opengles.TextureTarget;
-import com.ejwa.dinja.opengles.TextureType;
+import com.ejwa.dinja.opengles.texture.TextureFormat;
+import com.ejwa.dinja.opengles.texture.TextureMagnifyFilter;
+import com.ejwa.dinja.opengles.texture.TextureMinifyFilter;
+import com.ejwa.dinja.opengles.texture.TextureTarget;
+import com.ejwa.dinja.opengles.texture.TextureType;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.googlecode.javacpp.Pointer;
 
 public abstract class AbstractSampler<T extends Pointer> extends AbstractUniform<T, T> {
@@ -51,7 +52,7 @@ public abstract class AbstractSampler<T extends Pointer> extends AbstractUniform
 	public void bind() {
 		textureHandle = OpenGLES2.glGenTexture();
 		activeTexture.set();
-		OpenGLES2.glBindTexture(TextureTarget.GL_TEXTURE_2D, textureHandle);
+		TextureTarget.GL_TEXTURE_2D.bind(textureHandle);
 		PixelStorageMode.GL_UNPACK_ALIGNMENT.set(1);
 		OpenGLES2.glTexImage2D(0, width, height, textureFormat, textureType, data);
 
@@ -62,8 +63,8 @@ public abstract class AbstractSampler<T extends Pointer> extends AbstractUniform
 	@Override
 	public void send(int handle) {
 		activeTexture.set();
-		OpenGLES2.glBindTexture(TextureTarget.GL_TEXTURE_2D, textureHandle);
-		OpenGLES2.glUniform1i(handle, 0);
+		TextureTarget.GL_TEXTURE_2D.bind(textureHandle);
+		OpenGLES2Native.glUniform1i(handle, 0);
 	}
 
 	public int getWidth() {

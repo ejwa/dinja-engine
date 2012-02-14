@@ -24,6 +24,7 @@ import android.util.Log;
 import com.ejwa.dinja.opengles.GLError;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +56,7 @@ public class Program {
 
 	public void registerVertexAttributeHandles(String ...vertexAttributeVariableNames) {
 		for (String n : vertexAttributeVariableNames) {
-			final int vertexAttributeHandle = OpenGLES2.glGetAttribLocation(handle, n);
+			final int vertexAttributeHandle = OpenGLES2Native.glGetAttribLocation(handle, n);
 
 			if (vertexAttributeHandle != -1) {
 				Log.d(Program.class.getName(), String.format("Registered vertex attribute '%s' at position %d.",
@@ -77,7 +78,7 @@ public class Program {
 
 	public void registerUniformHandles(String ...uniformVariableNames) {
 		for (String n : uniformVariableNames) {
-			final int uniformHandle = OpenGLES2.glGetUniformLocation(handle, n);
+			final int uniformHandle = OpenGLES2Native.glGetUniformLocation(handle, n);
 
 			if (uniformHandle != -1) {
 				Log.d(Program.class.getName(), String.format("Registered uniform '%s' at position %d.", n, uniformHandle));
@@ -109,7 +110,7 @@ public class Program {
 	}
 
 	private void linkProgram() {
-		OpenGLES2.glLinkProgram(handle);
+		OpenGLES2Native.glLinkProgram(handle);
 
 		if (!isLinked()) {
 			final String infoLog = OpenGLES2.glGetProgramInfoLog(handle);
@@ -127,23 +128,23 @@ public class Program {
 
 		vertexShader.compile();
 		fragmentShader.compile();
-		handle = OpenGLES2.glCreateProgram();
+		handle = OpenGLES2Native.glCreateProgram();
 
 		if (handle == 0) {
 			throw new GLException("Failed to create program.");
 		}
 
-		OpenGLES2.glAttachShader(handle, vertexShader.getHandle());
+		OpenGLES2Native.glAttachShader(handle, vertexShader.getHandle());
 		GLError.check(Program.class);
 
-		OpenGLES2.glAttachShader(handle, fragmentShader.getHandle());
+		OpenGLES2Native.glAttachShader(handle, fragmentShader.getHandle());
 		GLError.check(Program.class);
 
 		linkProgram();
 	}
 
 	public void delete() {
-		OpenGLES2.glDeleteProgram(handle);
+		OpenGLES2Native.glDeleteProgram(handle);
 	}
 
 	public int getHandle() {
@@ -156,6 +157,6 @@ public class Program {
 	}
 
 	public void use() {
-		OpenGLES2.glUseProgram(handle);
+		OpenGLES2Native.glUseProgram(handle);
 	}
 }

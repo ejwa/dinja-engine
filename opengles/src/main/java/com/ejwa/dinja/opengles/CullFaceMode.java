@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import javax.microedition.khronos.opengles.GL10;
 
 public enum CullFaceMode {
@@ -32,6 +32,6 @@ public enum CullFaceMode {
 	CullFaceMode(int id) { this.id = id; }
 
 	public void set() {
-		OpenGLES2.glCullFace(id);
+		OpenGLES2Native.glCullFace(id);
 	}
 }

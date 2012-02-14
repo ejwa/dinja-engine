@@ -22,11 +22,10 @@ package com.ejwa.dinja.opengles.library;
 
 import com.ejwa.dinja.opengles.BlendDestinationFactor;
 import com.ejwa.dinja.opengles.BlendSourceFactor;
-import com.ejwa.dinja.opengles.Capability;
 import com.ejwa.dinja.opengles.DataType;
-import com.ejwa.dinja.opengles.TextureFormat;
-import com.ejwa.dinja.opengles.TextureTarget;
-import com.ejwa.dinja.opengles.TextureType;
+import com.ejwa.dinja.opengles.texture.TextureFormat;
+import com.ejwa.dinja.opengles.texture.TextureTarget;
+import com.ejwa.dinja.opengles.texture.TextureType;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
 import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
@@ -37,9 +36,8 @@ import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.PointerPointer;
 
-public final class OpenGLES2 extends OpenGLES2Native {
+public final class OpenGLES2  {
 	private OpenGLES2() {
-		super(); /* No instances of this class allowed. */
 	}
 
 	public static int glGetProgramiv(int program, int paramName) {
@@ -101,8 +99,8 @@ public final class OpenGLES2 extends OpenGLES2Native {
 		final int vertexAttributeHandle = program.getVertexAttributeHandle(primitiveData.getVertices().getVariableName());
 
 		if (vertexAttributeHandle != -1) {
-			glVertexAttribPointer(vertexAttributeHandle, 3, DataType.GL_FLOAT.getId() , false, 0, primitiveData.getVertices().getData());
-			glEnableVertexAttribArray(vertexAttributeHandle);
+			OpenGLES2Native.glVertexAttribPointer(vertexAttributeHandle, 3, DataType.GL_FLOAT.getId() , false, 0, primitiveData.getVertices().getData());
+			OpenGLES2Native.glEnableVertexAttribArray(vertexAttributeHandle);
 		}
 
 		for (int i = 0; i < primitiveData.getUniforms().size(); i++) {
@@ -114,8 +112,8 @@ public final class OpenGLES2 extends OpenGLES2Native {
 		for (int i = 0; i < primitiveData.getVertexAttributeArrays().size(); i++) {
 			final AbstractVertexAttributeArray va = primitiveData.getVertexAttributeArrays().get(i);
 			final int vAttributeArrayHandle = program.getVertexAttributeHandle(va.getVariableName());
-			glVertexAttribPointer(vAttributeArrayHandle, va.getComponents(), DataType.GL_FLOAT.getId(), false, 0, va.getData());
-			glEnableVertexAttribArray(vAttributeArrayHandle);
+			OpenGLES2Native.glVertexAttribPointer(vAttributeArrayHandle, va.getComponents(), DataType.GL_FLOAT.getId(), false, 0, va.getData());
+			OpenGLES2Native.glEnableVertexAttribArray(vAttributeArrayHandle);
 		}
 
 		for (int i = 0; i < primitiveData.getSamplers().size(); i++) {
@@ -129,18 +127,14 @@ public final class OpenGLES2 extends OpenGLES2Native {
 	}
 
 	public static void glTexImage2D(int level, int width, int height, TextureFormat format, TextureType type, Pointer pixels) {
-		glTexImage2D(TextureTarget.GL_TEXTURE_2D.getId(), level, format.getId(), width, height, 0, format.getId(), type.getId(), pixels);
-	}
-
-	public static void glBindTexture(TextureTarget textureTarget, int handle) {
-		glBindTexture(textureTarget.getId(), handle);
+		OpenGLES2Native.glTexImage2D(TextureTarget.GL_TEXTURE_2D.getId(), level, format.getId(), width, height, 0, format.getId(), type.getId(), pixels);
 	}
 
 	public static int glGenTexture() {
 		final IntPointer handlePtr = new IntPointer(1);
 		final int handle;
 
-		glGenTextures(1, handlePtr);
+		OpenGLES2Native.glGenTextures(1, handlePtr);
 		handle = handlePtr.get(0);
 		handlePtr.deallocate();
 
@@ -148,6 +142,6 @@ public final class OpenGLES2 extends OpenGLES2Native {
 	}
 
 	public static void glBlendFunc(BlendSourceFactor sourceFactor, BlendDestinationFactor destinationFactor) {
-		glBlendFunc(sourceFactor.getId(), destinationFactor.getId());
+		OpenGLES2Native.glBlendFunc(sourceFactor.getId(), destinationFactor.getId());
 	}
 }

@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import javax.microedition.khronos.opengles.GL10;
 
 public enum Capability {
@@ -43,10 +43,10 @@ public enum Capability {
 	}
 
 	public void enable() {
-		OpenGLES2.glEnable(id);
+		OpenGLES2Native.glEnable(id);
 	}
 
 	public void disable() {
-		OpenGLES2.glDisable(id);
+		OpenGLES2Native.glDisable(id);
 	}
 }

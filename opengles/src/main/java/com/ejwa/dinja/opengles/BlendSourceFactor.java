@@ -20,6 +20,7 @@
  */
 package com.ejwa.dinja.opengles;
 
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import javax.microedition.khronos.opengles.GL10;
 
 public enum BlendSourceFactor {

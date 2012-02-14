@@ -23,12 +23,15 @@ package com.ejwa.dinja.opengles.library;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.FloatPointer;
 import com.googlecode.javacpp.IntPointer;
+import com.googlecode.javacpp.Loader;
 import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.ShortPointer;
 
-public final class NativeMemory extends OpenGLES2Native {
+public final class NativeMemory {
+	static { Loader.load(OpenGLES2Native.class); }
+
 	private NativeMemory() {
-		super(); /* No instances of this class allowed. */
+		/* No instances of this class allowed. */
 	}
 
 	private static void checkPointer(Pointer pointer) {

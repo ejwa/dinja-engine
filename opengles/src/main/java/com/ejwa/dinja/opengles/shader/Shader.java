@@ -23,6 +23,7 @@ package com.ejwa.dinja.opengles.shader;
 import android.util.Log;
 import com.ejwa.dinja.opengles.GLException;
 import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +36,7 @@ public class Shader {
 	private final int shaderType;
 
 	private int createShader(int shaderType) {
-		final int h = OpenGLES2.glCreateShader(shaderType);
+		final int h = OpenGLES2Native.glCreateShader(shaderType);
 
 		if (h == 0) {
 			throw new GLException("Failed to create shader.");
@@ -60,7 +61,7 @@ public class Shader {
 	public void compile() {
 		handle = createShader(shaderType);
 		OpenGLES2.glShaderSource(handle, shaderSource);
-		OpenGLES2.glCompileShader(handle);
+		OpenGLES2Native.glCompileShader(handle);
 
 		if (!isCompiled()) {
 			final String infoLog = OpenGLES2.glGetShaderInfoLog(handle);
@@ -72,7 +73,7 @@ public class Shader {
 	}
 
 	public final void delete() {
-		OpenGLES2.glDeleteShader(handle);
+		OpenGLES2Native.glDeleteShader(handle);
 	}
 
 	public int getHandle() {
