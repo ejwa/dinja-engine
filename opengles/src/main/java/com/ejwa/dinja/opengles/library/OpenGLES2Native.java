@@ -29,6 +29,13 @@ import com.googlecode.javacpp.PointerPointer;
 import com.googlecode.javacpp.annotation.Cast;
 import com.googlecode.javacpp.annotation.Platform;
 
+/**
+ * The main class for all native OpenGL ES 2 bindings. The class is intended to be used by the classes in this layer and should
+ * in most cases only be called directly from within this layer. This class is static and can not be instantiated.
+ *
+ * @author Adam Waldenberg <adam.waldenberg@ejwa.se>
+ * @since 0.1
+ */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.UseSingleton"})
 @Platform(cinclude = "GLES2/gl2.h", link = "GLESv2")
 public final class OpenGLES2Native {
