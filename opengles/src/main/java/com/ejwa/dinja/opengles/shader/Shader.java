@@ -22,8 +22,10 @@ package com.ejwa.dinja.opengles.shader;
 
 import android.util.Log;
 import com.ejwa.dinja.opengles.error.GLException;
-import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
+import com.googlecode.javacpp.BytePointer;
+import com.googlecode.javacpp.IntPointer;
+import com.googlecode.javacpp.PointerPointer;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,13 +60,35 @@ public class Shader {
 		this.shaderSource = shaderSource;
 	}
 
+	private void setShaderSource(String source) {
+		final BytePointer sourcePtr = new BytePointer(source);
+		final PointerPointer sourcePtrPtr =  new PointerPointer(new BytePointer[] { sourcePtr });
+
+		OpenGLES2Native.glShaderSource(handle, 1, sourcePtrPtr, null);
+		sourcePtrPtr.deallocate();
+		sourcePtr.deallocate();
+	}
+
+	private String getShaderInfoLog() {
+		final BytePointer infoLogPtr = new BytePointer(256);
+		final IntPointer length = new IntPointer(1);
+
+		OpenGLES2Native.glGetShaderInfoLog(handle, infoLogPtr.capacity(), length, infoLogPtr);
+
+		final String infoLog = infoLogPtr.getString();
+		infoLogPtr.deallocate();
+		length.deallocate();
+
+		return infoLog;
+	}
+
 	public void compile() {
 		handle = createShader(shaderType);
-		OpenGLES2.glShaderSource(handle, shaderSource);
+		setShaderSource(shaderSource);
 		OpenGLES2Native.glCompileShader(handle);
 
 		if (!isCompiled()) {
-			final String infoLog = OpenGLES2.glGetShaderInfoLog(handle);
+			final String infoLog = getShaderInfoLog();
 
 			delete();
 			Log.e(Shader.class.getName(), infoLog);
@@ -80,13 +104,22 @@ public class Shader {
 		return handle;
 	}
 
+	private int getShaderiv(int paramName) {
+		final IntPointer parameterPtr = new IntPointer(1);
+		OpenGLES2Native.glGetShaderiv(handle, paramName, parameterPtr);
+
+		final int parameter = parameterPtr.get();
+		parameterPtr.deallocate();
+		return parameter;
+	}
+
 	public boolean isFlaggedForDeletion() {
 		final int GL_DELETE_STATUS = 0x8b80;
-		return OpenGLES2.glGetShaderiv(handle, GL_DELETE_STATUS) != 0;
+		return getShaderiv(GL_DELETE_STATUS) != 0;
 	}
 
 	public final boolean isCompiled() {
 		final int GL_COMPILE_STATUS = 0x8b81;
-		return OpenGLES2.glGetShaderiv(handle, GL_COMPILE_STATUS) != 0;
+		return getShaderiv(GL_COMPILE_STATUS) != 0;
 	}
 }

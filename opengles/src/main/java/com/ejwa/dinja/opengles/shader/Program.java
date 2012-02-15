@@ -23,9 +23,10 @@ package com.ejwa.dinja.opengles.shader;
 import android.util.Log;
 import com.ejwa.dinja.opengles.error.GLError;
 import com.ejwa.dinja.opengles.error.GLException;
-import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
+import com.googlecode.javacpp.BytePointer;
+import com.googlecode.javacpp.IntPointer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -109,11 +110,24 @@ public class Program {
 		return globalUniforms;
 	}
 
+	private String getProgramInfoLog() {
+		final BytePointer infoLogPtr = new BytePointer(256);
+		final IntPointer length = new IntPointer(1);
+
+		OpenGLES2Native.glGetProgramInfoLog(handle, infoLogPtr.capacity(), length, infoLogPtr);
+
+		final String infoLog = infoLogPtr.getString();
+		infoLogPtr.deallocate();
+		length.deallocate();
+
+		return infoLog;
+	}
+
 	private void linkProgram() {
 		OpenGLES2Native.glLinkProgram(handle);
 
 		if (!isLinked()) {
-			final String infoLog = OpenGLES2.glGetProgramInfoLog(handle);
+			final String infoLog = getProgramInfoLog();
 
 			delete();
 			Log.e(Shader.class.getName(), infoLog);
@@ -151,9 +165,18 @@ public class Program {
 		return handle;
 	}
 
+	private int getProgramiv(int paramName) {
+		final IntPointer parameterPtr = new IntPointer(1);
+		OpenGLES2Native.glGetProgramiv(handle, paramName, parameterPtr);
+
+		final int parameter = parameterPtr.get();
+		parameterPtr.deallocate();
+		return parameter;
+	}
+
 	public boolean isLinked() {
 		final int GL_LINK_STATUS = 0x8b82;
-		return OpenGLES2.glGetProgramiv(handle, GL_LINK_STATUS) != 0;
+		return getProgramiv(GL_LINK_STATUS) != 0;
 	}
 
 	public void use() {

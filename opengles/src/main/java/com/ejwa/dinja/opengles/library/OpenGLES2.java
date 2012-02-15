@@ -29,66 +29,11 @@ import com.ejwa.dinja.opengles.shader.Program;
 import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import com.ejwa.dinja.opengles.shader.argument.AbstractVertexAttributeArray;
-import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
-import com.googlecode.javacpp.PointerPointer;
 
 public final class OpenGLES2  {
 	private OpenGLES2() {
-	}
-
-	public static int glGetProgramiv(int program, int paramName) {
-		final IntPointer parameterPtr = new IntPointer(1);
-		OpenGLES2Native.glGetProgramiv(program, paramName, parameterPtr);
-
-		final int parameter = parameterPtr.get();
-		parameterPtr.deallocate();
-		return parameter;
-	}
-
-	public static String glGetProgramInfoLog(int program) {
-		final BytePointer infoLogPtr = new BytePointer(256);
-		final IntPointer length = new IntPointer(1);
-
-		OpenGLES2Native.glGetProgramInfoLog(program, infoLogPtr.capacity(), length, infoLogPtr);
-
-		final String infoLog = infoLogPtr.getString();
-		infoLogPtr.deallocate();
-		length.deallocate();
-
-		return infoLog;
-	}
-
-	public static void glShaderSource(int shader, String source) {
-		final BytePointer sourcePtr = new BytePointer(source);
-		final PointerPointer sourcePtrPtr =  new PointerPointer(new BytePointer[] { sourcePtr });
-
-		OpenGLES2Native.glShaderSource(shader, 1, sourcePtrPtr, null);
-		sourcePtrPtr.deallocate();
-		sourcePtr.deallocate();
-	}
-
-	public static int glGetShaderiv(int shader, int paramName) {
-		final IntPointer parameterPtr = new IntPointer(1);
-		OpenGLES2Native.glGetShaderiv(shader, paramName, parameterPtr);
-
-		final int parameter = parameterPtr.get();
-		parameterPtr.deallocate();
-		return parameter;
-	}
-
-	public static String glGetShaderInfoLog(int shader) {
-		final BytePointer infoLogPtr = new BytePointer(256);
-		final IntPointer length = new IntPointer(1);
-
-		OpenGLES2Native.glGetShaderInfoLog(shader, infoLogPtr.capacity(), length, infoLogPtr);
-
-		final String infoLog = infoLogPtr.getString();
-		infoLogPtr.deallocate();
-		length.deallocate();
-
-		return infoLog;
 	}
 
 	public static void glDrawElements(Program program, PrimitiveData primitiveData) {
