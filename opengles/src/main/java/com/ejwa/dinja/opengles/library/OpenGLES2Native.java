@@ -28,7 +28,6 @@ import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.PointerPointer;
 import com.googlecode.javacpp.annotation.Cast;
 import com.googlecode.javacpp.annotation.Platform;
-import javax.microedition.khronos.opengles.GL10;
 
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.UseSingleton"})
 @Platform(cinclude = "GLES2/gl2.h", link = "GLESv2")
@@ -40,9 +39,6 @@ public final class OpenGLES2Native {
 	}
 
 	public static final int GL_ES_VERSION_2_0 = 1;
-	public static final int GL_DEPTH_BUFFER_BIT = GL10.GL_DEPTH_BUFFER_BIT;
-	public static final int GL_STENCIL_BUFFER_BIT = GL10.GL_STENCIL_BUFFER_BIT;
-	public static final int GL_COLOR_BUFFER_BIT = GL10.GL_COLOR_BUFFER_BIT;
 
 	public static native void glEnable(int cap);
 	public static native void glDisable(int cap);

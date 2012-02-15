@@ -67,7 +67,7 @@ public class GLSurfaceRenderer implements Renderer {
 			f.onFrameUpdate(timeSinceLastFrame);
 		}
 
-		OpenGLES2Native.glClear(OpenGLES2Native.GL_DEPTH_BUFFER_BIT | OpenGLES2Native.GL_COLOR_BUFFER_BIT);
+		OpenGLES2Native.glClear(GL10.GL_DEPTH_BUFFER_BIT | GL10.GL_COLOR_BUFFER_BIT);
 
 		for (int i = 0; i < glSurface.getPrograms().size(); i++) {
 			final Program program = glSurface.getPrograms().get(i);
