@@ -24,13 +24,15 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.SystemClock;
 import android.util.Log;
 import com.ejwa.dinja.opengles.Capability;
-import com.ejwa.dinja.opengles.library.OpenGLES2;
+import com.ejwa.dinja.opengles.DataType;
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
 import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
+import com.ejwa.dinja.opengles.shader.argument.AbstractVertexAttributeArray;
+import com.googlecode.javacpp.Pointer;
 import java.util.Set;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -56,6 +58,39 @@ public class GLSurfaceRenderer implements Renderer {
 		}
 	}
 
+	private static void drawElements(Program program, PrimitiveData primitiveData) {
+		final Pointer indices =  primitiveData.getIndices();
+		final DataType indicesType = primitiveData.getVertices().getData().capacity() / 3 >= 256 ? DataType.GL_UNSIGNED_SHORT : DataType.GL_UNSIGNED_BYTE;
+		final int vertexAttributeHandle = program.getVertexAttributeHandle(primitiveData.getVertices().getVariableName());
+
+		if (vertexAttributeHandle != -1) {
+			OpenGLES2Native.glVertexAttribPointer(vertexAttributeHandle, 3, DataType.GL_FLOAT.getId() , false, 0, primitiveData.getVertices().getData());
+			OpenGLES2Native.glEnableVertexAttribArray(vertexAttributeHandle);
+		}
+
+		for (int i = 0; i < primitiveData.getUniforms().size(); i++) {
+			final AbstractUniform u = primitiveData.getUniforms().get(i);
+			final int uniformHandle = program.getUniformHandle(u.getVariableName());
+			u.send(uniformHandle);
+		}
+
+		for (int i = 0; i < primitiveData.getVertexAttributeArrays().size(); i++) {
+			final AbstractVertexAttributeArray va = primitiveData.getVertexAttributeArrays().get(i);
+			final int vAttributeArrayHandle = program.getVertexAttributeHandle(va.getVariableName());
+			OpenGLES2Native.glVertexAttribPointer(vAttributeArrayHandle, va.getComponents(), DataType.GL_FLOAT.getId(), false, 0, va.getData());
+			OpenGLES2Native.glEnableVertexAttribArray(vAttributeArrayHandle);
+		}
+
+		for (int i = 0; i < primitiveData.getSamplers().size(); i++) {
+			final AbstractSampler s = primitiveData.getSamplers().get(i);
+			final int samplerHandle = program.getUniformHandle(s.getVariableName());
+			s.send(samplerHandle);
+		}
+
+		primitiveData.getBlending().enable();
+		OpenGLES2Native.glDrawElements(primitiveData.getPrimitiveType().getId(), indices.capacity(), indicesType.getId(), indices);
+	}
+
 	@Override
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onDrawFrame(GL10 gl) {
@@ -75,7 +110,7 @@ public class GLSurfaceRenderer implements Renderer {
 
 			synchronized (glSurface.getPrimitiveDatas()) {
 				for (int j = 0; j < glSurface.getPrimitiveDatas().size(); j++) {
-					OpenGLES2.glDrawElements(program, glSurface.getPrimitiveDatas().get(j));
+					drawElements(program, glSurface.getPrimitiveDatas().get(j));
 				}
 			}
 		}
