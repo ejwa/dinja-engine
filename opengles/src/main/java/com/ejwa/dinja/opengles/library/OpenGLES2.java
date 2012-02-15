@@ -21,15 +21,11 @@
 package com.ejwa.dinja.opengles.library;
 
 import com.ejwa.dinja.opengles.DataType;
-import com.ejwa.dinja.opengles.texture.TextureFormat;
-import com.ejwa.dinja.opengles.texture.TextureTarget;
-import com.ejwa.dinja.opengles.texture.TextureType;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
 import com.ejwa.dinja.opengles.shader.argument.AbstractSampler;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import com.ejwa.dinja.opengles.shader.argument.AbstractVertexAttributeArray;
-import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
 
 public final class OpenGLES2  {
@@ -67,20 +63,5 @@ public final class OpenGLES2  {
 
 		primitiveData.getBlending().enable();
 		OpenGLES2Native.glDrawElements(primitiveData.getPrimitiveType().getId(), indices.capacity(), indicesType.getId(), indices);
-	}
-
-	public static void glTexImage2D(int level, int width, int height, TextureFormat format, TextureType type, Pointer pixels) {
-		OpenGLES2Native.glTexImage2D(TextureTarget.GL_TEXTURE_2D.getId(), level, format.getId(), width, height, 0, format.getId(), type.getId(), pixels);
-	}
-
-	public static int glGenTexture() {
-		final IntPointer handlePtr = new IntPointer(1);
-		final int handle;
-
-		OpenGLES2Native.glGenTextures(1, handlePtr);
-		handle = handlePtr.get(0);
-		handlePtr.deallocate();
-
-		return handle;
 	}
 }

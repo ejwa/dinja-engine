@@ -27,8 +27,8 @@ import com.ejwa.dinja.opengles.texture.TextureMagnifyFilter;
 import com.ejwa.dinja.opengles.texture.TextureMinifyFilter;
 import com.ejwa.dinja.opengles.texture.TextureTarget;
 import com.ejwa.dinja.opengles.texture.TextureType;
-import com.ejwa.dinja.opengles.library.OpenGLES2;
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
+import com.googlecode.javacpp.IntPointer;
 import com.googlecode.javacpp.Pointer;
 
 public abstract class AbstractSampler<T extends Pointer> extends AbstractUniform<T, T> {
@@ -49,12 +49,28 @@ public abstract class AbstractSampler<T extends Pointer> extends AbstractUniform
 		this.height = height;
 	}
 
+	private static int genTexture() {
+		final IntPointer handlePtr = new IntPointer(1);
+		final int handle;
+
+		OpenGLES2Native.glGenTextures(1, handlePtr);
+		handle = handlePtr.get(0);
+		handlePtr.deallocate();
+
+		return handle;
+	}
+
+	private void texImage2D(int level) {
+		OpenGLES2Native.glTexImage2D(TextureTarget.GL_TEXTURE_2D.getId(), level, textureFormat.getId(), width, height,
+		                             0, textureFormat.getId(), textureType.getId(), data);
+	}
+
 	public void bind() {
-		textureHandle = OpenGLES2.glGenTexture();
+		textureHandle = genTexture();
 		activeTexture.set();
 		TextureTarget.GL_TEXTURE_2D.bind(textureHandle);
 		PixelStorageMode.GL_UNPACK_ALIGNMENT.set(1);
-		OpenGLES2.glTexImage2D(0, width, height, textureFormat, textureType, data);
+		texImage2D(0);
 
 		TextureMagnifyFilter.GL_LINEAR.set(TextureTarget.GL_TEXTURE_2D);
 		TextureMinifyFilter.GL_LINEAR.set(TextureTarget.GL_TEXTURE_2D);
