@@ -20,43 +20,26 @@
  */
 package com.ejwa.dinja.opengles.shader.argument;
 
-public abstract class AbstractUniform<T, P> {
-	protected final int components;
-	protected P data;
-	private T value;
-	private final String variableName;
+import com.ejwa.dinja.opengles.library.OpenGLES2Native;
+import org.openmali.vecmath2.Vector3f;
 
-	public AbstractUniform(String variableName, int components) {
-		this.variableName = variableName;
-		this.components = components;
+public class UniformVector3f extends AbstractUniform<Vector3f, Vector3f> {
+	public UniformVector3f(String variableName) {
+		super(variableName, 3);
 	}
 
-	public AbstractUniform(String variableName, int components, T value) {
-		this(variableName, components);
-		set(value);
+	public UniformVector3f(String variableName, Vector3f value) {
+		super(variableName, 3, value);
+		data = value;
 	}
 
-	public int getComponents() {
-		return components;
+	@Override
+	protected synchronized void setData(Vector3f value) {
+		data.set(value.getX(), value.getY(), value.getZ());
 	}
 
-	public T get() {
-		return value;
-	}
-
-	public final void set(T value) {
-		this.value = value;
-		setData(value);
-	}
-
-	public synchronized P getData() {
-		return data;
-	}
-
-	public abstract void send(int handle);
-	protected abstract void setData(T value);
-
-	public String getVariableName() {
-		return variableName;
+	@Override
+	public void send(int handle) {
+		OpenGLES2Native.glUniform3f(handle, data.getX(), data.getY(), data.getZ());
 	}
 }

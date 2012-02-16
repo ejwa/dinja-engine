@@ -105,11 +105,7 @@ public class PrimitiveData {
 	}
 
 	public void removeSampler(String variableName) {
-		final AbstractSampler sampler = samplers.remove(variableName);
-
-		if (sampler != null) {
-			sampler.getData().deallocate();
-		}
+		samplers.remove(variableName);
 	}
 
 	public PrimitiveDataArgument<AbstractSampler> getSamplers() {
@@ -121,11 +117,7 @@ public class PrimitiveData {
 	}
 
 	public void removeUniform(String variableName) {
-		final AbstractUniform uniform = uniforms.remove(variableName);
-
-		if (uniform != null) {
-			uniform.getData().deallocate();
-		}
+		uniforms.remove(variableName);
 	}
 
 	public PrimitiveDataArgument<AbstractUniform> getUniforms() {
