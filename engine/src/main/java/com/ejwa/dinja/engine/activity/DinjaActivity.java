@@ -41,16 +41,13 @@ import com.ejwa.dinja.engine.controller.input.TiltForceInputController;
 import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.engine.view.Viewable;
-import com.ejwa.dinja.opengles.error.GLException;
 import com.ejwa.dinja.opengles.display.GLSurface;
 import com.ejwa.dinja.opengles.display.IFrameTimeListener;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;
+import com.ejwa.dinja.opengles.display.draw.ElementsDraw;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
-import com.ejwa.dinja.opengles.shader.FragmentShader;
 import com.ejwa.dinja.opengles.shader.Program;
-import com.ejwa.dinja.opengles.shader.VertexShader;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import org.openmali.FastMath;
@@ -63,6 +60,8 @@ import org.openmali.FastMath;
  * @since 0.1
  */
 public class DinjaActivity extends Activity {
+	private static final String VERTEX_SHADER = "/vertex.glsl";
+	private static final String FRAGMENT_SHADER = "/fragment.glsl";
 	private static final int FASTMATH_PRECISION = 0x4000;
 
 	private GLSurface glSurfaceView;
@@ -108,17 +107,6 @@ public class DinjaActivity extends Activity {
 		super.onPause();
 	}
 
-	private void setShaders() {
-		final InputStream vertexShader = getClass().getResourceAsStream("/vertex.glsl");
-		final InputStream fragmentShader = getClass().getResourceAsStream("/fragment.glsl");
-
-		try {
-			glSurfaceView.registerProgram(new Program(new VertexShader(vertexShader), new FragmentShader(fragmentShader)));
-		} catch (Exception ex) {
-			throw new GLException("Failed to open shader source files.", ex);
-		}
-	}
-
 	/**
 	 * Called after <code>onCreate()</code> or after, <code>onPause()</code>. Everything that should happen after the dinja
 	 * activity is created or after it has been inactive, should be done here. <code>DinjaActivity</code> resumes the GL
@@ -132,7 +120,9 @@ public class DinjaActivity extends Activity {
 		super.onResume();
 		glSurfaceView.onResume();
 		Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
-		setShaders();
+
+		final Program program = new Program(VERTEX_SHADER, FRAGMENT_SHADER);
+		glSurfaceView.registerFrameDrawListener(new ElementsDraw(program));
 	}
 
 	/**

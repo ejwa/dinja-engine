@@ -23,15 +23,15 @@ package com.ejwa.dinja.opengles.display;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import com.ejwa.dinja.opengles.display.draw.IFrameDrawListener;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
-import com.ejwa.dinja.opengles.shader.Program;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class GLSurface extends GLSurfaceView {
 	private final List<PrimitiveData> primitiveDatas = Collections.synchronizedList(new ArrayList<PrimitiveData>());
-	private final List<Program> programs = Collections.synchronizedList(new ArrayList<Program>());
+	private final List<IFrameDrawListener> frameDrawListeners = Collections.synchronizedList(new ArrayList<IFrameDrawListener>());
 	private final List<IFrameTimeListener> frameTimeListeners = Collections.synchronizedList(new ArrayList<IFrameTimeListener>());
 	private final List<IFrameUpdateListener> frameUpdateListeners = Collections.synchronizedList(new ArrayList<IFrameUpdateListener>());
 	private final List<ISurfaceChangeListener> surfaceChangeListeners = Collections.synchronizedList(new ArrayList<ISurfaceChangeListener>());
@@ -60,18 +60,18 @@ public class GLSurface extends GLSurfaceView {
 		return primitiveDatas;
 	}
 
-	public void registerProgram(Program program) {
-		if (!programs.contains(program)) {
-			programs.add(program);
+	public void registerFrameDrawListener(IFrameDrawListener frameDrawListener) {
+		if (!frameDrawListeners.contains(frameDrawListener)) {
+			frameDrawListeners.add(frameDrawListener);
 		}
 	}
 
-	public void unregisterProgram(Program program) {
-		programs.remove(program);
+	public void unregisterFrameDrawListener(IFrameDrawListener frameDrawListener) {
+		frameDrawListeners.remove(frameDrawListener);
 	}
 
-	public List<Program> getPrograms() {
-		return programs;
+	public List<IFrameDrawListener> getFrameDrawListeners() {
+		return frameDrawListeners;
 	}
 
 	public void registerFrameTimeListener(IFrameTimeListener frameTimeListener) {

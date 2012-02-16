@@ -27,6 +27,7 @@ import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.shader.argument.AbstractUniform;
 import com.googlecode.javacpp.BytePointer;
 import com.googlecode.javacpp.IntPointer;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,6 +49,19 @@ public class Program {
 
 	public Program(VertexShader vertexShader, FragmentShader fragmentShader) {
 		attach(vertexShader, fragmentShader);
+	}
+
+	public Program(String vertexShader, String fragmentShader) {
+		final InputStream vs = getClass().getResourceAsStream(vertexShader);
+		final InputStream fs = getClass().getResourceAsStream(fragmentShader);
+
+		try {
+			attach(new VertexShader(vs), new FragmentShader(fs));
+			vs.close();
+			fs.close();
+		} catch (Exception ex) {
+			throw new GLException("Failed to open shader source files.", ex);
+		}
 	}
 
 	public final void attach(VertexShader vertexShader, FragmentShader fragmentShader) {
