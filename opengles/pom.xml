@@ -15,6 +15,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.ejwa.dinja</groupId>
+			<artifactId>utility</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.googlecode</groupId>
 			<artifactId>javacpp</artifactId>
 		</dependency>

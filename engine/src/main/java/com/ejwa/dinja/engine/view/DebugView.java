@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.ejwa.dinja.engine.model.Camera;
 import com.ejwa.dinja.engine.model.node.scene.Scene;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
-import com.ejwa.dinja.engine.util.Tuple;
+import com.ejwa.dinja.utility.type.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 

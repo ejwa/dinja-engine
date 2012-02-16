@@ -16,6 +16,7 @@
 		<module>engine</module>
 		<module>opengles</module>
 		<module>physics</module>
+		<module>utility</module>
 	</modules>
 
 	<repositories>

@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.util.xml;
+package com.ejwa.dinja.utility.xml;
 
 import android.content.res.AssetManager;
 import android.util.Log;

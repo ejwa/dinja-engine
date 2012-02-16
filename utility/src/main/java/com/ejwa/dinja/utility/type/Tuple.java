@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.util;
+package com.ejwa.dinja.utility.type;
 
 public class Tuple<A, B> {
 	private A a;

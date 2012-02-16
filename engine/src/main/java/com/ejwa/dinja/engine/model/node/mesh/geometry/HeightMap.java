@@ -22,7 +22,7 @@ package com.ejwa.dinja.engine.model.node.mesh.geometry;
 
 import com.ejwa.dinja.engine.model.node.mesh.Texture;
 import com.ejwa.dinja.engine.model.node.mesh.Vertex;
-import com.ejwa.dinja.engine.util.HashedArrayList;
+import com.ejwa.dinja.utility.type.HashedArrayList;
 
 /**
  * Describes a heightmap geometry which actually is a {@link Plane} with vertices translated in the Z axis according to a

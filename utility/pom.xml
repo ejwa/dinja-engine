@@ -8,37 +8,15 @@
 	</parent>
 
 	<groupId>com.ejwa.dinja</groupId>
-	<artifactId>engine</artifactId>
+	<artifactId>utility</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
-	<name>Dinja Engine Implementation</name>
+	<name>Dinja Engine Utility</name>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.ejwa.dinja</groupId>
-			<artifactId>opengles</artifactId>
-			<version>0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.ejwa.dinja</groupId>
-			<artifactId>physics</artifactId>
-			<version>0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.ejwa.dinja</groupId>
-			<artifactId>utility</artifactId>
-			<version>0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openmali</groupId>
-			<artifactId>openmali</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.simpleframework</groupId>
@@ -52,13 +30,5 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/main/glsl</directory>
-			</resource>
-		</resources>
 	</build>
 </project>
