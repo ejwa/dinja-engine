@@ -65,8 +65,8 @@ public class GLSurfaceRenderer implements Renderer {
 			final IFrameDrawListener frameDrawListener = glSurface.getFrameDrawListeners().get(i);
 
 			if (frameDrawListener.isEnabled()) {
-				synchronized (glSurface.getPrimitiveDatas()) {
-					frameDrawListener.onDrawFrame(glSurface.getPrimitiveDatas());
+				synchronized (glSurface.getPrimitiveDataList()) {
+					frameDrawListener.onDrawFrame(glSurface.getPrimitiveDataList());
 				}
 			}
 		}
@@ -101,8 +101,8 @@ public class GLSurfaceRenderer implements Renderer {
 			final IFrameDrawListener frameDrawListener = glSurface.getFrameDrawListeners().get(i);
 
 			if (frameDrawListener.isEnabled()) {
-				synchronized (glSurface.getPrimitiveDatas()) {
-					frameDrawListener.onPrepareDraw(glSurface.getPrimitiveDatas());
+				synchronized (glSurface.getPrimitiveDataList()) {
+					frameDrawListener.onPrepareDraw(glSurface.getPrimitiveDataList());
 				}
 			}
 		}
