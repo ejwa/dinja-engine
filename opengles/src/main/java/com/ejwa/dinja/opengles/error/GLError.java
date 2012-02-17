@@ -61,7 +61,7 @@ public final class GLError {
 		 * it's only for error handling it's an acceptable solution.
 		 */
 		if (Code.GL_NO_ERROR.getId() != error) {
-			for (Code c : Code.class.getEnumConstants()) {
+			for (Code c : Code.values()) {
 				if (c.getId() == error) {
 					return c;
 				}
