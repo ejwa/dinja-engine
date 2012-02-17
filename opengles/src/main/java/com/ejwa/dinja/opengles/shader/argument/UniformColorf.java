@@ -21,21 +21,21 @@
 package com.ejwa.dinja.opengles.shader.argument;
 
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
-import org.openmali.vecmath2.Vector3f;
+import org.openmali.vecmath2.Colorf;
 
-public class UniformVector3f extends AbstractUniform<Vector3f, Vector3f> {
-	public UniformVector3f(String variableName) {
+public class UniformColorf extends AbstractUniform<Colorf, Colorf> {
+	public UniformColorf(String variableName) {
 		super(variableName, 3);
 	}
 
-	public UniformVector3f(String variableName, Vector3f value) {
+	public UniformColorf(String variableName, Colorf value) {
 		super(variableName, 3, value);
 	}
 
 	@Override
-	protected synchronized void setData(Vector3f value) {
+	protected synchronized void setData(Colorf value) {
 		if (data == null) {
-			data = new Vector3f();
+			data = new Colorf();
 		}
 
 		data.set(value);
@@ -43,6 +43,10 @@ public class UniformVector3f extends AbstractUniform<Vector3f, Vector3f> {
 
 	@Override
 	public void send(int handle) {
-		OpenGLES2Native.glUniform3f(handle, data.getX(), data.getY(), data.getZ());
+		if (data.hasAlpha()) {
+			OpenGLES2Native.glUniform4f(handle, data.getRed(), data.getGreen(), data.getBlue(), data.getAlpha());
+		} else {
+			OpenGLES2Native.glUniform3f(handle, data.getRed(), data.getGreen(), data.getBlue());
+		}
 	}
 }

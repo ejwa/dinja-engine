@@ -85,7 +85,9 @@ public final class OpenGLES2Native {
 	public static native void glUniform4fv(int location, int count, FloatPointer value);
 	public static native void glUniformMatrix4fv(int location, int count, boolean transpose, FloatPointer value);
 	public static native void glUniform1i(int location, int value);
+	public static native void glUniform3i(int location, int v0, int v1, int v2);
 	public static native void glUniform3f(int location, float v0, float v1, float v2);
+	public static native void glUniform4f(int location, float v0, float v1, float v2, float v3);
 
 	public static native void glActiveTexture(int texture);
 	public static native void glTexParameteri(int target, int paramName, int param);

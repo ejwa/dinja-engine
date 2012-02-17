@@ -21,28 +21,28 @@
 package com.ejwa.dinja.opengles.shader.argument;
 
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
-import org.openmali.vecmath2.Vector3f;
+import org.openmali.vecmath2.Tuple3i;
 
-public class UniformVector3f extends AbstractUniform<Vector3f, Vector3f> {
-	public UniformVector3f(String variableName) {
+public class UniformTuple3i extends AbstractUniform<Tuple3i, Tuple3i> {
+	public UniformTuple3i(String variableName) {
 		super(variableName, 3);
 	}
 
-	public UniformVector3f(String variableName, Vector3f value) {
+	public UniformTuple3i(String variableName, Tuple3i value) {
 		super(variableName, 3, value);
 	}
 
 	@Override
-	protected synchronized void setData(Vector3f value) {
+	protected synchronized void setData(Tuple3i value) {
 		if (data == null) {
-			data = new Vector3f();
+			data = new Tuple3i();
 		}
 
-		data.set(value);
+		data.set(value.getX(), value.getY(), value.getZ());
 	}
 
 	@Override
 	public void send(int handle) {
-		OpenGLES2Native.glUniform3f(handle, data.getX(), data.getY(), data.getZ());
+		OpenGLES2Native.glUniform3i(handle, data.getX(), data.getY(), data.getZ());
 	}
 }
