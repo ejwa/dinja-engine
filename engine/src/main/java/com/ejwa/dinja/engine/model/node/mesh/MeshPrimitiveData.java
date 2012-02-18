@@ -38,14 +38,20 @@ public class MeshPrimitiveData extends PrimitiveData {
 	public static final String TEXTURE_COORDINATE_ATTRIBUTE_NAME = "aTexCoord";
 	public static final String TEXTURE_SAMPLER_NAME = "sTexture";
 	public static final String VERTEX_COORDINATE_ATTRIBUTE_NAME = "aPosition";
+	private final Mesh parentMesh;
 	private final List<Vertex> vertices;
 	private final List<Vertex> indices;
 
-	public MeshPrimitiveData(PrimitiveType primitiveType, String vertexCoordVariableName,
+	public MeshPrimitiveData(Mesh parentMesh, PrimitiveType primitiveType, String vertexCoordVariableName,
 		                 List<Vertex> vertices, List<Vertex> indices) {
 		super(primitiveType, vertexCoordVariableName);
+		this.parentMesh = parentMesh;
 		this.vertices = vertices;
 		this.indices = indices;
+	}
+
+	public Mesh getParentMesh() {
+		return parentMesh;
 	}
 
 	private void updatePrimitiveDataAttributes(Vector3f positions[], Colorf colors[], Vector3f normals[],

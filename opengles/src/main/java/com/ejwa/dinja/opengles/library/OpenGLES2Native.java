@@ -36,7 +36,7 @@ import com.googlecode.javacpp.annotation.Platform;
  * @author Adam Waldenberg <adam.waldenberg@ejwa.se>
  * @since 0.1
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.UseSingleton"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.UseSingleton", "PMD.ExcessivePublicCount"})
 @Platform(cinclude = "GLES2/gl2.h", link = "GLESv2")
 public final class OpenGLES2Native {
 	static { Loader.load(); }
@@ -57,6 +57,7 @@ public final class OpenGLES2Native {
 	public static native int glGetError();
 	public static native @Cast("const uint8_t *") BytePointer glGetString(int nameIdentifier);
 	public static native void glViewport(int x, int y, int width, int height);
+	public static native void glScissor(int x, int y, int width, int height);
 
 	public static native int glCreateProgram();
 	public static native void glDeleteProgram(int program);
@@ -87,6 +88,7 @@ public final class OpenGLES2Native {
 	public static native void glUniform1i(int location, int value);
 	public static native void glUniform3i(int location, int v0, int v1, int v2);
 	public static native void glUniform3f(int location, float v0, float v1, float v2);
+	public static native void glUniform4i(int location, int v0, int v1, int v2, int v3);
 	public static native void glUniform4f(int location, float v0, float v1, float v2, float v3);
 
 	public static native void glActiveTexture(int texture);
@@ -95,6 +97,7 @@ public final class OpenGLES2Native {
 	public static native void glBindTexture(int target, int texture);
 	public static native void glGenTextures(int n, @Cast("unsigned int *") IntPointer textures);
 	public static native void glPixelStorei(int paramName, int param);
+	public static native void glReadPixels(int x, int y, int width, int height, int format, int type, Pointer data);
 
 	public static native void glBlendFunc(int sourceFactor, int destinationFactor);
 

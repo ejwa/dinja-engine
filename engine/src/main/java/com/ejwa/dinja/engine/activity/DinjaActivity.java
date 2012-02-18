@@ -28,12 +28,14 @@ import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.controller.DebugController;
 import com.ejwa.dinja.engine.controller.SceneController;
+import com.ejwa.dinja.engine.controller.input.FingerFlingMeshInputController;
 import com.ejwa.dinja.engine.controller.animator.AnimatorController;
 import com.ejwa.dinja.engine.controller.animator.IAnimator;
 import com.ejwa.dinja.engine.controller.input.FingerDeltaMovementInputController;
 import com.ejwa.dinja.engine.controller.input.FingerMovementInputController;
 import com.ejwa.dinja.engine.controller.input.FingerPositionInputController;
 import com.ejwa.dinja.engine.controller.input.IFingerDeltaMovementInputListener;
+import com.ejwa.dinja.engine.controller.input.IFingerFlingMeshInputListener;
 import com.ejwa.dinja.engine.controller.input.IFingerMovementInputListener;
 import com.ejwa.dinja.engine.controller.input.IFingerPositionInputListener;
 import com.ejwa.dinja.engine.controller.input.ITiltForceInputListener;
@@ -46,6 +48,7 @@ import com.ejwa.dinja.opengles.display.IFrameTimeListener;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;
 import com.ejwa.dinja.opengles.display.draw.ElementsDraw;
+import com.ejwa.dinja.opengles.display.draw.SelectionDraw;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import com.ejwa.dinja.opengles.shader.Program;
 import java.util.HashMap;
@@ -65,8 +68,10 @@ public class DinjaActivity extends Activity {
 	private static final int FASTMATH_PRECISION = 0x4000;
 
 	private GLSurface glSurfaceView;
+	private SelectionDraw selectionDraw;
 	private Map<ITiltForceInputListener, TiltForceInputController> tiltForceListeners;
 	private Map<IFingerDeltaMovementInputListener, FingerDeltaMovementInputController> fingerDeltaMovementListeners;
+	private Map<IFingerFlingMeshInputListener, FingerFlingMeshInputController> fingerFlingMeshListeners;
 	private Map<IFingerPositionInputListener, FingerPositionInputController> fingerPositionListeners;
 	private Map<IFingerMovementInputListener, FingerMovementInputController> fingerMovementListeners;
 
@@ -85,8 +90,10 @@ public class DinjaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		tiltForceListeners = new HashMap<ITiltForceInputListener, TiltForceInputController>();
 		fingerDeltaMovementListeners = new HashMap<IFingerDeltaMovementInputListener, FingerDeltaMovementInputController>();
+		fingerFlingMeshListeners = new HashMap<IFingerFlingMeshInputListener, FingerFlingMeshInputController>();
 		fingerPositionListeners = new HashMap<IFingerPositionInputListener, FingerPositionInputController>();
 		fingerMovementListeners = new HashMap<IFingerMovementInputListener, FingerMovementInputController>();
+		selectionDraw = new SelectionDraw();
 
 		FastMath.setPrecision(FASTMATH_PRECISION);
 		glSurfaceView = new GLSurface(getApplication());
@@ -120,6 +127,8 @@ public class DinjaActivity extends Activity {
 		super.onResume();
 		glSurfaceView.onResume();
 		Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
+		glSurfaceView.registerFrameDrawListener(selectionDraw);
+		glSurfaceView.registerSurfaceChangeListener(selectionDraw);
 
 		final Program program = new Program(VERTEX_SHADER, FRAGMENT_SHADER);
 		glSurfaceView.registerFrameDrawListener(new ElementsDraw(program));
@@ -154,6 +163,13 @@ public class DinjaActivity extends Activity {
 		if (controllable instanceof ITiltForceInputListener) {
 			final TiltForceInputController input = new TiltForceInputController(this, (ITiltForceInputListener) controllable);
 			tiltForceListeners.put((ITiltForceInputListener) controllable, input);
+		}
+
+		if (controllable instanceof IFingerFlingMeshInputListener) {
+			final FingerFlingMeshInputController input = new FingerFlingMeshInputController((IFingerFlingMeshInputListener) controllable, glSurfaceView);
+			fingerFlingMeshListeners.put((IFingerFlingMeshInputListener) controllable, input);
+
+			selectionDraw.registerSelectionDrawListener(input);
 		}
 
 		if (controllable instanceof IFingerDeltaMovementInputListener) {
@@ -197,6 +213,10 @@ public class DinjaActivity extends Activity {
 			final TiltForceInputController input = tiltForceListeners.get((ITiltForceInputListener) controllable);
 			input.unregister();
 			tiltForceListeners.remove((ITiltForceInputListener) controllable);
+		}
+
+		if (controllable instanceof IFingerFlingMeshInputListener) {
+			fingerFlingMeshListeners.remove((IFingerFlingMeshInputListener) controllable);
 		}
 
 		if (controllable instanceof IFingerDeltaMovementInputListener) {
@@ -267,16 +287,31 @@ public class DinjaActivity extends Activity {
 	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		for (FingerDeltaMovementInputController c : fingerDeltaMovementListeners.values()) {
+		boolean wasFlinging = false;
+		boolean flinging = false;
+
+		for (FingerFlingMeshInputController c : fingerFlingMeshListeners.values()) {
+			wasFlinging |= c.isFlinging();
 			c.onTouchEvent(event);
+			flinging |= c.isFlinging();
 		}
 
-		for (FingerPositionInputController c : fingerPositionListeners.values()) {
-			c.onTouchEvent(event);
+		if (wasFlinging && !flinging) {
+			event.setAction(MotionEvent.ACTION_DOWN);
 		}
 
-		for (FingerMovementInputController c : fingerMovementListeners.values()) {
-			c.onTouchEvent(event);
+		if (event.getAction() == MotionEvent.ACTION_DOWN || !flinging) {
+			for (FingerDeltaMovementInputController c : fingerDeltaMovementListeners.values()) {
+				c.onTouchEvent(event);
+			}
+
+			for (FingerPositionInputController c : fingerPositionListeners.values()) {
+				c.onTouchEvent(event);
+			}
+
+			for (FingerMovementInputController c : fingerMovementListeners.values()) {
+				c.onTouchEvent(event);
+			}
 		}
 
 		return true;

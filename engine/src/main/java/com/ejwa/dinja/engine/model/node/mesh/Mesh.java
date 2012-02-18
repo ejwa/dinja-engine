@@ -55,7 +55,8 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 	public Mesh(String name, PrimitiveType primitiveType) {
 		super(name);
 
-		meshPrimitiveData = new MeshPrimitiveData(primitiveType, MeshPrimitiveData.VERTEX_COORDINATE_ATTRIBUTE_NAME,
+		//TODO: Remove as many deps on MeshPrimitiveData as possible here...
+		meshPrimitiveData = new MeshPrimitiveData(this, primitiveType, MeshPrimitiveData.VERTEX_COORDINATE_ATTRIBUTE_NAME,
 		                                          vertices, indices);
 
 		final Matrix4f modelViewProjectionMatrix = new Matrix4f();
