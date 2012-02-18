@@ -30,7 +30,7 @@ public class BaseNode implements INode {
 	protected final String name;
 	protected final List<INode> nodes = new LinkedList<INode>();
 
-	public BaseNode(String name) {
+	protected BaseNode(String name) {
 		modelMatrix.setIdentity();
 		this.name = name;
 	}
