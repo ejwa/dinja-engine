@@ -20,6 +20,8 @@
  */
 package com.ejwa.dinja.opengles.display;
 
+import android.opengl.GLSurfaceView;
+
 public interface ISurfaceChangeListener {
-	void onSurfaceChange(GLSurface surface);
+	void onSurfaceChange(GLSurfaceView glSurfaceView);
 }

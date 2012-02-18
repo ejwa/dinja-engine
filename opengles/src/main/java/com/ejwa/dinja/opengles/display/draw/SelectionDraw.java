@@ -20,10 +20,9 @@
  */
 package com.ejwa.dinja.opengles.display.draw;
 
-import android.util.Log;
+import android.opengl.GLSurfaceView;
 import com.ejwa.dinja.opengles.Capability;
 import com.ejwa.dinja.opengles.DataType;
-import com.ejwa.dinja.opengles.display.GLSurface;
 import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
@@ -172,9 +171,9 @@ public class SelectionDraw extends AbstractDraw implements ISurfaceChangeListene
 	}
 
 	@Override
-	public void onSurfaceChange(GLSurface surface) {
+	public void onSurfaceChange(GLSurfaceView glSurfaceView) {
 		synchronized (this) {
-			surfaceHeight = surface.getHeight();
+			surfaceHeight = glSurfaceView.getHeight();
 		}
 	}
 }

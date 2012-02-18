@@ -20,13 +20,13 @@
  */
 package com.ejwa.dinja.engine.controller.input;
 
+import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import com.ejwa.dinja.engine.model.node.mesh.MeshPrimitiveData;
-import com.ejwa.dinja.opengles.display.GLSurface;
 import com.ejwa.dinja.opengles.display.draw.ISelectionDrawListener;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import org.openmali.vecmath2.Vector2f;
 public class FingerFlingMeshInputController extends SimpleOnGestureListener implements ISelectionDrawListener {
 	private final IFingerFlingMeshInputListener fingerFlingMeshInputListener;
 	private final GestureDetector gestureDetector;
-	private final GLSurface surface;
+	private final GLSurfaceView glSurfaceView;
 	private final float minimumFlingVelocity;
 	private final AtomicBoolean flinging = new AtomicBoolean(false);
 	private final List<Mesh> selectedMeshes = Collections.synchronizedList(new ArrayList<Mesh>());
@@ -50,16 +50,17 @@ public class FingerFlingMeshInputController extends SimpleOnGestureListener impl
 	private float distanceMoved;
 	private long flingStartTime;
 
-	public FingerFlingMeshInputController(IFingerFlingMeshInputListener fingerFlingMeshInputListener, GLSurface surface, float minimumFlingVelocity) {
+	public FingerFlingMeshInputController(IFingerFlingMeshInputListener fingerFlingMeshInputListener,
+	                                      GLSurfaceView glSurfaceView, float minimumFlingVelocity) {
 		super();
 		gestureDetector = new GestureDetector(this);
 		this.fingerFlingMeshInputListener = fingerFlingMeshInputListener;
-		this.surface = surface;
+		this.glSurfaceView = glSurfaceView;
 		this.minimumFlingVelocity = minimumFlingVelocity;
 	}
 
-	public FingerFlingMeshInputController(IFingerFlingMeshInputListener fingerFlingMeshInputListener, GLSurface surface) {
-		this(fingerFlingMeshInputListener, surface, 1f);
+	public FingerFlingMeshInputController(IFingerFlingMeshInputListener fingerFlingMeshInputListener, GLSurfaceView glSurfaceView) {
+		this(fingerFlingMeshInputListener, glSurfaceView, 1f);
 	}
 
 	public boolean isFlinging() {
@@ -105,7 +106,7 @@ public class FingerFlingMeshInputController extends SimpleOnGestureListener impl
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 		if (distanceMoved >= 0) {
-			fingerDeltaMovement.set(distanceX / surface.getWidth(), distanceY / surface.getHeight());
+			fingerDeltaMovement.set(distanceX / glSurfaceView.getWidth(), distanceY / glSurfaceView.getHeight());
 			distanceMoved += Math.abs(fingerDeltaMovement.length());
 
 			if (minimumFlingVelocity > distanceMoved / ((SystemClock.uptimeMillis() - flingStartTime) / 1000f)) {

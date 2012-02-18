@@ -20,22 +20,22 @@
  */
 package com.ejwa.dinja.engine.controller.input;
 
+import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
-import com.ejwa.dinja.opengles.display.GLSurface;
 
 public class FingerPositionInputController {
 	private final IFingerPositionInputListener fingerPositionInputListener;
-	private final GLSurface surface;
+	private final GLSurfaceView glSurfaceView;
 
-	public FingerPositionInputController(IFingerPositionInputListener fingerPositionInputListener, GLSurface surface) {
+	public FingerPositionInputController(IFingerPositionInputListener fingerPositionInputListener, GLSurfaceView glSurfaceView) {
 		this.fingerPositionInputListener = fingerPositionInputListener;
-		this.surface = surface;
+		this.glSurfaceView = glSurfaceView;
 	}
 
 	public void onTouchEvent(MotionEvent motionEvent) {
 		if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-			final float x = motionEvent.getX() / surface.getWidth();
-			final float y = motionEvent.getY() / surface.getHeight();
+			final float x = motionEvent.getX() / glSurfaceView.getWidth();
+			final float y = motionEvent.getY() / glSurfaceView.getHeight();
 
 			fingerPositionInputListener.onFingerPositionInput(x, y);
 		}

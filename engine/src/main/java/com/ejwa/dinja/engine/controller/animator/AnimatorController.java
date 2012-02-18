@@ -26,17 +26,17 @@ import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 
 public class AnimatorController implements Controllable, IFrameUpdateListener {
 	private final IAnimator animator;
-	private final GLSurface glSurfaceView;
+	private final GLSurface glSurface;
 
-	public AnimatorController(IAnimator animator, GLSurface glSurfaceView) {
+	public AnimatorController(IAnimator animator, GLSurface glSurface) {
 		this.animator = animator;
-		this.glSurfaceView = glSurfaceView;
+		this.glSurface = glSurface;
 	}
 
 	@Override
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		if (animator.isCompleted()) {
-			glSurfaceView.unregisterFrameUpdateListener(this);
+			glSurface.unregisterFrameUpdateListener(this);
 
 			if (animator.getAnimatorListener() != null) {
 				animator.getAnimatorListener().onAnimatorUnregistered();

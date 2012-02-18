@@ -20,27 +20,27 @@
  */
 package com.ejwa.dinja.engine.controller.input;
 
+import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
-import com.ejwa.dinja.opengles.display.GLSurface;
 import org.openmali.FastMath;
 import org.openmali.vecmath2.Point2f;
 
 public class FingerMovementInputController {
 	private final IFingerMovementInputListener fingerMovementInputListener;
-	private final GLSurface surface;
+	private final GLSurfaceView glSurfaceView;
 	private final Point2f startPosition = new Point2f();
 	private final Point2f endPosition = new Point2f();
 	private float angle;
 
-	public FingerMovementInputController(IFingerMovementInputListener fingerMovementInputListener, GLSurface surface) {
+	public FingerMovementInputController(IFingerMovementInputListener fingerMovementInputListener, GLSurfaceView glSurfaceView) {
 		this.fingerMovementInputListener = fingerMovementInputListener;
-		this.surface = surface;
+		this.glSurfaceView = glSurfaceView;
 	}
 
 	public void onTouchEvent(MotionEvent motionEvent) {
 		if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-			final float x = motionEvent.getX() / surface.getWidth();
-			final float y = motionEvent.getY() / surface.getHeight();
+			final float x = motionEvent.getX() / glSurfaceView.getWidth();
+			final float y = motionEvent.getY() / glSurfaceView.getHeight();
 
 			if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 				startPosition.set(x, y);

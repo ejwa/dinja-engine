@@ -20,24 +20,24 @@
  */
 package com.ejwa.dinja.engine.controller.input;
 
+import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
-import com.ejwa.dinja.opengles.display.GLSurface;
 import org.openmali.vecmath2.Point2f;
 
 public class FingerDeltaMovementInputController {
 	private final IFingerDeltaMovementInputListener fingerDeltaMovementInputListener;
-	private final GLSurface surface;
+	private final GLSurfaceView glSurfaceView;
 	private final Point2f previousPosition = new Point2f();
 
-	public FingerDeltaMovementInputController(IFingerDeltaMovementInputListener fingerDeltaMovementInputListener, GLSurface surface) {
+	public FingerDeltaMovementInputController(IFingerDeltaMovementInputListener fingerDeltaMovementInputListener, GLSurfaceView glSurfaceView) {
 		this.fingerDeltaMovementInputListener = fingerDeltaMovementInputListener;
-		this.surface = surface;
+		this.glSurfaceView = glSurfaceView;
 	}
 
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onTouchEvent(MotionEvent motionEvent) {
-		final float x = motionEvent.getX() / surface.getWidth();
-		final float y = motionEvent.getY() / surface.getHeight();
+		final float x = motionEvent.getX() / glSurfaceView.getWidth();
+		final float y = motionEvent.getY() / glSurfaceView.getHeight();
 
 		switch (motionEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:

@@ -67,7 +67,7 @@ public class DinjaActivity extends Activity {
 	private static final String FRAGMENT_SHADER = "/fragment.glsl";
 	private static final int FASTMATH_PRECISION = 0x4000;
 
-	private GLSurface glSurfaceView;
+	private GLSurface glSurface;
 	private SelectionDraw selectionDraw;
 	private Map<ITiltForceInputListener, TiltForceInputController> tiltForceListeners;
 	private Map<IFingerDeltaMovementInputListener, FingerDeltaMovementInputController> fingerDeltaMovementListeners;
@@ -97,8 +97,8 @@ public class DinjaActivity extends Activity {
 		selectionDraw.setEnabled(false);
 
 		FastMath.setPrecision(FASTMATH_PRECISION);
-		glSurfaceView = new GLSurface(getApplication());
-		setContentView(glSurfaceView);
+		glSurface = new GLSurface(getApplication());
+		setContentView(glSurface);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class DinjaActivity extends Activity {
 	 */
 	@Override
 	protected void onPause() {
-		glSurfaceView.onPause();
+		glSurface.onPause();
 		super.onPause();
 	}
 
@@ -126,14 +126,14 @@ public class DinjaActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		glSurfaceView.onResume();
+		glSurface.onResume();
 		Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
 
-		glSurfaceView.registerFrameDrawListener(selectionDraw);
-		glSurfaceView.registerSurfaceChangeListener(selectionDraw);
+		glSurface.registerFrameDrawListener(selectionDraw);
+		glSurface.registerSurfaceChangeListener(selectionDraw);
 
 		final Program program = new Program(VERTEX_SHADER, FRAGMENT_SHADER);
-		glSurfaceView.registerFrameDrawListener(new ElementsDraw(program));
+		glSurface.registerFrameDrawListener(new ElementsDraw(program));
 	}
 
 	/**
@@ -147,19 +147,19 @@ public class DinjaActivity extends Activity {
 	 */
 	protected final void registerController(Controllable controllable) {
 		if (controllable instanceof IFrameTimeListener) {
-			glSurfaceView.registerFrameTimeListener((IFrameTimeListener) controllable);
+			glSurface.registerFrameTimeListener((IFrameTimeListener) controllable);
 		}
 
 		if (controllable instanceof IFrameUpdateListener) {
 			if (controllable instanceof IAnimator) {
-				glSurfaceView.registerFrameUpdateListener(new AnimatorController((IAnimator) controllable, glSurfaceView));
+				glSurface.registerFrameUpdateListener(new AnimatorController((IAnimator) controllable, glSurface));
 			} else {
-				glSurfaceView.registerFrameUpdateListener((IFrameUpdateListener) controllable);
+				glSurface.registerFrameUpdateListener((IFrameUpdateListener) controllable);
 			}
 		}
 
 		if (controllable instanceof ISurfaceChangeListener) {
-			glSurfaceView.registerSurfaceChangeListener((ISurfaceChangeListener) controllable);
+			glSurface.registerSurfaceChangeListener((ISurfaceChangeListener) controllable);
 		}
 
 		if (controllable instanceof ITiltForceInputListener) {
@@ -168,24 +168,24 @@ public class DinjaActivity extends Activity {
 		}
 
 		if (controllable instanceof IFingerFlingMeshInputListener) {
-			final FingerFlingMeshInputController input = new FingerFlingMeshInputController((IFingerFlingMeshInputListener) controllable, glSurfaceView);
+			final FingerFlingMeshInputController input = new FingerFlingMeshInputController((IFingerFlingMeshInputListener) controllable, glSurface);
 			fingerFlingMeshListeners.put((IFingerFlingMeshInputListener) controllable, input);
 			selectionDraw.setEnabled(true);
 			selectionDraw.registerSelectionDrawListener(input);
 		}
 
 		if (controllable instanceof IFingerDeltaMovementInputListener) {
-			final FingerDeltaMovementInputController input = new FingerDeltaMovementInputController((IFingerDeltaMovementInputListener) controllable, glSurfaceView);
+			final FingerDeltaMovementInputController input = new FingerDeltaMovementInputController((IFingerDeltaMovementInputListener) controllable, glSurface);
 			fingerDeltaMovementListeners.put((IFingerDeltaMovementInputListener) controllable, input);
 		}
 
 		if (controllable instanceof IFingerPositionInputListener) {
-			final FingerPositionInputController input = new FingerPositionInputController((IFingerPositionInputListener) controllable, glSurfaceView);
+			final FingerPositionInputController input = new FingerPositionInputController((IFingerPositionInputListener) controllable, glSurface);
 			fingerPositionListeners.put((IFingerPositionInputListener) controllable, input);
 		}
 
 		if (controllable instanceof IFingerMovementInputListener) {
-			final FingerMovementInputController input = new FingerMovementInputController((IFingerMovementInputListener) controllable, glSurfaceView);
+			final FingerMovementInputController input = new FingerMovementInputController((IFingerMovementInputListener) controllable, glSurface);
 			fingerMovementListeners.put((IFingerMovementInputListener) controllable, input);
 		}
 	}
@@ -200,15 +200,15 @@ public class DinjaActivity extends Activity {
 	 */
 	protected final void unregisterController(Controllable controllable) {
 		if (controllable instanceof IFrameTimeListener) {
-			glSurfaceView.unregisterFrameTimeListener((IFrameTimeListener) controllable);
+			glSurface.unregisterFrameTimeListener((IFrameTimeListener) controllable);
 		}
 
 		if (controllable instanceof IFrameUpdateListener) {
-			glSurfaceView.unregisterFrameUpdateListener((IFrameUpdateListener) controllable);
+			glSurface.unregisterFrameUpdateListener((IFrameUpdateListener) controllable);
 		}
 
 		if (controllable instanceof ISurfaceChangeListener) {
-			glSurfaceView.unregisterSurfaceChangeListener((ISurfaceChangeListener) controllable);
+			glSurface.unregisterSurfaceChangeListener((ISurfaceChangeListener) controllable);
 		}
 
 		if (controllable instanceof ITiltForceInputListener) {
@@ -251,7 +251,7 @@ public class DinjaActivity extends Activity {
 
 		if (view instanceof SceneView) {
 			for (PrimitiveData p : (Iterable<PrimitiveData>) view) {
-				glSurfaceView.registerPrimitiveData(p);
+				glSurface.registerPrimitiveData(p);
 			}
 
 			final SceneView sceneView = (SceneView) view;
@@ -272,7 +272,7 @@ public class DinjaActivity extends Activity {
 		/* TODO: Handle default controllers when unregistering certain views. */
 		if (view instanceof Iterable) {
 			for (PrimitiveData p : (Iterable<PrimitiveData>) view) {
-				glSurfaceView.unregisterPrimitiveData(p);
+				glSurface.unregisterPrimitiveData(p);
 			}
 		}
 	}

@@ -20,8 +20,8 @@
  */
 package com.ejwa.dinja.engine.controller;
 
+import android.opengl.GLSurfaceView;
 import com.ejwa.dinja.engine.view.SceneView;
-import com.ejwa.dinja.opengles.display.GLSurface;
 import com.ejwa.dinja.opengles.display.ISurfaceChangeListener;
 
 public class CameraController implements Controllable, ISurfaceChangeListener {
@@ -32,7 +32,7 @@ public class CameraController implements Controllable, ISurfaceChangeListener {
 	}
 
 	@Override
-	public void onSurfaceChange(GLSurface surface) {
-		sceneView.getScene().getCamera().getFrustum().setAspectRatio((float) surface.getWidth() / surface.getHeight());
+	public void onSurfaceChange(GLSurfaceView glSurfaceView) {
+		sceneView.getScene().getCamera().getFrustum().setAspectRatio((float) glSurfaceView.getWidth() / glSurfaceView.getHeight());
 	}
 }
