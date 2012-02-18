@@ -42,7 +42,7 @@ import java.util.Map;
 import org.openmali.vecmath2.Point2i;
 import org.openmali.vecmath2.Tuple3i;
 
-public class SelectionDraw extends AbstractDraw implements ISurfaceChangeListener {
+public class SelectionDraw extends AbstractDraw implements IFramePeekListener, ISurfaceChangeListener {
 	static { Loader.load(OpenGLES2Native.class); }
 
 	private static final String VERTEX_SHADER = "/click_vertex.glsl";
@@ -159,15 +159,19 @@ public class SelectionDraw extends AbstractDraw implements ISurfaceChangeListene
 			OpenGLES2Native.glDrawElements(pd.getPrimitiveType().getId(), indices.capacity(), indicesType.getId(), indices);
 		}
 
+		Capability.GL_CULL_FACE.disable();
+		Capability.GL_DEPTH_TEST.disable();
+		Capability.GL_SCISSOR_TEST.disable();
+	}
+
+	@Override
+	public void onPeekFrame(List<PrimitiveData> primitiveDataList) {
 		synchronized (this) {
 			OpenGLES2Native.glReadPixels(selectedPoint.getX(), surfaceHeight - selectedPoint.getY(), 1, 1,
 			                             TextureFormat.GL_RGBA.getId(), TextureType.GL_UNSIGNED_BYTE.getId(), selectedPixel);
 		}
 
 		refreshSelectedPrimitiveData();
-		Capability.GL_CULL_FACE.disable();
-		Capability.GL_DEPTH_TEST.disable();
-		Capability.GL_SCISSOR_TEST.disable();
 	}
 
 	@Override

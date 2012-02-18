@@ -26,6 +26,7 @@ import android.util.Log;
 import com.ejwa.dinja.opengles.library.OpenGLES2Native;
 import com.ejwa.dinja.opengles.Property;
 import com.ejwa.dinja.opengles.display.draw.IFrameDrawListener;
+import com.ejwa.dinja.opengles.display.draw.IFramePeekListener;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -53,8 +54,8 @@ public class GLSurfaceRenderer implements Renderer {
 	@Override
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public void onDrawFrame(GL10 gl) {
-		final long enterTime = System.nanoTime();
 		final long timeSinceLastFrame = getMilliSecondsSinceLastFrame();
+		long enterTime = System.nanoTime();
 
 		for (int i = 0; i < glSurface.getFrameUpdateListeners().size(); i++) {
 			final IFrameUpdateListener f = glSurface.getFrameUpdateListeners().get(i);
@@ -67,6 +68,12 @@ public class GLSurfaceRenderer implements Renderer {
 			if (frameDrawListener.isEnabled()) {
 				synchronized (glSurface.getPrimitiveDataList()) {
 					frameDrawListener.onDrawFrame(glSurface.getPrimitiveDataList());
+
+					if (frameDrawListener instanceof IFramePeekListener) {
+						final long peekTime = System.nanoTime();
+						((IFramePeekListener) frameDrawListener).onPeekFrame(glSurface.getPrimitiveDataList());
+						enterTime += (System.nanoTime() - peekTime);
+					}
 				}
 			}
 		}
