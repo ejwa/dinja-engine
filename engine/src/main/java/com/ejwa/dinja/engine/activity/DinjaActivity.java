@@ -94,6 +94,7 @@ public class DinjaActivity extends Activity {
 		fingerPositionListeners = new HashMap<IFingerPositionInputListener, FingerPositionInputController>();
 		fingerMovementListeners = new HashMap<IFingerMovementInputListener, FingerMovementInputController>();
 		selectionDraw = new SelectionDraw();
+		selectionDraw.setEnabled(false);
 
 		FastMath.setPrecision(FASTMATH_PRECISION);
 		glSurfaceView = new GLSurface(getApplication());
@@ -127,6 +128,7 @@ public class DinjaActivity extends Activity {
 		super.onResume();
 		glSurfaceView.onResume();
 		Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
+
 		glSurfaceView.registerFrameDrawListener(selectionDraw);
 		glSurfaceView.registerSurfaceChangeListener(selectionDraw);
 
@@ -168,7 +170,7 @@ public class DinjaActivity extends Activity {
 		if (controllable instanceof IFingerFlingMeshInputListener) {
 			final FingerFlingMeshInputController input = new FingerFlingMeshInputController((IFingerFlingMeshInputListener) controllable, glSurfaceView);
 			fingerFlingMeshListeners.put((IFingerFlingMeshInputListener) controllable, input);
-
+			selectionDraw.setEnabled(true);
 			selectionDraw.registerSelectionDrawListener(input);
 		}
 
