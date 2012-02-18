@@ -35,11 +35,7 @@ public class SceneController implements Controllable, IFrameUpdateListener {
 	}
 
 	private void handleMesh(Mesh mesh, Matrix4f propagatedModelMatrix) {
-		final Matrix4f projectionMatrix = sceneView.getScene().getCamera().getProjectionMatrix();
-		final Matrix4f viewMatrix = sceneView.getScene().getCamera().getViewMatrix();
-
-		modelViewProjectionMatrix.mul(projectionMatrix, viewMatrix);
-		modelViewProjectionMatrix.mul(propagatedModelMatrix);
+		modelViewProjectionMatrix.mul(sceneView.getScene().getCamera().getViewProjectionMatrix(), propagatedModelMatrix);
 		mesh.setModelViewProjectionMatrix(modelViewProjectionMatrix);
 	}
 

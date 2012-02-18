@@ -33,6 +33,6 @@ public class CameraController implements Controllable, ISurfaceChangeListener {
 
 	@Override
 	public void onSurfaceChange(GLSurface surface) {
-		sceneView.getScene().getCamera().setAspectRatio((float) surface.getWidth() / surface.getHeight());
+		sceneView.getScene().getCamera().getFrustum().setAspectRatio((float) surface.getWidth() / surface.getHeight());
 	}
 }

@@ -20,50 +20,23 @@
  */
 package com.ejwa.dinja.engine.model;
 
-import android.opengl.Matrix;
 import org.openmali.vecmath2.Matrix4f;
 import org.openmali.vecmath2.Vector3f;
 
 public class Camera {
-	private static final float DEFAULT_ASPECT_RATIO = 16 / 9.6f;
-	private static final float DEFAULT_FIELD_OF_VIEW = 45;
-	private static final float DEFAULT_FAR_PLANE = 10;
-	private static final float DEFAULT_NEAR_PLANE = 0.001f;
 	private static final Vector3f DEFAULT_LOOK_DIRECTION = new Vector3f(0, 0, -1);
 	private static final Vector3f DEFAULT_LOCATION = new Vector3f(0, 0, 5);
 	private static final Vector3f DEFAULT_UP_DIRECTION = new Vector3f(0, 1, 0);
 
-	private final Matrix4f projectionMatrix = new Matrix4f();
-	private boolean recalculateProjectionMatrix = true;
 	private final Matrix4f viewMatrix = new Matrix4f();
 	private boolean recalculateViewMatrix = true;
+	private final Matrix4f viewProjectionMatrix = new Matrix4f();
 
-	private float aspectRatio = DEFAULT_ASPECT_RATIO;
-	private float fieldOfView = DEFAULT_FIELD_OF_VIEW;
-	private float farPlane = DEFAULT_FAR_PLANE;
-	private float nearPlane = DEFAULT_NEAR_PLANE;
+	private final Frustum frustum = new Frustum();
 
 	private Vector3f lookDirection = DEFAULT_LOOK_DIRECTION;
 	private Vector3f location = DEFAULT_LOCATION;
 	private Vector3f upDirection = DEFAULT_UP_DIRECTION;
-
-	public Matrix4f getProjectionMatrix() {
-		if (recalculateProjectionMatrix) {
-			final float size = nearPlane * (float) Math.tan(Math.toRadians(fieldOfView) / 2.0);
-			final float pv[] = new float[16];
-
-			synchronized (this) {
-				Matrix.frustumM(pv, 0, -size, size, -size / aspectRatio, size / aspectRatio, nearPlane, farPlane);
-			}
-
-			projectionMatrix.set(pv[0], pv[1], pv[2], pv[3], pv[4], pv[5], pv[6], pv[7], pv[8], pv[9],
-			                     pv[10], pv[11], pv[12], pv[13], pv[14], pv[15]);
-			projectionMatrix.transpose();
-			recalculateProjectionMatrix = false;
-		}
-
-		return projectionMatrix;
-	}
 
 	public Matrix4f getViewMatrix() {
 		if (recalculateViewMatrix) {
@@ -100,43 +73,18 @@ public class Camera {
 		return viewMatrix;
 	}
 
-	public void setAspectRatio(float aspectRatio) {
-		synchronized (this) {
-			this.aspectRatio = aspectRatio;
+	public Matrix4f getViewProjectionMatrix() {
+		if (recalculateViewMatrix || getFrustum().isRecalculateProjectionMatrix()) {
+			final Matrix4f vm = getViewMatrix();
+			final Matrix4f pm = getFrustum().getProjectionMatrix();
+			viewProjectionMatrix.mul(pm, vm);
 		}
 
-		recalculateProjectionMatrix = true;
+		return viewProjectionMatrix;
 	}
 
-	public synchronized float getAspectRatio() {
-		return aspectRatio;
-	}
-
-	public void setFieldOfView(float fieldOfView) {
-		this.fieldOfView = fieldOfView;
-		recalculateProjectionMatrix = true;
-	}
-
-	public float getFieldOfView() {
-		return fieldOfView;
-	}
-
-	public float getFarPlane() {
-		return farPlane;
-	}
-
-	public void setFarPlane(float farPlane) {
-		this.farPlane = farPlane;
-		recalculateProjectionMatrix = true;
-	}
-
-	public float getNearPlane() {
-		return nearPlane;
-	}
-
-	public void setNearPlane(float nearPlane) {
-		this.nearPlane = nearPlane;
-		recalculateProjectionMatrix = true;
+	public Frustum getFrustum() {
+		return frustum;
 	}
 
 	public Vector3f getLookDirection() {
