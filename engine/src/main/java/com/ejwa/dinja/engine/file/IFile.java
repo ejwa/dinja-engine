@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.util.file;
+package com.ejwa.dinja.engine.file;
 
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import java.util.List;

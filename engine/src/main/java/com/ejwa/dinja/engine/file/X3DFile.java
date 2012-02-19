@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.util.file;
+package com.ejwa.dinja.engine.file;
 
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -61,7 +61,7 @@ public class X3DFile extends XMLReader<X3D> implements IFile {
 	private void loadMeshTextures(Mesh mesh, Appearance appearance) {
 		if (appearance != null && appearance.getImageTexture() != null) {
 			final String texture = appearance.getImageTexture().getUrl().split(" \"")[0].replaceAll("\"", "");
-			mesh.setTexture(TextureLoader.load(assetManager, texture));
+			mesh.getMaterial().setTexture(TextureLoader.load(assetManager, texture));
 		}
 	}
 

@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.engine.model.file.x3d;
 
-import com.ejwa.dinja.engine.util.StringConverter;
+import com.ejwa.dinja.engine.model.file.StringConverter;
 import java.util.List;
 import org.openmali.vecmath2.Colorf;
 import org.simpleframework.xml.Attribute;

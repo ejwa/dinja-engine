@@ -27,7 +27,7 @@ import com.ejwa.dinja.engine.controller.input.ITiltForceInputListener;
 import com.ejwa.dinja.engine.model.Camera;
 import com.ejwa.dinja.engine.model.node.scene.Scene;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
-import com.ejwa.dinja.engine.util.file.X3DFile;
+import com.ejwa.dinja.engine.file.X3DFile;
 import com.ejwa.dinja.engine.view.SceneView;
 import com.ejwa.dinja.opengles.display.IFrameUpdateListener;
 
