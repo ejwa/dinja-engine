@@ -25,18 +25,22 @@ import java.util.List;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class IndexedFaceSet {
-	@Attribute(required = false)
-	private boolean colorPerVertex;
-
-	@Attribute
-	private boolean normalPerVertex;
-
 	@Attribute
 	private String coordIndex;
 
-	@Attribute
-	private boolean solid;
+	@Attribute(required = false)
+	private boolean colorPerVertex = true;
+
+	@Attribute(required = false)
+	private boolean convex = true;
+
+	@Attribute(required = false)
+	private boolean normalPerVertex = true;
+
+	@Attribute(required = false)
+	private boolean solid = true;
 
 	@Attribute
 	private String texCoordIndex;
@@ -71,6 +75,14 @@ public class IndexedFaceSet {
 
 	public void setColorPerVertex(boolean colorPerVertex) {
 		this.colorPerVertex = colorPerVertex;
+	}
+
+	public boolean isConvex() {
+		return convex;
+	}
+
+	public void setConvex(boolean convex) {
+		this.convex = convex;
 	}
 
 	public boolean isNormalPerVertex() {

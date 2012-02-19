@@ -23,7 +23,7 @@ package com.ejwa.dinja.engine.model.file.x3d;
 import org.simpleframework.xml.Element;
 
 public class Shape {
-	@Element(name = "Appearance")
+	@Element(name = "Appearance", required = false)
 	private Appearance appearance;
 
 	@Element(name = "IndexedFaceSet")

@@ -23,8 +23,11 @@ package com.ejwa.dinja.engine.model.file.x3d;
 import org.simpleframework.xml.Element;
 
 public class Appearance {
-	@Element(name = "ImageTexture")
+	@Element(name = "ImageTexture", required = false)
 	private ImageTexture imageTexture;
+
+	@Element(name = "Material", required = false)
+	private Material material;
 
 	public ImageTexture getImageTexture() {
 		return imageTexture;
@@ -32,5 +35,13 @@ public class Appearance {
 
 	public void setImageTexture(ImageTexture imageTexture) {
 		this.imageTexture = imageTexture;
+	}
+
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 }
