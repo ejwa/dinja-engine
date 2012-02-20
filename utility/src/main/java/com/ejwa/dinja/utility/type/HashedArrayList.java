@@ -30,15 +30,15 @@ public class HashedArrayList<T> extends ArrayList<T> {
 	private static final long serialVersionUID = 1L;
 	private final Map<T, Integer> elementsWithIndex = new HashMap<T, Integer>();
 
-	private void addIndexed(T e) {
-		if (elementsWithIndex.put(e, size()) != null) {
+	private void addIndexed(int index, T e) {
+		if (elementsWithIndex.put(e, index) != null) {
 			throw new IllegalArgumentException("Hash list already contains an indentical element.");
 		}
 	}
 
 	@Override
 	public boolean add(T e) {
-		addIndexed(e);
+		addIndexed(size(), e);
 		super.add(e);
 		return true;
 	}
@@ -49,7 +49,7 @@ public class HashedArrayList<T> extends ArrayList<T> {
 			throw new IllegalArgumentException("Index exceeds size of list.");
 		}
 
-		addIndexed(e);
+		addIndexed(i, e);
 		super.add(i, e);
 
 		for (Integer index : elementsWithIndex.values()) {
@@ -66,6 +66,22 @@ public class HashedArrayList<T> extends ArrayList<T> {
 		}
 
 		return true;
+	}
+
+	@Override
+	public T set(int i, T e) {
+		if (i > size()) {
+			throw new IllegalArgumentException("Index exceeds size of list.");
+		}
+
+		final T o = super.set(i, e);
+
+		if (elementsWithIndex.containsValue(i)) {
+			elementsWithIndex.remove(o);
+		}
+
+		addIndexed(i, e);
+		return o;
 	}
 
 	@Override
