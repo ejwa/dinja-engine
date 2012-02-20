@@ -25,7 +25,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.ejwa.dinja.engine.model.file.FileResourceException;
-import com.ejwa.dinja.engine.model.node.mesh.Texture;
+import com.ejwa.dinja.engine.model.material.Texture;
 import java.io.IOException;
 
 /**

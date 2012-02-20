@@ -20,6 +20,7 @@
  */
 package com.ejwa.dinja.engine.model.node.mesh;
 
+import com.ejwa.dinja.engine.model.material.Material;
 import com.ejwa.dinja.engine.model.node.BaseNode;
 import com.ejwa.dinja.engine.model.properties.Rotatable;
 import com.ejwa.dinja.engine.model.properties.Scalable;
@@ -27,14 +28,8 @@ import com.ejwa.dinja.engine.model.properties.Translatable;
 import com.ejwa.dinja.engine.model.transform.Rotator;
 import com.ejwa.dinja.engine.model.transform.Scaler;
 import com.ejwa.dinja.engine.model.transform.Translator;
-import com.ejwa.dinja.opengles.ActiveTexture;
-import com.ejwa.dinja.opengles.blend.BlendDestinationFactor;
-import com.ejwa.dinja.opengles.blend.BlendSourceFactor;
-import com.ejwa.dinja.opengles.blend.Blending;
 import com.ejwa.dinja.opengles.error.GLException;
 import com.ejwa.dinja.opengles.primitive.PrimitiveType;
-import com.ejwa.dinja.opengles.shader.argument.TextureRGB565Sampler;
-import com.ejwa.dinja.opengles.shader.argument.TextureRGBA8888Sampler;
 import com.ejwa.dinja.opengles.shader.argument.UniformMatrix4f;
 import com.ejwa.dinja.utility.type.HashedArrayList;
 import java.util.ArrayList;
@@ -45,7 +40,7 @@ import org.openmali.vecmath2.Matrix4f;
 public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable {
 	private final List<Vertex> indices = new ArrayList<Vertex>();
 	private final MeshPrimitiveData meshPrimitiveData;
-	private Texture texture;
+	private final Material material;
 	private final List<Vertex> vertices = new HashedArrayList<Vertex>();
 
 	private final Translator translator = new Translator(modelMatrix);
@@ -58,7 +53,7 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 		//TODO: Remove as many deps on MeshPrimitiveData as possible here...
 		meshPrimitiveData = new MeshPrimitiveData(this, primitiveType, MeshPrimitiveData.VERTEX_COORDINATE_ATTRIBUTE_NAME,
 		                                          vertices, indices);
-
+		material = new Material(meshPrimitiveData);
 		final Matrix4f modelViewProjectionMatrix = new Matrix4f();
 		modelViewProjectionMatrix.setIdentity();
 		meshPrimitiveData.addUniform(new UniformMatrix4f(MeshPrimitiveData.MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME,
@@ -92,24 +87,8 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 		meshPrimitiveData.getUniforms().get(MeshPrimitiveData.MODEL_VIEW_PROJECTION_MATRIX_UNIFORM_NAME).set(modelViewProjectionMatrix);
 	}
 
-	public Texture getTexture() {
-		return texture;
-	}
-
-	public void setTexture(Texture texture) {
-		this.texture = texture;
-
-		if (texture.isHasAlpha()) {
-			meshPrimitiveData.addSampler(new TextureRGBA8888Sampler(MeshPrimitiveData.TEXTURE_SAMPLER_NAME,
-			                             ActiveTexture.GL_TEXTURE0, texture.getWidth(), texture.getHeight(),
-			                             texture.getPixelsRGBA8888()));
-			meshPrimitiveData.setBlending(new Blending(BlendSourceFactor.GL_SRC_ALPHA,
-			                              BlendDestinationFactor.GL_ONE_MINUS_SRC_ALPHA));
-		} else  {
-			meshPrimitiveData.addSampler(new TextureRGB565Sampler(MeshPrimitiveData.TEXTURE_SAMPLER_NAME,
-			                             ActiveTexture.GL_TEXTURE0, texture.getWidth(), texture.getHeight(),
-			                             texture.getPixelsRGB565()));
-		}
+	public Material getMaterial() {
+		return material;
 	}
 
 	public List<Vertex> getVertices() {

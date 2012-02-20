@@ -79,7 +79,7 @@ public class DancingLettersActivity extends DinjaActivity {
 	private class DancingLetter extends Plane {
 		public DancingLetter(String name, String textureName, float x, float y, int zLayer, float width, float height) {
 			super(name, width, height, 1);
-			setTexture(TextureLoader.load(getAssets(), textureName));
+			getMaterial().setTexture(TextureLoader.load(getAssets(), textureName));
 			getTranslator().set(new Vector3f(x, y, zLayer * 0.01f));
 		}
 

@@ -40,7 +40,7 @@ public class DragWorldActivity extends DinjaActivity {
 		super.onCreate(savedInstanceState);
 
 		final Sphere sphere = new Sphere("world", 1, 12, 24);
-		sphere.setTexture(TextureLoader.load(getAssets(), "world_map.jpg"));
+		sphere.getMaterial().setTexture(TextureLoader.load(getAssets(), "world_map.jpg"));
 
 		final Scene scene = new Scene(new Camera(), sphere);
 

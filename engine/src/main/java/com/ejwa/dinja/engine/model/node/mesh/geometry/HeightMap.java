@@ -20,7 +20,7 @@
  */
 package com.ejwa.dinja.engine.model.node.mesh.geometry;
 
-import com.ejwa.dinja.engine.model.node.mesh.Texture;
+import com.ejwa.dinja.engine.model.material.Texture;
 import com.ejwa.dinja.engine.model.node.mesh.Vertex;
 import com.ejwa.dinja.utility.type.HashedArrayList;
 

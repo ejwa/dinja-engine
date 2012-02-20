@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model.node.mesh;
+package com.ejwa.dinja.engine.model.material;
 
 import android.graphics.Color;
 import com.googlecode.javacpp.IntPointer;
