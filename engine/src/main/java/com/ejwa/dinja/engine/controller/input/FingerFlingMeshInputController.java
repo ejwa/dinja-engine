@@ -29,10 +29,12 @@ import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import com.ejwa.dinja.engine.model.node.mesh.MeshPrimitiveData;
 import com.ejwa.dinja.opengles.display.draw.ISelectionDrawListener;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
+import com.ejwa.dinja.utility.type.Tuple;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.openmali.vecmath2.Point2f;
 import org.openmali.vecmath2.Point2i;
 import org.openmali.vecmath2.Vector2f;
 
@@ -42,7 +44,7 @@ public class FingerFlingMeshInputController extends SimpleOnGestureListener impl
 	private final GLSurfaceView glSurfaceView;
 	private final float minimumFlingVelocity;
 	private final AtomicBoolean flinging = new AtomicBoolean(false);
-	private final List<Mesh> selectedMeshes = Collections.synchronizedList(new ArrayList<Mesh>());
+	private final List<Tuple<Point2f, Mesh>> selectedMeshes = Collections.synchronizedList(new ArrayList<Tuple<Point2f, Mesh>>());
 
 	private final Point2i fingerPosition = new Point2i();
 	private final Vector2f fingerDeltaMovement = new Vector2f();
@@ -60,7 +62,7 @@ public class FingerFlingMeshInputController extends SimpleOnGestureListener impl
 	}
 
 	public FingerFlingMeshInputController(IFingerFlingMeshInputListener fingerFlingMeshInputListener, GLSurfaceView glSurfaceView) {
-		this(fingerFlingMeshInputListener, glSurfaceView, 1f);
+		this(fingerFlingMeshInputListener, glSurfaceView, 0.75f);
 	}
 
 	public boolean isFlinging() {
@@ -133,7 +135,9 @@ public class FingerFlingMeshInputController extends SimpleOnGestureListener impl
 	@Override
 	public void onSelectedPrimitiveData(PrimitiveData primitiveData) {
 		if (flinging.get() && primitiveData instanceof MeshPrimitiveData) {
-			selectedMeshes.add(((MeshPrimitiveData) primitiveData).getParentMesh());
+			final Point2f p = new Point2f((float) fingerPosition.getX() / glSurfaceView.getWidth(),
+			                              (float) fingerPosition.getY() / glSurfaceView.getHeight());
+			selectedMeshes.add(new Tuple<Point2f, Mesh>(p, ((MeshPrimitiveData) primitiveData).getParentMesh()));
 		}
 	}
 }

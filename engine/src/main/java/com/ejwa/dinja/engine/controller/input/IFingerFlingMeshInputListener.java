@@ -21,8 +21,10 @@
 package com.ejwa.dinja.engine.controller.input;
 
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
+import com.ejwa.dinja.utility.type.Tuple;
 import java.util.List;
+import org.openmali.vecmath2.Point2f;
 
 public interface IFingerFlingMeshInputListener {
-	void onFingerFlingMeshInput(List<Mesh> meshes);
+	void onFingerFlingMeshInput(List<Tuple<Point2f, Mesh>> meshes);
 }
