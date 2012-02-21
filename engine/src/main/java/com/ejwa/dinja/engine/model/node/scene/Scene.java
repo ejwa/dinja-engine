@@ -42,6 +42,7 @@ public class Scene extends BaseNode {
 		return camera;
 	}
 
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	private int countMeshes(INode node) {
 		int count = 0;
 
