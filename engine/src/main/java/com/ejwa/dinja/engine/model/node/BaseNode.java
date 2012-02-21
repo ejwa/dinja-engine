@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.openmali.vecmath2.Matrix4f;
+import org.openmali.vecmath2.Point3f;
 
 public class BaseNode implements INode {
 	protected final Matrix4f modelMatrix = new Matrix4f();
@@ -75,5 +76,45 @@ public class BaseNode implements INode {
 	@Override
 	public List<INode> getNodes() {
 		return nodes;
+	}
+
+	@Override
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+	public INode getNodeClosestToPoint(Point3f point) {
+		if (!getNodes().isEmpty()) {
+			return BaseNode.getNodeClosestToPoint(point, getNodes());
+		}
+
+		return this;
+	}
+
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+	public static INode getNodeClosestToPoint(Point3f point, List<INode> nodes) {
+		if (nodes.isEmpty()) {
+			throw new IllegalArgumentException("Nodes array can't be empty.");
+		}
+
+		final Point3f p = Point3f.fromPool();
+		INode closestNode = nodes.get(0);
+		float shortestDistance = Float.MAX_VALUE;
+
+		for (int i = 0; i < nodes.size(); i++) {
+			final INode n = nodes.get(i);
+			n.getWorldMatrix().get(p);
+			final float distance = point.distance(p);
+
+			if (distance < shortestDistance) {
+				shortestDistance = distance;
+				closestNode = n;
+			}
+		}
+
+		Point3f.toPool(p);
+
+		if (!closestNode.getNodes().isEmpty()) {
+			return closestNode.getNodeClosestToPoint(point);
+		}
+
+		return closestNode;
 	}
 }

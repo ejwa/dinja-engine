@@ -22,6 +22,7 @@ package com.ejwa.dinja.engine.model;
 
 import org.openmali.vecmath2.Matrix4f;
 import org.openmali.vecmath2.Ray3f;
+import org.openmali.vecmath2.Vector2f;
 import org.openmali.vecmath2.Vector3f;
 
 public class Camera {
@@ -115,7 +116,7 @@ public class Camera {
 		recalculateViewMatrix = true;
 	}
 
-        private void getPointWorldCoordinates(Vector3f point, Vector3f worldCoordinates, boolean nearPlane) {
+        private void getPointWorldCoordinates(Vector2f point, Vector3f worldCoordinates, boolean nearPlane) {
 		final Matrix4f m = Matrix4f.fromPool();
 		final Vector3f p = worldCoordinates;
 
@@ -133,18 +134,28 @@ public class Camera {
 		Matrix4f.toPool(m);
         }
 
-	public Ray3f getRayFromNearPlanePoint(Vector3f point) {
+	public Vector3f getPointWorldCoordinates(Vector2f point) {
+		final Vector3f v = new Vector3f();
+		getPointWorldCoordinates(point, v, true);
+		return v;
+	}
+
+	public void getPointWorldCoordinates(Vector2f point, Vector3f worldCoordinates) {
+		getPointWorldCoordinates(point, worldCoordinates, true);
+	}
+
+	public Ray3f getRayFromNearPlanePoint(Vector2f point) {
 		final Ray3f r = new Ray3f();
 		getRayFromNearPlanePoint(point, r);
 		return r;
 	}
 
-	public void getRayFromNearPlanePoint(Vector3f point, Ray3f ray) {
+	public void getRayFromNearPlanePoint(Vector2f point, Ray3f ray) {
 		final Vector3f near = Vector3f.fromPool();
 		final Vector3f far = Vector3f.fromPool();
 		final Vector3f direction = Vector3f.fromPool();
 
-		getPointWorldCoordinates(point, near, true);
+		getPointWorldCoordinates(point, near);
 		getPointWorldCoordinates(point, far, false);
 
 		direction.sub(far, near);

@@ -22,6 +22,7 @@ package com.ejwa.dinja.engine.model.node;
 
 import java.util.List;
 import org.openmali.vecmath2.Matrix4f;
+import org.openmali.vecmath2.Point3f;
 
 public interface INode {
 	Matrix4f getModelMatrix();
@@ -31,4 +32,5 @@ public interface INode {
 	void removeNodes(INode ...nodes);
 	void removeNodes(String ...nodeNames);
 	List<INode> getNodes();
+	INode getNodeClosestToPoint(Point3f point);
 }
