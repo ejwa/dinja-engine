@@ -115,12 +115,6 @@ public class Camera {
 		recalculateViewMatrix = true;
 	}
 
-	private Vector3f getPointWorldCoordinates(Vector3f point, boolean nearPlane) {
-		final Vector3f v = new Vector3f();
-		getPointWorldCoordinates(point, v, nearPlane);
-		return v;
-	}
-
         private void getPointWorldCoordinates(Vector3f point, Vector3f worldCoordinates, boolean nearPlane) {
 		final Matrix4f m = Matrix4f.fromPool();
 		final Vector3f p = worldCoordinates;
@@ -139,21 +133,22 @@ public class Camera {
 		Matrix4f.toPool(m);
         }
 
-	public Ray3f getRayFromNearPlanePoint(Vector3f worldPoint) {
+	public Ray3f getRayFromNearPlanePoint(Vector3f point) {
 		final Ray3f r = new Ray3f();
-		getRayFromNearPlanePoint(worldPoint, r);
+		getRayFromNearPlanePoint(point, r);
 		return r;
 	}
 
-	public void getRayFromNearPlanePoint(Vector3f worldPoint, Ray3f ray) {
+	public void getRayFromNearPlanePoint(Vector3f point, Ray3f ray) {
 		final Vector3f near = Vector3f.fromPool();
 		final Vector3f far = Vector3f.fromPool();
 		final Vector3f direction = Vector3f.fromPool();
 
-		getPointWorldCoordinates(near, true);
-		getPointWorldCoordinates(far, false);
+		getPointWorldCoordinates(point, near, true);
+		getPointWorldCoordinates(point, far, false);
 
 		direction.sub(far, near);
+		direction.normalize();
 		ray.set(near, direction);
 
 		Vector3f.toPool(near);
