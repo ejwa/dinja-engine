@@ -115,4 +115,8 @@ public class Rotator {
 	public void setCenter(float x, float y, float z) {
 		centerOfRotation.set(x, y, z);
 	}
+
+	public void setCenter(Translatable translatable) {
+		setCenter(translatable.getTranslator().get());
+	}
 }
