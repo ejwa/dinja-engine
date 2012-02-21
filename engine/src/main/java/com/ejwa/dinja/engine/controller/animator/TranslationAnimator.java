@@ -21,7 +21,7 @@
 package com.ejwa.dinja.engine.controller.animator;
 
 import com.ejwa.dinja.engine.model.ease.IEase;
-import com.ejwa.dinja.engine.model.properties.Translatable;
+import com.ejwa.dinja.engine.model.transform.Translatable;
 import org.openmali.vecmath2.Vector3f;
 
 public class TranslationAnimator extends BaseAnimator<Translatable, Vector3f> {

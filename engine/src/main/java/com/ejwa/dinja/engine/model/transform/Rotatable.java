@@ -18,10 +18,10 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model.properties;
+package com.ejwa.dinja.engine.model.transform;
 
-import com.ejwa.dinja.engine.model.transform.Translator;
+import com.ejwa.dinja.engine.model.transform.Rotator;
 
-public interface Translatable {
-	Translator getTranslator();
+public interface Rotatable {
+	Rotator getRotator();
 }

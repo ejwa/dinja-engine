@@ -20,9 +20,9 @@
  */
 package com.ejwa.dinja.engine.model.node;
 
-import com.ejwa.dinja.engine.model.properties.Rotatable;
-import com.ejwa.dinja.engine.model.properties.Scalable;
-import com.ejwa.dinja.engine.model.properties.Translatable;
+import com.ejwa.dinja.engine.model.transform.Rotatable;
+import com.ejwa.dinja.engine.model.transform.Scalable;
+import com.ejwa.dinja.engine.model.transform.Translatable;
 import com.ejwa.dinja.engine.model.transform.Rotator;
 import com.ejwa.dinja.engine.model.transform.Scaler;
 import com.ejwa.dinja.engine.model.transform.Translator;

@@ -21,7 +21,7 @@
 package com.ejwa.dinja.engine.controller.animator;
 
 import com.ejwa.dinja.engine.model.ease.IEase;
-import com.ejwa.dinja.engine.model.properties.Rotatable;
+import com.ejwa.dinja.engine.model.transform.Rotatable;
 import org.openmali.vecmath2.Quaternion4f;
 
 public class RotationAnimator extends BaseAnimator<Rotatable, Quaternion4f> {

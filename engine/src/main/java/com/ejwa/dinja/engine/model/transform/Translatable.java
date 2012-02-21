@@ -18,10 +18,10 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model.properties;
+package com.ejwa.dinja.engine.model.transform;
 
-import com.ejwa.dinja.engine.model.transform.Scaler;
+import com.ejwa.dinja.engine.model.transform.Translator;
 
-public interface Scalable {
-	Scaler getScaler();
+public interface Translatable {
+	Translator getTranslator();
 }
