@@ -21,6 +21,7 @@
 package com.ejwa.dinja.engine.model;
 
 import org.openmali.vecmath2.Matrix4f;
+import org.openmali.vecmath2.Ray3f;
 import org.openmali.vecmath2.Vector3f;
 
 public class Camera {
@@ -113,4 +114,51 @@ public class Camera {
 		this.upDirection = upDirection;
 		recalculateViewMatrix = true;
 	}
+
+	private Vector3f getPointWorldCoordinates(Vector3f point, boolean nearPlane) {
+		final Vector3f v = new Vector3f();
+		getPointWorldCoordinates(point, v, nearPlane);
+		return v;
+	}
+
+        private void getPointWorldCoordinates(Vector3f point, Vector3f worldCoordinates, boolean nearPlane) {
+		final Matrix4f m = Matrix4f.fromPool();
+		final Vector3f p = worldCoordinates;
+
+                p.setX(2 * point.x() - 1);
+                p.setY(1 - 2 * point.y());
+                p.setZ(nearPlane ? 1 : 0);
+
+		m.set(getViewProjectionMatrix());
+		m.invert();
+
+		final float w = p.getX() * m.m30() + p.getY() * m.m31() + p.getZ() * m.m32() + m.m33();
+		m.transform(p, p);
+		p.set((m.m03() + p.getX()) / w, (m.m13() + p.getY()) / w, (m.m23() + p.getZ()) / w);
+
+		Matrix4f.toPool(m);
+        }
+
+	public Ray3f getRayFromNearPlanePoint(Vector3f worldPoint) {
+		final Ray3f r = new Ray3f();
+		getRayFromNearPlanePoint(worldPoint, r);
+		return r;
+	}
+
+	public void getRayFromNearPlanePoint(Vector3f worldPoint, Ray3f ray) {
+		final Vector3f near = Vector3f.fromPool();
+		final Vector3f far = Vector3f.fromPool();
+		final Vector3f direction = Vector3f.fromPool();
+
+		getPointWorldCoordinates(near, true);
+		getPointWorldCoordinates(far, false);
+
+		direction.sub(far, near);
+		ray.set(near, direction);
+
+		Vector3f.toPool(near);
+		Vector3f.toPool(far);
+		Vector3f.toPool(direction);
+	}
+
 }
