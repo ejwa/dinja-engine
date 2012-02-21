@@ -25,6 +25,7 @@ import org.openmali.vecmath2.Matrix4f;
 
 public interface INode {
 	Matrix4f getModelMatrix();
+	Matrix4f getWorldMatrix();
 	String getName();
 	void addNodes(INode ...nodes);
 	void removeNodes(INode ...nodes);

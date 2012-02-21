@@ -34,32 +34,30 @@ public class SceneController implements Controllable, IFrameUpdateListener {
 		this.sceneView = sceneView;
 	}
 
-	private void handleMesh(Mesh mesh, Matrix4f propagatedModelMatrix) {
-		modelViewProjectionMatrix.mul(sceneView.getScene().getCamera().getViewProjectionMatrix(), propagatedModelMatrix);
+	private void handleMesh(Mesh mesh) {
+		modelViewProjectionMatrix.mul(sceneView.getScene().getCamera().getViewProjectionMatrix(), mesh.getWorldMatrix());
 		mesh.setModelViewProjectionMatrix(modelViewProjectionMatrix);
 	}
 
 	private void handleChildren(INode node, Matrix4f propagatedModelMatrix) {
-		final Matrix4f m = Matrix4f.fromPool();
-
 		for (int i = 0; i < node.getNodes().size(); i++) {
 			final INode n = node.getNodes().get(i);
-			m.mul(propagatedModelMatrix, n.getModelMatrix());
+			n.getWorldMatrix().mul(propagatedModelMatrix, n.getModelMatrix());
 
 			if (!n.getNodes().isEmpty()) {
-				handleChildren(n, m);
+				handleChildren(n, n.getWorldMatrix());
 			}
 
 			if (n instanceof Mesh) {
-				handleMesh((Mesh) n, m);
+				handleMesh((Mesh) n);
 			}
 		}
-
-		Matrix4f.toPool(m);
 	}
 
 	@Override
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
-		handleChildren(sceneView.getScene(), sceneView.getScene().getModelMatrix());
+		final Matrix4f modelMatrix = sceneView.getScene().getModelMatrix();
+		handleChildren(sceneView.getScene(), modelMatrix);
+		sceneView.getScene().getWorldMatrix().set(modelMatrix);
 	}
 }

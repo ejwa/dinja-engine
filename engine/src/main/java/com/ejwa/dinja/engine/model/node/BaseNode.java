@@ -27,6 +27,7 @@ import org.openmali.vecmath2.Matrix4f;
 
 public class BaseNode implements INode {
 	protected final Matrix4f modelMatrix = new Matrix4f();
+	protected final Matrix4f worldMatrix = new Matrix4f();
 	protected final String name;
 	protected final List<INode> nodes = new LinkedList<INode>();
 
@@ -38,6 +39,11 @@ public class BaseNode implements INode {
 	@Override
 	public Matrix4f getModelMatrix() {
 		return modelMatrix;
+	}
+
+	@Override
+	public Matrix4f getWorldMatrix() {
+		return worldMatrix;
 	}
 
 	@Override
