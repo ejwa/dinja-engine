@@ -21,8 +21,8 @@
 package com.ejwa.dinja.physics.math;
 
 import com.ejwa.dinja.physics.library.BulletNative;
-import com.ejwa.dinja.physics.pool.Pool;
-import com.ejwa.dinja.physics.pool.Poolable;
+import com.ejwa.dinja.utility.pool.Pool;
+import com.ejwa.dinja.utility.pool.Poolable;
 import com.googlecode.javacpp.Loader;
 import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.annotation.Allocator;

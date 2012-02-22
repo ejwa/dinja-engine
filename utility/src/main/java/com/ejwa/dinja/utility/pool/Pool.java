@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.physics.pool;
+package com.ejwa.dinja.utility.pool;
 
 import java.util.ArrayList;
 import java.util.List;

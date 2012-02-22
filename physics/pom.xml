@@ -22,6 +22,12 @@
 			<groupId>org.openmali</groupId>
 			<artifactId>openmali</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.ejwa.dinja</groupId>
+			<artifactId>utility</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -67,7 +73,7 @@
 							<executable>java</executable>
 							<arguments>
 								<argument>-jar</argument>        <argument>${com.googlecode:javacpp:jar}</argument>
-								<argument>-classpath</argument>  <argument>${project.build.outputDirectory}:${org.openmali:openmali:jar}</argument>
+								<argument>-classpath</argument>  <argument>${project.build.outputDirectory}:${org.openmali:openmali:jar}:${com.ejwa.dinja:utility:jar}</argument>
 								<argument>-d</argument>          <argument>${project.build.outputDirectory}/lib/armeabi</argument>
 								<argument>-properties</argument> <argument>android-arm</argument>
 								<argument>-o</argument>          <argument>jniBulletNative</argument>
@@ -114,7 +120,7 @@
 							<executable>java</executable>
 							<arguments>
 								<argument>-jar</argument>        <argument>${com.googlecode:javacpp:jar}</argument>
-								<argument>-classpath</argument>  <argument>${project.build.outputDirectory}:${org.openmali:openmali:jar}</argument>
+								<argument>-classpath</argument>  <argument>${project.build.outputDirectory}:${org.openmali:openmali:jar}:${com.ejwa.dinja:utility:jar}</argument>
 								<argument>-d</argument>          <argument>${project.build.outputDirectory}/lib/armeabi-v7a</argument>
 								<argument>-properties</argument> <argument>android-arm</argument>
 								<argument>-o</argument>          <argument>jniBulletNative</argument>
