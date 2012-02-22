@@ -122,7 +122,7 @@ public class Camera {
 
                 p.setX(2 * point.x() - 1);
                 p.setY(1 - 2 * point.y());
-                p.setZ(nearPlane ? 1 : 0);
+                p.setZ(nearPlane ? 0 : 1);
 
 		m.set(getViewProjectionMatrix());
 		m.invert();
