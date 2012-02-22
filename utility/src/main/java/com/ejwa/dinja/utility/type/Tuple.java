@@ -20,9 +20,16 @@
  */
 package com.ejwa.dinja.utility.type;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tuple<A, B> {
 	private A a;
 	private B b;
+
+	public Tuple() {
+		/* It should be possible to construct empty tuples. */
+	}
 
 	public Tuple(A a, B b) {
 		this.a = a;
@@ -43,5 +50,35 @@ public class Tuple<A, B> {
 
 	public void setB(B b) {
 		this.b = b;
+	}
+
+	public void set(A a, B b) {
+		this.a = a;
+		this.b = b;
+	}
+
+	public static <A, B> List<A> getAList(List<Tuple<A, B>> t) {
+		final List<A> list = new ArrayList<A>();
+
+		for (int i = 0; i < t.size(); i++) {
+			list.add(t.get(i).getA());
+		}
+
+		return list;
+	}
+
+	public static <A, B> List<B> getBList(List<Tuple<A, B>> t) {
+		final List<B> list = new ArrayList<B>();
+
+		for (int i = 0; i < t.size(); i++) {
+			list.add(t.get(i).getB());
+		}
+
+		return list;
+	}
+
+	@Override
+	public String toString() {
+		return "A[" + a + "], B[" + b + "]";
 	}
 }
