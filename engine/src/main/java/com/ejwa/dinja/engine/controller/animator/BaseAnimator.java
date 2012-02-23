@@ -24,11 +24,11 @@ import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.model.ease.EaseFactory;
 import com.ejwa.dinja.engine.model.ease.IEase;
 
-public class BaseAnimator<A, T> implements Controllable, IAnimator {
+class BaseAnimator<A, T> implements Controllable, IAnimator {
 	private IAnimatorListener animatorListener;
-	private boolean completed;
-	private boolean paused;
 
+	protected boolean completed;
+	protected boolean paused;
 	protected final A animatable;
 	protected T origin;
 	protected T destination;
@@ -36,23 +36,23 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator {
 	protected IEase ease;
 	protected float time;
 
-	public BaseAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination,
-	                        float duration, Class<? extends IEase> ease) {
+	protected BaseAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination,
+	                       float duration, Class<? extends IEase> ease) {
 		this(animatable, origin, destination, duration, ease);
 		this.animatorListener = animatorListener;
 	}
 
-	public BaseAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination, float duration) {
+	protected BaseAnimator(IAnimatorListener animatorListener, A animatable, T origin, T destination, float duration) {
 		this(animatable, origin, destination, duration);
 		this.animatorListener = animatorListener;
 	}
 
-	public BaseAnimator(A animatable, T origin, T destination, float duration, Class<? extends IEase> ease) {
+	protected BaseAnimator(A animatable, T origin, T destination, float duration, Class<? extends IEase> ease) {
 		this(animatable, origin, destination, duration);
 		this.ease = EaseFactory.get(ease);
 	}
 
-	public BaseAnimator(A animatable, T origin, T destination, float duration) {
+	protected BaseAnimator(A animatable, T origin, T destination, float duration) {
 		this.animatable = animatable;
 		this.duration = duration;
 		this.origin = origin;
@@ -66,11 +66,15 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator {
 
 	@Override
 	public synchronized void pause() {
-		if (!paused && animatorListener instanceof IAnimatorPausListener) {
+		if (!paused) {
 			paused = true;
 
 			if (animatorListener instanceof IAnimatorPausListener) {
 				((IAnimatorPausListener) animatorListener).onAnimatorPaused();
+			}
+
+			if (this instanceof IAnimatorPausListener) {
+				((IAnimatorPausListener) this).onAnimatorPaused();
 			}
 		}
 	}
@@ -89,6 +93,10 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator {
 
 			if (animatorListener instanceof IAnimatorPausListener) {
 				((IAnimatorPausListener) animatorListener).onAnimatorResumed();
+			}
+
+			if (this instanceof IAnimatorPausListener) {
+				((IAnimatorPausListener) this).onAnimatorResumed();
 			}
 		}
 	}
@@ -118,14 +126,22 @@ public class BaseAnimator<A, T> implements Controllable, IAnimator {
 			if (animatorListener != null) {
 				animatorListener.onAnimatorCompleted();
 			}
+
+			if (this instanceof IAnimatorListener) {
+				((IAnimatorListener) this).onAnimatorCompleted();
+			}
 		}
 	}
 
 	@Override
 	public synchronized void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		if (!paused && !completed) {
-			if (animatorListener != null && time == 0) {
+			if (time == 0 && animatorListener != null) {
 				animatorListener.onAnimatorStarted();
+			}
+
+			if (time == 0 && this instanceof IAnimatorListener) {
+				((IAnimatorListener) this).onAnimatorStarted();
 			}
 
 			if (time < duration) {

@@ -41,6 +41,10 @@ public class AnimatorController implements Controllable, IFrameUpdateListener {
 			if (animator.getAnimatorListener() != null) {
 				animator.getAnimatorListener().onAnimatorUnregistered();
 			}
+
+			if (animator instanceof IAnimatorListener) {
+				((IAnimatorListener) animator).onAnimatorUnregistered();
+			}
 		} else {
 			animator.onFrameUpdate(milliSecondsSinceLastFrame);
 		}
