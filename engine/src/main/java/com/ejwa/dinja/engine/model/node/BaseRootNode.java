@@ -20,39 +20,45 @@
  */
 package com.ejwa.dinja.engine.model.node;
 
-import com.ejwa.dinja.engine.model.transform.Rotatable;
-import com.ejwa.dinja.engine.model.transform.Scalable;
-import com.ejwa.dinja.engine.model.transform.Translatable;
-import com.ejwa.dinja.engine.model.transform.Rotator;
-import com.ejwa.dinja.engine.model.transform.Scaler;
-import com.ejwa.dinja.engine.model.transform.Translator;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Group extends BaseNode implements Rotatable, Scalable, Translatable {
-	private final Translator translator = new Translator(modelMatrix);
-	private final Rotator rotator = new Rotator(modelMatrix, translator.get());
-	private final Scaler scaler = new Scaler(modelMatrix);
+public class BaseRootNode extends BaseNode implements IRootNode {
+	private final Map<String, INode> allNodes = new HashMap<String, INode>();
 
-	public Group(String name) {
+	protected BaseRootNode(String name) {
 		super(name);
-	}
-
-	public Group(String name, INode ...nodes) {
-		this(name);
-		addNodes(nodes);
+		root = this;
 	}
 
 	@Override
-	public Translator getTranslator() {
-		return translator;
+	public INode getNodeDeep(String nodeName) {
+		return allNodes.get(nodeName);
 	}
 
 	@Override
-	public Rotator getRotator() {
-		return rotator;
+	public void setRootDeep(INode node) {
+		setRoot(this);
+
+		if (allNodes.put(node.getName(), node) != null) {
+			throw new NodeAlreadyAddedException(node, this);
+		}
+
+		for (INode n : node.getNodes()) {
+			setRootDeep(n);
+		}
 	}
 
 	@Override
-	public Scaler getScaler() {
-		return scaler;
+	public void clearRootDeep(INode node) {
+		setRoot(null);
+
+		if (allNodes.remove(node.getName()) == null) {
+			throw new NodeNotFoundException(node, this);
+		}
+
+		for (INode n : node.getNodes()) {
+			clearRootDeep(n);
+		}
 	}
 }

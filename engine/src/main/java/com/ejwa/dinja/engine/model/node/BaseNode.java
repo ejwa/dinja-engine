@@ -20,17 +20,20 @@
  */
 package com.ejwa.dinja.engine.model.node;
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openmali.vecmath2.Matrix4f;
 import org.openmali.vecmath2.Point3f;
 
 public class BaseNode implements INode {
 	protected final Matrix4f modelMatrix = new Matrix4f();
 	protected final Matrix4f worldMatrix = new Matrix4f();
-	protected final String name;
-	protected final List<INode> nodes = new LinkedList<INode>();
+	private final String name;
+	protected IRootNode root;
+	private final List<INode> nodes = new ArrayList<INode>();
+	private final Map<String, INode> nodeNames = new HashMap<String, INode>();
 
 	protected BaseNode(String name) {
 		modelMatrix.setIdentity();
@@ -40,6 +43,25 @@ public class BaseNode implements INode {
 	@Override
 	public Matrix4f getModelMatrix() {
 		return modelMatrix;
+	}
+
+	@Override
+	public void propagateModelMatrix() {
+		for (INode n : nodes) {
+			n.getModelMatrix().mul(getModelMatrix(), n.getModelMatrix());
+		}
+	}
+
+	private void propagateModelMatrixDeep(INode node) {
+		for (INode n : nodes) {
+			n.getModelMatrix().mul(node.getModelMatrix(), n.getModelMatrix());
+			propagateModelMatrixDeep(node);
+		}
+	}
+
+	@Override
+	public void propagateModelMatrixDeep() {
+		propagateModelMatrixDeep(this);
 	}
 
 	@Override
@@ -53,23 +75,55 @@ public class BaseNode implements INode {
 	}
 
 	@Override
-	public final void addNodes(INode ...nodes) {
-		this.nodes.addAll(Arrays.asList(nodes));
+	public IRootNode getRoot() {
+		return root;
+	}
+
+	@Override
+	public void setRoot(IRootNode root) {
+		this.root = root;
+	}
+
+	@Override
+	public void addNodes(INode ...nodes) {
+		for (INode n : nodes) {
+			if (root != null) {
+				root.setRootDeep(n);
+			}
+
+			if (nodeNames.put(n.getName(), n) != null) {
+				throw new NodeAlreadyAddedException(n);
+			}
+
+			this.nodes.add(n);
+		}
 	}
 
 	@Override
 	public void removeNodes(INode ...nodes) {
-		this.nodes.removeAll(Arrays.asList(nodes));
+		for (INode n : nodes) {
+			if (root != null) {
+				root.clearRootDeep(n);
+			}
+
+			if (nodeNames.remove(n.getName()) == null) {
+				throw new NodeNotFoundException(n);
+			}
+
+			this.nodes.remove(n);
+		}
 	}
 
 	@Override
 	public void removeNodes(String ...nodeNames) {
 		for (String nodeName : nodeNames) {
-			for (INode n : nodes) {
-				if (n.getName().equals(nodeName)) {
-					nodes.remove(n);
-				}
+			final INode n = this.nodeNames.get(nodeName);
+
+			if (n == null) {
+				throw new NodeNotFoundException(nodeName);
 			}
+
+			removeNodes(n);
 		}
 	}
 
@@ -79,17 +133,21 @@ public class BaseNode implements INode {
 	}
 
 	@Override
-	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public INode getNodeClosestToPoint(Point3f point) {
+	public INode getNode(String nodeName) {
+		return nodeNames.get(nodeName);
+	}
+
+	@Override
+	public INode getNodeClosestToPointDeep(Point3f point) {
 		if (!getNodes().isEmpty()) {
-			return BaseNode.getNodeClosestToPoint(point, getNodes());
+			return BaseNode.getNodeClosestToPointDeep(point, getNodes());
 		}
 
-		return this;
+		return null;
 	}
 
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public static INode getNodeClosestToPoint(Point3f point, List<INode> nodes) {
+	public static INode getNodeClosestToPointDeep(Point3f point, List<INode> nodes) {
 		if (nodes.isEmpty()) {
 			throw new IllegalArgumentException("Nodes array can't be empty.");
 		}
@@ -98,8 +156,7 @@ public class BaseNode implements INode {
 		INode closestNode = nodes.get(0);
 		float shortestDistance = Float.MAX_VALUE;
 
-		for (int i = 0; i < nodes.size(); i++) {
-			final INode n = nodes.get(i);
+		for (INode n : nodes) {
 			n.getWorldMatrix().get(p);
 			final float distance = point.distance(p);
 
@@ -112,7 +169,7 @@ public class BaseNode implements INode {
 		Point3f.toPool(p);
 
 		if (!closestNode.getNodes().isEmpty()) {
-			return closestNode.getNodeClosestToPoint(point);
+			return closestNode.getNodeClosestToPointDeep(point);
 		}
 
 		return closestNode;

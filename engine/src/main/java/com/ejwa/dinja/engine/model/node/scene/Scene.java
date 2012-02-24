@@ -22,10 +22,10 @@ package com.ejwa.dinja.engine.model.node.scene;
 
 import com.ejwa.dinja.engine.model.Camera;
 import com.ejwa.dinja.engine.model.node.INode;
-import com.ejwa.dinja.engine.model.node.BaseNode;
+import com.ejwa.dinja.engine.model.node.BaseRootNode;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 
-public class Scene extends BaseNode {
+public class Scene extends BaseRootNode {
 	protected final Camera camera;
 
 	public Scene(Camera camera) {

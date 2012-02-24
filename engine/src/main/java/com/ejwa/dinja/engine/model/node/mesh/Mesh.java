@@ -68,7 +68,6 @@ public class Mesh extends BaseNode implements Rotatable, Scalable, Translatable 
 	public Mesh(String name, PrimitiveType primitiveType, Vertex vertices[], Vertex ...indices) {
 		this(name, primitiveType, vertices);
 		addIndices(indices);
-
 	}
 
 	public List<Vertex> getIndices() {
