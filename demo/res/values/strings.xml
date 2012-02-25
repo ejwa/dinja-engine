@@ -2,9 +2,23 @@
 <resources>
 	<string name="app_name">Dinja Engine Demo</string>
 	<string-array name="demos">
-		<item>Dinja Bomb (Tilt)\n\nA texturized dinja bomb object controlled with a TiltForceInputController.</item>
-		<item>World (Drag)\n\nA texturized world sphere controlled with a DragController.</item>
-		<item>Dancing Letters (Animated)\n\nSome dancing letters animated using animators.</item>
-		<item>Sphere (Custom Shader)\n\nA rotating sphere with a custom shader attached.</item>
+		<item>
+			Dinja Bomb\n\nA texturized dinja bomb object controlled with a TiltForceInputController.
+			Also demonstrates the loading of X3D files.
+		</item>
+		<item>
+			World Sphere\n\nA texturized world sphere controlled with a FingerMovementController.
+			Also demonstrates how to use the debug view.
+		</item>
+		<item>
+			Dancing Letters\n\nSome dancing letters with an alpha channel.
+			Demonstrates the use of animators and animator scripts.
+		</item>
+		<item>
+			Rubiks Cube\n\nA rubiks cube that can be rotated and manipulated. The demo begins with a completed cube
+			with sections that can be rotated using fling movements. Demonstrates the use of a
+			FingerDeltaMovementInputController together with other parts of the engine, such as node groups, scene
+			graph manipulation, animator listeners and programatically configured texture coordinates.
+		</item>
 	</string-array>
 </resources>

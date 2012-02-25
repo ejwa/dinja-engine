@@ -50,7 +50,7 @@ public class DemoActivity extends ListActivity {
 			switch(position) {
 				case 1: demoToShow = DragWorldActivity.class; break;
 				case 2: demoToShow = DancingLettersActivity.class; break;
-				case 3: demoToShow = SphereActivity.class; break;
+				case 3: demoToShow = RubiksCubeActivity.class; break;
 				default: demoToShow = TiltBombActivity.class; break;
 			}
 
