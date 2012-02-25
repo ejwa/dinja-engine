@@ -62,7 +62,7 @@ public class FingerFlingMeshInputController extends SimpleOnGestureListener impl
 	}
 
 	public FingerFlingMeshInputController(IFingerFlingMeshInputListener fingerFlingMeshInputListener, GLSurfaceView glSurfaceView) {
-		this(fingerFlingMeshInputListener, glSurfaceView, 0.75f);
+		this(fingerFlingMeshInputListener, glSurfaceView, 0.65f);
 	}
 
 	public boolean isFlinging() {
