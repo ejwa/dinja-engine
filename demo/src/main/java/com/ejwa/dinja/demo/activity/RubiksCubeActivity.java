@@ -112,7 +112,6 @@ public class RubiksCubeActivity extends DinjaActivity {
 				final INode node = BaseNode.getNodeClosestToPointDeep(new Point3f(v), new ArrayList(rubiksCube.getMiddleBoxSections().keySet()));
 				final Vector3f selectedSide = rubiksCube.getMiddleBoxSections().get(node);
 				final Tuple<Vector3f, List<BoxSection>> sliceToRoll =  rubiksCube.setSliceToRoll(selectedSide, b);
-				sliceToRoll.getB().add((BoxSection) node);
 
 				if (!sliceToRoll.getA().equals(Vector3f.ZERO)) {
 					final Quaternion4f rotation = new Quaternion4f();
