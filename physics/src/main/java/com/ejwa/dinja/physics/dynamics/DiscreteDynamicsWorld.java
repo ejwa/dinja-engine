@@ -81,11 +81,7 @@ public class DiscreteDynamicsWorld extends Pointer implements IDynamicsWorld {
 		PhysicsVector3.toPool(gravity);
 	}
 
-	@Override
-	public native void stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep);
-
-	@Override
-	public void stepSimulation(float timeStep) {
-		stepSimulation(timeStep, 1, 1/60f);
-	}
+	@Override public native void stepSimulation(float timeStep);
+	@Override public native void stepSimulation(float timeStep, int maxSubSteps);
+	@Override public native void stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep);
 }

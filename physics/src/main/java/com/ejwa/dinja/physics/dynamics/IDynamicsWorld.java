@@ -31,6 +31,7 @@ public interface IDynamicsWorld {
 	void setGravity(Vector3f gravity);
 	void setGravity(float x, float y, float z);
 	void stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep);
+	void stepSimulation(float timeStep, int maxSubSteps);
 	void stepSimulation(float timeStep);
 	void synchronizeMotionStates();
 }

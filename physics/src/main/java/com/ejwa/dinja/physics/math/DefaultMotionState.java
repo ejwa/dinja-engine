@@ -34,8 +34,28 @@ import org.openmali.vecmath2.Matrix4f;
 public class DefaultMotionState extends MotionState {
 	static { Loader.load(BulletNative.class); }
 
+	@Allocator private native void allocate();
+	@Allocator private native void allocate(@Const @ByRef PhysicsTransform startTransform);
 	@Allocator private native void allocate(@Const @ByRef PhysicsTransform startTransform,
 	                                        @Const @ByRef PhysicsTransform centerOfMassOffset);
+
+	public DefaultMotionState() {
+		super();
+		allocate();
+	}
+
+	public DefaultMotionState(PhysicsTransform startTransform) {
+		super();
+		allocate(startTransform);
+	}
+
+	public DefaultMotionState(Matrix4f start) {
+		super();
+		final PhysicsTransform startTransform = new PhysicsTransform();
+
+		startTransform.setTransformationMatrix(start);
+		allocate(startTransform);
+	}
 
 	public DefaultMotionState(PhysicsTransform startTransform, PhysicsTransform centerOfMassOffset) {
 		super();

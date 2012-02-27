@@ -22,6 +22,7 @@ package com.ejwa.dinja.physics.dynamics.solver;
 
 import com.ejwa.dinja.physics.library.BulletNative;
 import com.googlecode.javacpp.Loader;
+import com.googlecode.javacpp.annotation.Allocator;
 import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.Platform;
 
@@ -29,4 +30,11 @@ import com.googlecode.javacpp.annotation.Platform;
 @Name("btSequentialImpulseConstraintSolver")
 public class SequentialImpulseConstraintSolver extends ConstraintSolver {
 	static { Loader.load(BulletNative.class); }
+
+	@Allocator private native void allocate();
+
+	public SequentialImpulseConstraintSolver() {
+		super();
+		allocate();
+	}
 }
