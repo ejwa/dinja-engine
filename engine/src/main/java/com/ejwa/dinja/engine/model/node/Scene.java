@@ -18,7 +18,7 @@
  * Public License along with Dinja Engine. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package com.ejwa.dinja.engine.model.node.scene;
+package com.ejwa.dinja.engine.model.node;
 
 import com.ejwa.dinja.engine.model.Camera;
 import com.ejwa.dinja.engine.model.node.INode;

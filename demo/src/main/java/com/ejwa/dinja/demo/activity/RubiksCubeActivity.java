@@ -36,7 +36,7 @@ import com.ejwa.dinja.engine.model.node.BaseNode;
 import com.ejwa.dinja.engine.model.node.Group;
 import com.ejwa.dinja.engine.model.node.INode;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
-import com.ejwa.dinja.engine.model.node.scene.Scene;
+import com.ejwa.dinja.engine.model.node.Scene;
 import com.ejwa.dinja.engine.util.TextureLoader;
 import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.engine.view.SceneView;

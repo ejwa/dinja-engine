@@ -29,7 +29,7 @@ import com.ejwa.dinja.engine.controller.animator.script.ArrayAnimatorScript;
 import com.ejwa.dinja.engine.controller.animator.script.LoopAnimatorScript;
 import com.ejwa.dinja.engine.controller.animator.script.PingPongAnimatorScript;
 import com.ejwa.dinja.engine.model.Camera;
-import com.ejwa.dinja.engine.model.node.scene.Scene;
+import com.ejwa.dinja.engine.model.node.Scene;
 import com.ejwa.dinja.engine.model.ease.CubicInOutEase;
 import com.ejwa.dinja.engine.model.node.mesh.geometry.Plane;
 import com.ejwa.dinja.engine.util.TextureLoader;

@@ -22,7 +22,7 @@ package com.ejwa.dinja.engine.controller;
 
 import android.os.SystemClock;
 import com.ejwa.dinja.engine.model.Camera;
-import com.ejwa.dinja.engine.model.node.scene.Scene;
+import com.ejwa.dinja.engine.model.node.Scene;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.opengles.display.IFrameTimeListener;

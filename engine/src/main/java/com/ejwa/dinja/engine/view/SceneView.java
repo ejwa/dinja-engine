@@ -21,7 +21,7 @@
 package com.ejwa.dinja.engine.view;
 
 import com.ejwa.dinja.engine.model.node.INode;
-import com.ejwa.dinja.engine.model.node.scene.Scene;
+import com.ejwa.dinja.engine.model.node.Scene;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 import com.ejwa.dinja.opengles.primitive.PrimitiveData;
 import java.util.Iterator;
