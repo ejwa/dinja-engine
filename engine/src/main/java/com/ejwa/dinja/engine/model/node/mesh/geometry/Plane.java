@@ -39,6 +39,8 @@ import org.openmali.vecmath2.Vector3f;
  * @since 0.1
  */
 public class Plane extends Mesh {
+	private final Vector2f dimensions = new Vector2f();
+
 	/**
 	 * Creates a plane geometry complete with defined properties such as texture coordinates. This constructor defaults
 	 * to creating a plane with a single segment.
@@ -66,6 +68,7 @@ public class Plane extends Mesh {
 	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	protected Plane(String name, float width, float height, int segments, boolean updatePrimitiveData) {
 		super(name, PrimitiveType.GL_TRIANGLE_STRIP);
+		dimensions.set(width, height);
 
 		if (segments == 0) {
 			throw new IllegalArgumentException("The number of segments has to be at least 1.");
@@ -119,5 +122,9 @@ public class Plane extends Mesh {
 		if (updatePrimitiveData) {
 			getMeshPrimitiveData().update();
 		}
+	}
+
+	public Vector2f getDimensions() {
+		return dimensions;
 	}
 }

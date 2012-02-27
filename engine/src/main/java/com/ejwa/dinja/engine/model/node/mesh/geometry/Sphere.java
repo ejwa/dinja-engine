@@ -38,6 +38,8 @@ import org.openmali.vecmath2.Vector3f;
  * @since 0.1
  */
 public class Sphere extends Mesh {
+	private final float radius;
+
 	/**
 	 * Creates a sphere geometry complete with defined properties such as texture coordinates.
 	 *
@@ -51,6 +53,7 @@ public class Sphere extends Mesh {
 	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public Sphere(String name, float radius, int rings, int segments) {
 		super(name, PrimitiveType.GL_TRIANGLE_STRIP);
+		this.radius = radius;
 
 		final float deltaRingAngle = (float) Math.PI / rings;
 		final float deltaSegmentAngle = (float) (2 * Math.PI / segments);
@@ -91,5 +94,9 @@ public class Sphere extends Mesh {
 		}
 
 		getMeshPrimitiveData().update();
+	}
+
+	public float getRadius() {
+		return radius;
 	}
 }

@@ -28,6 +28,8 @@ import org.openmali.vecmath2.Vector3f;
 
 
 public class Box extends Mesh {
+	private final Vector3f dimensions = new Vector3f();
+
 	private static final Vector3f[] NORMALS = {
 		new Vector3f(0, 0, 1),  // front (outwards)
 		new Vector3f(0, 1, 0),  // top (up)
@@ -63,8 +65,13 @@ public class Box extends Mesh {
 		new Vector2f(1, 1), new Vector2f(1, 0), new Vector2f(0, 1), new Vector2f(0, 0)  // back
 	};
 
+	public Box(String name, Vector3f dimensions) {
+		this(name, dimensions.getX(), dimensions.getY(), dimensions.getZ());
+	}
+
 	public Box(String name, float width, float height, float depth) {
 		super(name, PrimitiveType.GL_TRIANGLE_STRIP);
+		dimensions.set(width, height, depth);
 
 		for (int i = 0; i < vertices.length / 4; i++) {
 			vertices[i * 4].setNormal(NORMALS[i]);
@@ -117,5 +124,9 @@ public class Box extends Mesh {
 
 	public void setBackFaceTextureCoordinates(Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
 		setBoxFaceTextureCoordinates(20, uv1, uv2, uv3, uv4);
+	}
+
+	public Vector3f getDimensions() {
+		return dimensions;
 	}
 }
