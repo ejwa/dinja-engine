@@ -26,7 +26,7 @@ import org.openmali.vecmath2.Matrix4f;
 import org.openmali.vecmath2.Point3f;
 
 /**
- * An interface that describes an node in the scene graph. Any member of the scene graph need to implement this interface.
+ * An interface that describes an node in the scene graph. Any member of the scene graph needs to implement this interface.
  * A node can hold a children of nodes and also holds a model matrix (describing local transformations) and a world matrix
  * (describing global transformations).
  *
@@ -71,8 +71,8 @@ public interface INode {
 	/**
 	 * Returns the name of this node. Each node that is attached to the hierarchy of the root node (usually the scene) needs
 	 * to define a unique name. The name can later be used as a means of fetching a node from the hierarchy using
-	 * {@link #getNode(java.lang.String)}. The uniqueness of the name is checked whenever this node is being attached to
-	 * a hierarchy of a root node either directly or via one of it's parent nodes.
+	 * {@link IRootNode#getNodeDeep(java.lang.String)}. The uniqueness of the name is checked whenever this node is being
+	 * attached to a hierarchy of a root node either directly or via one of it's parent nodes.
 	 *
 	 * @return The unique name of this node.
 	 */
@@ -104,7 +104,7 @@ public interface INode {
 
 	/**
 	 * Removes the specified nodes from the list of child nodes that this node holds. If this node is attached to a
-	 * root node, the nodes removed will have their root node reset to <code>null</code>.
+	 * root node, the nodes being removed will have their root node reset to <code>null</code>.
 	 *
 	 * @param nodes The nodes to remove from this node.
 	 */

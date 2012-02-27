@@ -55,7 +55,7 @@ public class BaseNode implements INode {
 	private void propagateModelMatrixDeep(INode node) {
 		for (INode n : nodes) {
 			n.getModelMatrix().mul(node.getModelMatrix(), n.getModelMatrix());
-			propagateModelMatrixDeep(node);
+			propagateModelMatrixDeep(n);
 		}
 	}
 

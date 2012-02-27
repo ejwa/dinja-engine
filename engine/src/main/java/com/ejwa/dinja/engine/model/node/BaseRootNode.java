@@ -38,7 +38,7 @@ public class BaseRootNode extends BaseNode implements IRootNode {
 
 	@Override
 	public void setRootDeep(INode node) {
-		setRoot(this);
+		node.setRoot(this);
 
 		if (allNodes.put(node.getName(), node) != null) {
 			throw new NodeAlreadyAddedException(node, this);
@@ -51,7 +51,7 @@ public class BaseRootNode extends BaseNode implements IRootNode {
 
 	@Override
 	public void clearRootDeep(INode node) {
-		setRoot(null);
+		node.setRoot(null);
 
 		if (allNodes.remove(node.getName()) == null) {
 			throw new NodeNotFoundException(node, this);
