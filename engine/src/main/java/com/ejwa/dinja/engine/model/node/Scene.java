@@ -21,8 +21,6 @@
 package com.ejwa.dinja.engine.model.node;
 
 import com.ejwa.dinja.engine.model.Camera;
-import com.ejwa.dinja.engine.model.node.INode;
-import com.ejwa.dinja.engine.model.node.BaseRootNode;
 import com.ejwa.dinja.engine.model.node.mesh.Mesh;
 
 public class Scene extends BaseRootNode {

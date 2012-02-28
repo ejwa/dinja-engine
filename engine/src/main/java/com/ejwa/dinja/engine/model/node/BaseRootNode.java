@@ -22,9 +22,11 @@ package com.ejwa.dinja.engine.model.node;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 public class BaseRootNode extends BaseNode implements IRootNode {
 	private final Map<String, INode> allNodes = new HashMap<String, INode>();
+	private final Semaphore semaphore = new Semaphore(1);
 
 	protected BaseRootNode(String name) {
 		super(name);
@@ -60,5 +62,15 @@ public class BaseRootNode extends BaseNode implements IRootNode {
 		for (INode n : node.getNodes()) {
 			clearRootDeep(n);
 		}
+	}
+
+	@Override
+	public void acquire() {
+		semaphore.acquireUninterruptibly();
+	}
+
+	@Override
+	public void release() {
+		semaphore.release();
 	}
 }

@@ -24,4 +24,6 @@ public interface IRootNode extends INode {
 	INode getNodeDeep(String nodeName);
 	void setRootDeep(INode node);
 	void clearRootDeep(INode node);
+	void acquire();
+	void release();
 }

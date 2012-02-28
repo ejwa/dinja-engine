@@ -86,6 +86,10 @@ public class BaseNode implements INode {
 
 	@Override
 	public void addNodes(INode ...nodes) {
+		if (root != null) {
+			root.acquire();
+		}
+
 		for (INode n : nodes) {
 			if (root != null) {
 				root.setRootDeep(n);
@@ -97,10 +101,18 @@ public class BaseNode implements INode {
 
 			this.nodes.add(n);
 		}
+
+		if (root != null) {
+			root.release();
+		}
 	}
 
 	@Override
 	public void removeNodes(INode ...nodes) {
+		if (root != null) {
+			root.acquire();
+		}
+
 		for (INode n : nodes) {
 			if (root != null) {
 				root.clearRootDeep(n);
@@ -111,6 +123,10 @@ public class BaseNode implements INode {
 			}
 
 			this.nodes.remove(n);
+		}
+
+		if (root != null) {
+			root.release();
 		}
 	}
 

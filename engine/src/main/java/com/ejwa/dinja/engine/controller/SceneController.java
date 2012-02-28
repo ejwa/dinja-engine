@@ -57,7 +57,11 @@ public class SceneController implements Controllable, IFrameUpdateListener {
 	@Override
 	public void onFrameUpdate(long milliSecondsSinceLastFrame) {
 		final Matrix4f modelMatrix = sceneView.getScene().getModelMatrix();
+
+		sceneView.getScene().acquire();
 		handleChildren(sceneView.getScene(), modelMatrix);
+		sceneView.getScene().release();
+
 		sceneView.getScene().getWorldMatrix().set(modelMatrix);
 	}
 }
