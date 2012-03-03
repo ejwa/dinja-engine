@@ -32,7 +32,7 @@
 			<dependency>
 				<groupId>com.googlecode</groupId>
 				<artifactId>javacpp</artifactId>
-				<version>20120108</version>
+				<version>20120303</version>
 			</dependency>
 			<dependency>
 				<groupId>org.openmali</groupId>
@@ -133,7 +133,7 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>1.2.1</version>
-				  </plugin>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>

@@ -82,31 +82,7 @@
 								<argument>-Dcompiler.options=-march=armv5te -mtune=xscale -msoft-float ${env.ANDROID_NDK_HOME}/sources/cxx-stl/gnu-libstdc++/libs/armeabi/libsupc++.a</argument>
 								<argument>-Dcompiler.linkpath=sources/cxx-stl/gnu-libstdc++/libs/armeabi/:platforms/android-5/arch-arm/usr/lib/:${project.build.directory}/local/armeabi/</argument>
 								<argument>-Dplatform.root=${env.ANDROID_NDK_HOME}</argument>
-								<argument>com.ejwa.dinja.physics.collision.DefaultCollisionConfiguration</argument>
-								<argument>com.ejwa.dinja.physics.collision.broadphase.Broadphase</argument>
-								<argument>com.ejwa.dinja.physics.collision.broadphase.DbvtBroadphase</argument>
-								<argument>com.ejwa.dinja.physics.collision.dispatch.CollisionDispatcher</argument>
-								<argument>com.ejwa.dinja.physics.collision.dispatch.Dispatcher</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.BoxShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.CollisionShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.ConcaveShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.ConvexInternalShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.ConvexShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.PolyhedralConvexShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.SphereShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.StaticPlaneShape</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.DiscreteDynamicsWorld</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.RigidBody</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.RigidBodyConstructionInfo</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.solver.ConstraintSolver</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.solver.SequentialImpulseConstraintSolver</argument>
-								<argument>com.ejwa.dinja.physics.library.BulletNative</argument>
-								<argument>com.ejwa.dinja.physics.math.DefaultMotionState</argument>
-								<argument>com.ejwa.dinja.physics.math.MotionState</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsMatrix3</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsQuaternion</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsTransform</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsVector3</argument>
+								<argument>com.ejwa.dinja.physics.**</argument>
 							</arguments>
 						</configuration>
 					</execution>
@@ -129,31 +105,7 @@
 								<argument>-Dcompiler.options=-march=armv7-a -mtune=xscale ${env.ANDROID_NDK_HOME}/sources/cxx-stl/gnu-libstdc++/libs/armeabi-v7a/libsupc++.a</argument>
 								<argument>-Dcompiler.linkpath=sources/cxx-stl/gnu-libstdc++/libs/armeabi-v7a/:platforms/android-5/arch-arm/usr/lib/:${project.build.directory}/local/armeabi-v7a/</argument>
 								<argument>-Dplatform.root=${env.ANDROID_NDK_HOME}</argument>
-								<argument>com.ejwa.dinja.physics.collision.DefaultCollisionConfiguration</argument>
-								<argument>com.ejwa.dinja.physics.collision.broadphase.Broadphase</argument>
-								<argument>com.ejwa.dinja.physics.collision.broadphase.DbvtBroadphase</argument>
-								<argument>com.ejwa.dinja.physics.collision.dispatch.CollisionDispatcher</argument>
-								<argument>com.ejwa.dinja.physics.collision.dispatch.Dispatcher</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.BoxShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.CollisionShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.ConcaveShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.ConvexInternalShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.ConvexShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.PolyhedralConvexShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.SphereShape</argument>
-								<argument>com.ejwa.dinja.physics.collision.shape.StaticPlaneShape</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.DiscreteDynamicsWorld</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.RigidBody</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.RigidBodyConstructionInfo</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.solver.ConstraintSolver</argument>
-								<argument>com.ejwa.dinja.physics.dynamics.solver.SequentialImpulseConstraintSolver</argument>
-								<argument>com.ejwa.dinja.physics.library.BulletNative</argument>
-								<argument>com.ejwa.dinja.physics.math.DefaultMotionState</argument>
-								<argument>com.ejwa.dinja.physics.math.MotionState</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsMatrix3</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsQuaternion</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsTransform</argument>
-								<argument>com.ejwa.dinja.physics.math.PhysicsVector3</argument>
+								<argument>com.ejwa.dinja.physics.**</argument>
 							</arguments>
 						</configuration>
 					</execution>
