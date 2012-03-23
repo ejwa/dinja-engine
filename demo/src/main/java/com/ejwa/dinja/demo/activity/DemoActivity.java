@@ -51,6 +51,8 @@ public class DemoActivity extends ListActivity {
 				case 1: demoToShow = DragWorldActivity.class; break;
 				case 2: demoToShow = DancingLettersActivity.class; break;
 				case 3: demoToShow = RubiksCubeActivity.class; break;
+				case 4: demoToShow = BasicPhysicsActivity.class; break;
+				case 5: demoToShow = SphereActivity.class; break;
 				default: demoToShow = TiltBombActivity.class; break;
 			}
 

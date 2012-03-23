@@ -27,6 +27,7 @@ import android.view.MotionEvent;
 import com.ejwa.dinja.engine.controller.CameraController;
 import com.ejwa.dinja.engine.controller.Controllable;
 import com.ejwa.dinja.engine.controller.DebugController;
+import com.ejwa.dinja.engine.controller.physics.PhysicsWorldController;
 import com.ejwa.dinja.engine.controller.SceneController;
 import com.ejwa.dinja.engine.controller.input.FingerFlingMeshInputController;
 import com.ejwa.dinja.engine.controller.animator.AnimatorController;
@@ -134,6 +135,8 @@ public class DinjaActivity extends Activity {
 
 		final Program program = new Program(VERTEX_SHADER, FRAGMENT_SHADER);
 		glSurface.registerFrameDrawListener(new ElementsDraw(program));
+
+		//glSurface.registerFrameUpdateListener(new PhysicsWorldController());
 	}
 
 	/**

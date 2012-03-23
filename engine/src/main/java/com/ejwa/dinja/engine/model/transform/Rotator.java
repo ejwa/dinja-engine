@@ -117,6 +117,7 @@ public class Rotator {
 	}
 
 	public void setCenter(Translatable translatable) {
+		//TODO: Implement something that actually follows this translatable if it moves!
 		setCenter(translatable.getTranslator().get());
 	}
 }

@@ -20,5 +20,13 @@
 			FingerDeltaMovementInputController together with other parts of the engine, such as node groups, scene
 			graph manipulation, animator listeners and programatically configured texture coordinates.
 		</item>
+		<item>
+			Basic Physics(NOT COMPLETED!)\n\nA basic physics test with some spheres.
+			Demonstrates how to set up a very simple physics scene.
+		</item>
+		<item>
+			Shaded Sphere (NOT COMPLETED!)\n\nA rotating and custom shaded sphere.
+			Demonstrates how to set up and use a custom pixel and vertex shader.
+		</item>
 	</string-array>
 </resources>
