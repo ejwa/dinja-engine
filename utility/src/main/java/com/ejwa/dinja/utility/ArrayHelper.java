@@ -22,19 +22,54 @@ package com.ejwa.dinja.utility;
 
 import org.apache.commons.lang.ArrayUtils;
 
+/**
+ * Class that contains some useful methods for searching for subarrays in arrays. The class has methods that work
+ * in a similar fashion to {@link String#indexOf(java.lang.String)} but is adapted for generic arrays and includes some
+ * additional features, such as support for wrapping and searching of chunks.
+ *
+ * @author Adam Waldenberg <adam.waldenberg@ejwa.se>
+ * @since 0.1
+ */
 public final class ArrayHelper {
 	private ArrayHelper() {
 		/* No instances of this class allowed. */
 	}
 
+	/**
+	 * Returns the index, within an array, of the first occurrence of the specified subarray.
+	 *
+	 * @param array An array to search in.
+	 * @param subArray the subarray for which to search.
+	 * @return The index within this array of the first occurrence of the specified subarray.
+	 */
 	public static <T> int indexOfSubArray(T[] array, T[] subArray) {
 		return indexOfSubArrayChunk(array, subArray, subArray.length);
 	}
 
+	/**
+	 * Returns the index, within an array, of the first occurrence of the specified subarray. This method works in
+	 * a similar fashion to @{@link #indexOfSubArray(T[], T[])}, but loops through the array twice when searchnig for the
+	 * subarray.
+	 *
+	 * @param array An array to search in.
+	 * @param subArray the subarray for which to search.
+	 * @return The index within this array of the first occurrence of the specified subarray.
+	 * @see #indexOfSubArray(T[], T[])
+	 */
 	public static <T> int indexOfSubArrayWrapped(T[] array, T[] subArray) {
 		 return indexOfSubArray(ArrayUtils.addAll(array, array), subArray);
 	}
 
+	/**
+	 * Returns the index, within an array, of the first occurrence of the specified subarray. This method works in
+	 * a similar fashion to @{@link #indexOfSubArray(T[], T[])}, but searches for chunks of size
+	 * <code>subArrayChunkSize</code> from the subarray when searching through the array.
+	 *
+	 * @param array An array to search in.
+	 * @param subArray the subarray for which to search.
+	 * @param subArrayChunkSize Size of the chunks to pick from the subarray when searching through the array.
+	 * @see #indexOfSubArray(T[], T[])
+	 */
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public static <T> int indexOfSubArrayChunk(T[] array, T[] subArray, int subArrayChunkSize) {
 		if (subArray.length < subArrayChunkSize) {
@@ -63,6 +98,16 @@ public final class ArrayHelper {
 		return -1;
 	}
 
+	/**
+	 * Returns the index, within an array, of the first occurrence of the specified subarray. This method works in
+	 * a similar fashion to @{@link #indexOfSubArrayWrapped(T[], T[])}, but searches for chunks of size
+	 * <code>subArrayChunkSize</code> from the subarray when searching through the array.
+	 *
+	 * @param array An array to search in.
+	 * @param subArray the subarray for which to search.
+	 * @param subArrayChunkSize Size of the chunks to pick from the subarray when searching through the array.
+	 * @see #indexOfSubArrayWrapped(T[], T[])
+	 */
 	public static <T> int indexOfSubArrayChunkWrapped(T[] array, T[] subArray, int subArrayChunkSize) {
 		return indexOfSubArrayChunk(ArrayUtils.addAll(array, array), subArray, subArrayChunkSize);
 	}
