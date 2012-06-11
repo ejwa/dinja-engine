@@ -43,9 +43,7 @@ public class GLSurfaceRenderer implements Renderer {
 			previousFrameTime = SystemClock.uptimeMillis();
 			return 0;
 		} else {
-			final long msSinceLastFrame;
-
-			msSinceLastFrame = SystemClock.uptimeMillis() - previousFrameTime;
+			final long msSinceLastFrame = SystemClock.uptimeMillis() - previousFrameTime;
 			previousFrameTime = SystemClock.uptimeMillis();
 			return msSinceLastFrame;
 		}

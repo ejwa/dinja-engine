@@ -51,12 +51,10 @@ public abstract class AbstractSampler<T extends Pointer> extends AbstractUniform
 
 	private static int genTexture() {
 		final IntPointer handlePtr = new IntPointer(1);
-		final int handle;
-
 		OpenGLES2Native.glGenTextures(1, handlePtr);
-		handle = handlePtr.get(0);
-		handlePtr.deallocate();
 
+		final int handle = handlePtr.get(0);
+		handlePtr.deallocate();
 		return handle;
 	}
 
