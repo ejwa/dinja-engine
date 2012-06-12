@@ -34,12 +34,12 @@ public class ArrayHelperTest {
 	}
 
 	@Test(expected = IllegalAccessException.class)
-	public void checkConstructorPrivacy() throws InstantiationException, IllegalAccessException {
+	public void testConstructorPrivacy() throws InstantiationException, IllegalAccessException {
 		ArrayHelper.class.newInstance();
 	}
 
 	@Test
-	public void checkIndexOfSubArray() {
+	public void testIndexOfSubArray() {
 		// Should return correct index
 		Assert.assertEquals(0, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Ar")));
 		Assert.assertEquals(0, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("ArrayHelper")));
@@ -53,7 +53,7 @@ public class ArrayHelperTest {
 	}
 
 	@Test
-	public void checkIndexOfSubArrayWrapped() {
+	public void testIndexOfSubArrayWrapped() {
 		// Should return correct index
 		Assert.assertEquals(0, ArrayHelper.indexOfSubArrayWrapped(CHARACTERS, toCharArray(TEST_STRING + "A")));
 		Assert.assertEquals(5, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Helper")));
@@ -64,7 +64,7 @@ public class ArrayHelperTest {
 	}
 
 	@Test
-	public void checkIndexOfSubArrayChunk() {
+	public void testIndexOfSubArrayChunk() {
 		// Should return correct index
 		Assert.assertEquals(0, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("zzzzA"), 1));
 		Assert.assertEquals(11, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("TestHelper"), 4));
@@ -77,7 +77,7 @@ public class ArrayHelperTest {
 	}
 
 	@Test
-	public void checkIndexOfSubArrayChunkWrapped() {
+	public void testIndexOfSubArrayChunkWrapped() {
 		// Should return correct index
 		Assert.assertEquals(48, ArrayHelper.indexOfSubArrayChunkWrapped(CHARACTERS, toCharArray("z!Array"), 3));
 
