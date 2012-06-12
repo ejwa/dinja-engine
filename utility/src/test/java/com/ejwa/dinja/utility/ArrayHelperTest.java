@@ -21,12 +21,10 @@
 package com.ejwa.dinja.utility;
 
 import org.apache.commons.lang.ArrayUtils;
-import static org.junit.Assert.*;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
 
-@RunWith(Enclosed.class)
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class ArrayHelperTest {
 	private static final String TEST_STRING = "ArrayHelperTest is testing the ArrayHelper class!";
 	private static final Character[] CHARACTERS = toCharArray(TEST_STRING);
@@ -35,62 +33,55 @@ public class ArrayHelperTest {
 		return ArrayUtils.toObject(string.toCharArray());
 	}
 
-	public static class IndexOfSubArray {
-		@Test
-		public void shouldReturnCorrectIndex() {
-			assertEquals(0, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Ar")));
-			assertEquals(0, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("ArrayHelper")));
-			assertEquals(5, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Helper")));
-			assertEquals(48, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("!")));
-		}
-
-		@Test
-		public void shouldNotReturnIndex() {
-			assertEquals(-1, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("testinG")));
-			assertEquals(-1, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("")));
-			assertEquals(-1, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("! ")));
-		}
+	@Test(expected = IllegalAccessException.class)
+	public void checkConstructorPrivacy() throws InstantiationException, IllegalAccessException {
+		ArrayHelper.class.newInstance();
 	}
 
-	public static class IndexOfSubArrayWrapped {
-		@Test
-		public void shouldReturnCorrectIndex() {
-			assertEquals(0, ArrayHelper.indexOfSubArrayWrapped(CHARACTERS, toCharArray(TEST_STRING + "A")));
-			assertEquals(5, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Helper")));
-			assertEquals(48, ArrayHelper.indexOfSubArrayWrapped(CHARACTERS, toCharArray("!Ar")));
-		}
+	@Test
+	public void checkIndexOfSubArray() {
+		// Should return correct index
+		Assert.assertEquals(0, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Ar")));
+		Assert.assertEquals(0, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("ArrayHelper")));
+		Assert.assertEquals(5, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Helper")));
+		Assert.assertEquals(48, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("!")));
 
-		@Test
-		public void shouldNotReturnIndex() {
-			assertEquals(-1, ArrayHelper.indexOfSubArrayWrapped(CHARACTERS, toCharArray("!ar")));
-		}
+		// Should not return index
+		Assert.assertEquals(-1, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("testinG")));
+		Assert.assertEquals(-1, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("")));
+		Assert.assertEquals(-1, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("! ")));
 	}
 
-	public static class IndexOfSubArrayChunk {
-		@Test
-		public void shouldReturnCorrectIndex() {
-			assertEquals(0, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("zzzzA"), 1));
-			assertEquals(11, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("TestHelper"), 4));
-			assertEquals(3, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("ayHe"), 3));
-			assertEquals(19, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("some!testing"), 5));
-		}
+	@Test
+	public void checkIndexOfSubArrayWrapped() {
+		// Should return correct index
+		Assert.assertEquals(0, ArrayHelper.indexOfSubArrayWrapped(CHARACTERS, toCharArray(TEST_STRING + "A")));
+		Assert.assertEquals(5, ArrayHelper.indexOfSubArray(CHARACTERS, toCharArray("Helper")));
+		Assert.assertEquals(48, ArrayHelper.indexOfSubArrayWrapped(CHARACTERS, toCharArray("!Ar")));
 
-		@Test
-		public void shouldNotReturnIndex() {
-			assertEquals(-1, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("!"), 2));
-			assertEquals(-1, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("Array "), 6));
-		}
+		// Should not return index
+		Assert.assertEquals(-1, ArrayHelper.indexOfSubArrayWrapped(CHARACTERS, toCharArray("!ar")));
 	}
 
-	public static class IndexOfSubArrayChunkWrapped {
-		@Test
-		public void shouldReturnCorrectIndex() {
-			assertEquals(48, ArrayHelper.indexOfSubArrayChunkWrapped(CHARACTERS, toCharArray("z!Array"), 3));
-		}
+	@Test
+	public void checkIndexOfSubArrayChunk() {
+		// Should return correct index
+		Assert.assertEquals(0, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("zzzzA"), 1));
+		Assert.assertEquals(11, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("TestHelper"), 4));
+		Assert.assertEquals(3, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("ayHe"), 3));
+		Assert.assertEquals(19, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("some!testing"), 5));
 
-		@Test
-		public void shouldNotReturnIndex() {
-			assertEquals(-1, ArrayHelper.indexOfSubArrayChunkWrapped(CHARACTERS, toCharArray("zz!Array"), 7));
-		}
+		// Should not return index
+		Assert.assertEquals(-1, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("!"), 2));
+		Assert.assertEquals(-1, ArrayHelper.indexOfSubArrayChunk(CHARACTERS, toCharArray("Array "), 6));
+	}
+
+	@Test
+	public void checkIndexOfSubArrayChunkWrapped() {
+		// Should return correct index
+		Assert.assertEquals(48, ArrayHelper.indexOfSubArrayChunkWrapped(CHARACTERS, toCharArray("z!Array"), 3));
+
+		// Should not return index
+		Assert.assertEquals(-1, ArrayHelper.indexOfSubArrayChunkWrapped(CHARACTERS, toCharArray("zz!Array"), 7));
 	}
 }

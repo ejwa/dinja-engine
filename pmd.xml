@@ -6,6 +6,7 @@
 		<exclude name="AvoidSynchronizedAtMethodLevel" />
 		<exclude name="BeanMembersShouldSerialize" />
 		<exclude name="DoNotUseThreads" />
+		<exclude name="JUnitAssertionsShouldIncludeMessage" />
 		<exclude name="MethodArgumentCouldBeFinal" />
 		<exclude name="LongVariable" />
 		<exclude name="OnlyOneReturn" />
