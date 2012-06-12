@@ -20,6 +20,7 @@
  */
 package com.ejwa.dinja.utility.pool;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +83,15 @@ public class Pool<T extends Poolable<T>> {
 			object = objects.remove(--n);
 		} else {
 			try {
-				object = poolable.newInstance();
+				final Constructor<?> constructor = poolable.getDeclaredConstructor();
+
+				if (constructor.isAccessible()) {
+					object = (T) constructor.newInstance();
+				} else {
+					constructor.setAccessible(true);
+					object = (T) constructor.newInstance();
+					constructor.setAccessible(false);
+				}
 			} catch (Exception ex) {
 				throw new IllegalStateException("Failed to create instance for pool.", ex);
 			}
