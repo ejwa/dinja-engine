@@ -24,7 +24,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class ArrayHelperTest {
 	private static final String TEST_STRING = "ArrayHelperTest is testing the ArrayHelper class!";
 	private static final Character[] CHARACTERS = toCharArray(TEST_STRING);
