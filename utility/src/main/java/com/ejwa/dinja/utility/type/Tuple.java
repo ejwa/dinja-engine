@@ -60,8 +60,8 @@ public class Tuple<A, B> {
 	public static <A, B> List<A> getAList(List<Tuple<A, B>> t) {
 		final List<A> list = new ArrayList<A>();
 
-		for (int i = 0; i < t.size(); i++) {
-			list.add(t.get(i).getA());
+		for (Tuple<A, B> tuple : t) {
+			list.add(tuple.getA());
 		}
 
 		return list;
@@ -70,8 +70,8 @@ public class Tuple<A, B> {
 	public static <A, B> List<B> getBList(List<Tuple<A, B>> t) {
 		final List<B> list = new ArrayList<B>();
 
-		for (int i = 0; i < t.size(); i++) {
-			list.add(t.get(i).getB());
+		for (Tuple<A, B> tuple : t) {
+			list.add(tuple.getB());
 		}
 
 		return list;

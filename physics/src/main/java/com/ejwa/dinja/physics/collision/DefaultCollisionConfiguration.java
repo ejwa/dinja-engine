@@ -28,7 +28,7 @@ import com.googlecode.javacpp.annotation.Platform;
 
 @Platform(include = "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h", link = "bullet")
 @Name("btDefaultCollisionConfiguration")
-public class DefaultCollisionConfiguration extends CollisionConfiguration implements ICollisionConfiguration {
+public class DefaultCollisionConfiguration extends CollisionConfiguration {
 	static { Loader.load(BulletNative.class); }
 
 	@Allocator private native void allocate();

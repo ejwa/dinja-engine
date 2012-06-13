@@ -63,13 +63,13 @@ public class DancingLettersActivity extends DinjaActivity {
 		registerController(new LowerLetterAnimator(lettersEngine, 1.1f, 1.25f, 1));
 	}
 
-	private class UpperLetterAnimator extends LoopAnimatorScript {
+	private static class UpperLetterAnimator extends LoopAnimatorScript {
 		public UpperLetterAnimator(DancingLetter letter, Quaternion4f rotation, float duration) {
 			super(new PingPongAnimatorScript(new RotationAnimator(letter, rotation, duration, CubicInOutEase.class)));
 		}
 	}
 
-	private class LowerLetterAnimator extends LoopAnimatorScript {
+	private static class LowerLetterAnimator extends LoopAnimatorScript {
 		public LowerLetterAnimator(DancingLetter letter, float scale, float duration, float pause) {
 			super(new PingPongAnimatorScript(new ArrayAnimatorScript(
 			      new ScaleAnimator(letter, scale, duration, CubicInOutEase.class), new DelayAnimator(pause))));

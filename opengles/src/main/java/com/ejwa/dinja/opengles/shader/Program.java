@@ -51,6 +51,7 @@ public class Program {
 		attach(vertexShader, fragmentShader);
 	}
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings({"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", "REC_CATCH_EXCEPTION"})
 	public Program(String vertexShader, String fragmentShader) {
 		final InputStream vs = getClass().getResourceAsStream(vertexShader);
 		final InputStream fs = getClass().getResourceAsStream(fragmentShader);

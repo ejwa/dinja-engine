@@ -66,7 +66,7 @@ public class RubiksCubeActivity extends DinjaActivity {
 		registerController(new RubiksCubeFlingController(scene, rubiksCube));
 	}
 
-	private class RubiksCubeController implements Controllable, IFingerDeltaMovementInputListener, IFrameUpdateListener {
+	private static class RubiksCubeController implements Controllable, IFingerDeltaMovementInputListener, IFrameUpdateListener {
 		private final RubiksCube rubiksCube;
 		private float rotationFromX;
 		private float rotationFromY;

@@ -30,6 +30,7 @@ public final class EaseFactory {
 		/* No instances of this class allowed. */
 	}
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings({"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", "REC_CATCH_EXCEPTION"})
 	public static IEase get(Class<? extends IEase> easeClass) {
 		IEase easeObject = EASE_OBJECTS.get(easeClass);
 
@@ -44,5 +45,9 @@ public final class EaseFactory {
 		}
 
 		return easeObject;
+	}
+
+	public static void clear() {
+		EASE_OBJECTS.clear();
 	}
 }

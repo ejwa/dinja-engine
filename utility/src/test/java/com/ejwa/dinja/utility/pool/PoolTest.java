@@ -25,19 +25,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PoolTest {
-	private static class BasePoolableClass {
+	private static class BasePoolableClass<T> implements Poolable<T> {
 		protected int numClears = 0;
 
+		@Override
 		public void clear() {
 			numClears++;
 		}
 	}
 
-	private static class PrivatePoolableClass extends BasePoolableClass implements Poolable<PrivatePoolableClass> {
+	private static class PrivatePoolableClass extends BasePoolableClass<PrivatePoolableClass> {
 		/* Just a dummy class implementing the poolable interface */
 	}
 
-	public static class PublicPoolableClassNoDC extends BasePoolableClass implements Poolable<PublicPoolableClassNoDC> {
+	public static class PublicPoolableClassNoDC extends BasePoolableClass<PublicPoolableClassNoDC> {
 		public PublicPoolableClassNoDC(int numClears) {
 			super();
 			this.numClears = numClears;

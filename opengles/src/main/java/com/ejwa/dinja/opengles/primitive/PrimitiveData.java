@@ -97,7 +97,7 @@ public class PrimitiveData {
 	}
 
 	public final void setVerticesData(Vector3f  ...vertices) {
-		this.vertices.setData(vertices);
+		this.vertices.set(vertices);
 	}
 
 	public void addSampler(AbstractSampler sampler) {

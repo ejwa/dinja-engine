@@ -33,7 +33,7 @@ public class FloatVertexAttributeArray extends AbstractVertexAttributeArray<Floa
 	}
 
 	@Override
-	public synchronized void setData(Float... values) {
+	protected synchronized void setData(Float... values) {
 		data = NativeMemory.getFloatPointer(data, values.length);
 
 		for (int i = 0; i < values.length; i++) {

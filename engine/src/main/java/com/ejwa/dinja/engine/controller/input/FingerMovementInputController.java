@@ -30,7 +30,6 @@ public class FingerMovementInputController {
 	private final GLSurfaceView glSurfaceView;
 	private final Point2f startPosition = new Point2f();
 	private final Point2f endPosition = new Point2f();
-	private float angle;
 
 	public FingerMovementInputController(IFingerMovementInputListener fingerMovementInputListener, GLSurfaceView glSurfaceView) {
 		this.fingerMovementInputListener = fingerMovementInputListener;
@@ -41,6 +40,7 @@ public class FingerMovementInputController {
 		if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
 			final float x = motionEvent.getX() / glSurfaceView.getWidth();
 			final float y = motionEvent.getY() / glSurfaceView.getHeight();
+			float angle;
 
 			if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 				startPosition.set(x, y);

@@ -34,18 +34,22 @@ public abstract class AbstractVertexAttributeArray<T, P extends Pointer> {
 
 	public AbstractVertexAttributeArray(String variableName, int components, T ...values) {
 		this(variableName, components);
-		setData(values);
+		set(values);
 	}
 
 	public int getComponents() {
 		return components;
 	}
 
+	public final void set(T ...values) {
+		setData(values);
+	}
+
 	public synchronized P getData() {
 		return data;
 	}
 
-	public abstract void setData(T ...values);
+	protected abstract void setData(T ...values);
 
 	public String getVariableName() {
 		return variableName;

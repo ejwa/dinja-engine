@@ -43,7 +43,7 @@ public class TiltBombActivity extends DinjaActivity {
 		registerController(new BombMeshController(m));
 	}
 
-	private class BombMeshController implements Controllable, ITiltForceInputListener, IFrameUpdateListener {
+	private static class BombMeshController implements Controllable, ITiltForceInputListener, IFrameUpdateListener {
 		private final Mesh mesh;
 		private float xRotation;
 		private float yRotation;

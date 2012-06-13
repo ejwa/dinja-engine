@@ -89,9 +89,7 @@ public class Vertex implements Cloneable {
 		hash *= 67 + (color == null ? 0 : color.hashCode());
 		hash *= 67 + (normal == null ? 0 : normal.hashCode());
 		hash *= 67 + (position == null ? 0 : position.hashCode());
-		hash *= 67 + (textureCoordinates == null ? 0 : textureCoordinates.hashCode());
-
-		return hash;
+		return hash * 67 + (textureCoordinates == null ? 0 : textureCoordinates.hashCode());
 	}
 
 	@Override

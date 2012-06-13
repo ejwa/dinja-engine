@@ -34,7 +34,7 @@ public class ColorfVertexAttributeArray extends AbstractVertexAttributeArray<Col
 	}
 
 	@Override
-	public synchronized void setData(Colorf... values) {
+	protected synchronized void setData(Colorf... values) {
 		data = NativeMemory.getFloatPointer(data, values.length * components);
 
 		for (int i = 0; i < values.length; i++) {

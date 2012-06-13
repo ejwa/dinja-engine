@@ -30,7 +30,7 @@ import com.googlecode.javacpp.annotation.Platform;
 
 @Platform(include = "BulletCollision/CollisionDispatch/btCollisionDispatcher.h", link = "bullet")
 @Name("btCollisionDispatcher")
-public class CollisionDispatcher extends Dispatcher implements IDispatcher {
+public class CollisionDispatcher extends Dispatcher {
 	static { Loader.load(BulletNative.class); }
 
 	@Allocator private native void allocate(CollisionConfiguration collisionConfiguration);

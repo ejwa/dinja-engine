@@ -49,7 +49,7 @@ public class DragWorldActivity extends DinjaActivity {
 		registerController(new WorldMeshController(sphere));
 	}
 
-	private class WorldMeshController implements Controllable, IFingerMovementInputListener, IFrameUpdateListener {
+	private static class WorldMeshController implements Controllable, IFingerMovementInputListener, IFrameUpdateListener {
 		private final Mesh mesh;
 		private float rotationFromX;
 		private boolean fingerDown;

@@ -34,7 +34,7 @@ public class Tuple3fVertexAttributeArray extends AbstractVertexAttributeArray<Tu
 	}
 
 	@Override
-	public synchronized void setData(Tuple3f... values) {
+	protected synchronized void setData(Tuple3f... values) {
 		data = NativeMemory.getFloatPointer(data, values.length * components);
 
 		for (int i = 0; i < values.length; i++) {

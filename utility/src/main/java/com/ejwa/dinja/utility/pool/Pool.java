@@ -76,6 +76,7 @@ public class Pool<T extends Poolable<T>> {
 	}
 
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings({"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", "REC_CATCH_EXCEPTION"})
 	private T allocate(boolean clear) {
 		T object;
 

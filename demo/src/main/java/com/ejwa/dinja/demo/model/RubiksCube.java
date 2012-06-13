@@ -46,7 +46,7 @@ public class RubiksCube extends Group {
 	public final int[][] yIndices = {{0,1,2,11,20,19,18,9}, {3,4,5,14,23,22,21,12}, {6,7,8,17,26,25,24,15}};
 	public final int[][] zIndices = {{0,3,6,7,8,5,2,1}, {9,12,15,16,17,14,11,10}, {18,21,24,25,26,23,20,19}};
 
-	public class BoxSection extends Box {
+	public static class BoxSection extends Box {
 		public BoxSection(String name, float x, float y, float z, float size) {
 			super(name, size, size, size);
 			getTranslator().set(new Vector3f(x - 0.5f, y - 0.5f, z - 0.5f));

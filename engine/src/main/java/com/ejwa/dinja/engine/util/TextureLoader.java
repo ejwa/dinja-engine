@@ -47,6 +47,7 @@ public final class TextureLoader {
 	 * @return The created texture.
 	 */
 	@SuppressWarnings("PMD.ProtectLogD")
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings({"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", "REC_CATCH_EXCEPTION"})
 	public static Texture load(AssetManager assetManager, String fileName) {
 		try {
 			final Bitmap bitmap = BitmapFactory.decodeStream(assetManager.open(fileName));
