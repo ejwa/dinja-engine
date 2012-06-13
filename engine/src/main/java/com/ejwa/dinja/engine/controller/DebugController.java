@@ -28,6 +28,8 @@ import com.ejwa.dinja.engine.view.DebugView;
 import com.ejwa.dinja.opengles.display.IFrameTimeListener;
 
 public class DebugController implements Controllable, IFrameTimeListener {
+	private static final float DEBUG_UPDATE_SPEED = 0.2f;
+
 	private final DebugView debugView;
 	private final DebugUpdater updater = new DebugUpdater();
 	private long previousStoredTime = 0;
@@ -53,10 +55,9 @@ public class DebugController implements Controllable, IFrameTimeListener {
 		}
 
 		public synchronized void setNanoSecondsForFrame(long nanoSecondsForFrame) {
-			final float speed = 0.2f;
-			this.nanoSecondsForFrame = (long) (nanoSecondsForFrame * speed + this.nanoSecondsForFrame * (1f - speed));
+			this.nanoSecondsForFrame = (long) (nanoSecondsForFrame * DEBUG_UPDATE_SPEED + this.nanoSecondsForFrame *
+			                                   (1f - DEBUG_UPDATE_SPEED));
 		}
-
 
 		@Override
 		public void run() {

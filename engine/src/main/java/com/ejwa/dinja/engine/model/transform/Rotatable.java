@@ -20,8 +20,6 @@
  */
 package com.ejwa.dinja.engine.model.transform;
 
-import com.ejwa.dinja.engine.model.transform.Rotator;
-
 public interface Rotatable {
 	Rotator getRotator();
 }

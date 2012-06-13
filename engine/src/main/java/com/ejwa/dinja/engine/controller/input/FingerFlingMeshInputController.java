@@ -93,7 +93,7 @@ public class FingerFlingMeshInputController extends SimpleOnGestureListener impl
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		if (flinging.get() && !selectedMeshes.isEmpty()) {
-			final List<Tuple<Point2f, Mesh>> selectedMeshesCopy;
+			List<Tuple<Point2f, Mesh>> selectedMeshesCopy;
 
 			synchronized (selectedMeshes) {
 				selectedMeshesCopy = new ArrayList<Tuple<Point2f, Mesh>>(selectedMeshes);

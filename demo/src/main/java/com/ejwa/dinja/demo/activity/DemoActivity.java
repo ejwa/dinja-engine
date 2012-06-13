@@ -45,7 +45,7 @@ public class DemoActivity extends ListActivity {
 	private class ListItemController implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			final Class demoToShow;
+			Class demoToShow;
 
 			switch(position) {
 				case 1: demoToShow = DragWorldActivity.class; break;
