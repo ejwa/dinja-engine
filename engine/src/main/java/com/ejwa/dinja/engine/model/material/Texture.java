@@ -89,7 +89,7 @@ public class Texture {
 	/**
 	 * Sets if the current texture has valid alpha values. This value is used by Dinja Engine to check if the current
 	 * texture has valid alpha values or not. Set it to false on a image with alpha values to ignore the alpha channel of
-	 * the image. In effect, if set to false, Dinja Engine will fetch color values using {@link #getPixelsRGB565}.
+	 * the image. In effect, if set to false, Dinja Engine will fetch color values using {@link #getPixelsRGB565()}.
 	 *
 	 * @param hasAlpha true if alpha values should be fetched from the texture, otherwise false.
 	 */
@@ -98,12 +98,9 @@ public class Texture {
 	}
 
 	/**
-	 * Converts the pixel data and returns it in the form RGB565, suitable for use together with {@link TextureFormat#GL_RGB}
-	 * and {@link TextureType#GL_UNSIGNED_SHORT_5_6_5}.
+	 * Converts the pixel data and returns it in the form RGB565.
 	 *
 	 * @return A pointer to the pixel data for this texture in the form RGB565.
-	 * @see TextureFormat#GL_RGB
-	 * @see TextureType#GL_UNSIGNED_SHORT_5_6_5
 	 */
 	@SuppressWarnings("PMD.AvoidUsingShortType")
 	public ShortPointer getPixelsRGB565() {
@@ -124,12 +121,9 @@ public class Texture {
 	}
 
 	/**
-	 * Converts the pixel data and returns it in the form RGB565, suitable for use together with {@link TextureFormat#GL_RGB}
-	 * and {@link TextureType#GL_UNSIGNED_SHORT_5_6_5}.
+	 * Converts the pixel data and returns it in the form RGB565.
 	 *
 	 * @return An array with the pixel data for this texture in the form RGB565.
-	 * @see TextureFormat#GL_RGB
-	 * @see TextureType#GL_UNSIGNED_SHORT_5_6_5
 	 */
 	@SuppressWarnings("PMD.AvoidUsingShortType")
 	public short[] getPixelsRGB565Array() {
@@ -138,12 +132,9 @@ public class Texture {
 	}
 
 	/**
-	 * Converts the pixel data and returns it in the form RGBA8888, suitable for use together with
-	 * {@link TextureFormat#GL_RGBA} and {@link TextureType#GL_UNSIGNED_BYTE}.
+	 * Converts the pixel data and returns it in the form RGBA8888.
 	 *
 	 * @return A pointer to the pixel data for this texture in the form RGBA8888.
-	 * @see TextureFormat#GL_RGBA
-	 * @see TextureType#GL_UNSIGNED_BYTE
 	 */
 	public IntPointer getPixelsRGBA8888() {
 		if (pixelsRGBA8888 == null) {
@@ -164,12 +155,9 @@ public class Texture {
 	}
 
 	/**
-	 * Converts the pixel data and returns it in the form RGBA8888, suitable for use together with
-	 * {@link TextureFormat#GL_RGBA} and {@link TextureType#GL_UNSIGNED_BYTE}.
+	 * Converts the pixel data and returns it in the form RGBA8888.
 	 *
 	 * @return An array with the pixel data for this texture in the form RGBA8888.
-	 * @see TextureFormat#GL_RGBA
-	 * @see TextureType#GL_UNSIGNED_BYTE
 	 */
 	public int[] getPixelsRGBA8888Array() {
 		final IntPointer pointer = getPixelsRGBA8888();

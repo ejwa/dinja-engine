@@ -48,13 +48,13 @@ public final class ArrayHelper {
 
 	/**
 	 * Returns the index, within a wrapped array, of the first occurrence of the specified subarray. This method works in
-	 * a similar fashion to @{@link #indexOfSubArray(T[], T[])}, but loops through the array twice when searchnig for the
-	 * subarray.
+	 * a similar fashion to {@link #indexOfSubArray(Object[], Object[]) indexOfSubArray(T[], T[])}, but loops through the
+	 * array twice when searchnig for the subarray.
 	 *
 	 * @param array An array to search in.
 	 * @param subArray The subarray for which to search.
 	 * @return The index within this array of the first occurrence of the specified subarray.
-	 * @see #indexOfSubArray(T[], T[])
+	 * @see #indexOfSubArray(Object[], Object[]) indexOfSubArray(T[], T[])
 	 */
 	public static <T> int indexOfSubArrayWrapped(T[] array, T[] subArray) {
 		 return indexOfSubArray(ArrayUtils.addAll(array, array), subArray);
@@ -62,14 +62,14 @@ public final class ArrayHelper {
 
 	/**
 	 * Returns the index, within an array, of the first occurrence of one of the specified subarray chunks. This method
-	 * works in a similar fashion to @{@link #indexOfSubArray(T[], T[])}, but searches for chunks of size
-	 * <code>subArrayChunkSize</code> from the subarray when searching through the array.
+	 * works in a similar fashion to {@link #indexOfSubArray(Object[], Object[]) indexOfSubArray(T[], T[])}, but searches
+	 * for chunks of size <code>subArrayChunkSize</code> from the subarray when searching through the array.
 	 *
 	 * @param array An array to search in.
 	 * @param subArray The subarray for which to search from.
 	 * @param subArrayChunkSize Size of the chunks to pick from the subarray when searching through the array.
 	 * @return The index within this array of the first occurrence of one of the specified subarray chunks.
-	 * @see #indexOfSubArray(T[], T[])
+	 * @see #indexOfSubArray(Object[], Object[]) indexOfSubArray(T[], T[])
 	 */
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public static <T> int indexOfSubArrayChunk(T[] array, T[] subArray, int subArrayChunkSize) {
@@ -101,14 +101,14 @@ public final class ArrayHelper {
 
 	/**
 	 * Returns the index, within a wrapped array, of the first occurrence of one of the specified subarray chunks. This
-	 * method works in a similar fashion to @{@link #indexOfSubArrayWrapped(T[], T[])}, but searches for chunks of size
-	 * <code>subArrayChunkSize</code> from the subarray when searching through the array.
+	 * method works in a similar fashion to {@link #indexOfSubArrayWrapped(Object[], Object[]) indexOfSubArrayWrapped(T[], T[])},
+	 * but searches for chunks of size <code>subArrayChunkSize</code> from the subarray when searching through the array.
 	 *
 	 * @param array An array to search in.
 	 * @param subArray The subarray for which to search from.
 	 * @param subArrayChunkSize Size of the chunks to pick from the subarray when searching through the array.
 	 * @return The index within this array of the first occurrence of one of the specified subarray chunks.
-	 * @see #indexOfSubArrayWrapped(T[], T[])
+	 * @see #indexOfSubArrayWrapped(Object[], Object[]) indexOfSubArrayWrapped(T[], T[])
 	 */
 	public static <T> int indexOfSubArrayChunkWrapped(T[] array, T[] subArray, int subArrayChunkSize) {
 		return indexOfSubArrayChunk(ArrayUtils.addAll(array, array), subArray, subArrayChunkSize);
